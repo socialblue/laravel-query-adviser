@@ -1,11 +1,12 @@
-# Very short description of the package
+# Laravel-Query-Adviser
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/socialblue/laravel-query-adviser.svg?style=flat-square)](https://packagist.org/packages/socialblue/laravel-query-adviser)
 [![Build Status](https://img.shields.io/travis/socialblue/laravel-query-adviser/master.svg?style=flat-square)](https://travis-ci.org/socialblue/laravel-query-adviser)
 [![Quality Score](https://img.shields.io/scrutinizer/g/socialblue/laravel-query-adviser.svg?style=flat-square)](https://scrutinizer-ci.com/g/socialblue/laravel-query-adviser)
 [![Total Downloads](https://img.shields.io/packagist/dt/socialblue/laravel-query-adviser.svg?style=flat-square)](https://packagist.org/packages/socialblue/laravel-query-adviser)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+This package can help you in optimizing your MySql queries created by your Eloquent models.
+It uses the Builder to get more information about the underlying query. 
 
 ## Installation
 
@@ -18,7 +19,13 @@ composer require socialblue/laravel-query-adviser
 ## Usage
 
 ``` php
-// Usage description here
+
+$userBuilder = User::getQuery()
+->join('post', 'post.user_id', '=', 'user.id')
+->select([DB::raw('SUM(post.id)')]);
+dd(QueryBuilderHelper::info($userBuilder));
+
+
 ```
 
 ### Testing
