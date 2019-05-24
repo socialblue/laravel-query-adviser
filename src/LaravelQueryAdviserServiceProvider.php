@@ -18,7 +18,7 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
          * Optional methods to load your package assets
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-query-adviser');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-query-adviser');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-query-adviser');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
