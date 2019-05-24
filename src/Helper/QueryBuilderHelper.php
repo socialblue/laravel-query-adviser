@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class QueryBuilderHelper
 {
-    public static function info(Builder $builder)
+    public static function infoByBuilder($builder)
     {
         return [
             'toSql' => $builder->toSql(),
@@ -17,6 +17,32 @@ class QueryBuilderHelper
             'optimizeQuery' => self::showOptimizedQuery($builder)
         ];
     }
+
+    /**
+     * @param $builder
+     * @return mixed
+     */
+    public static function getQueryByBuilder($builder)
+    {
+       return self::addBindingsToQuery($builder);
+    }
+
+    /**
+     * @param $sql
+     * @param $bindings
+     * @return string|string[]|null
+     */
+    public static function combineQueryAndBindings($sql, $bindings)
+    {
+        $pdo = DB::connection()->getPdo();
+
+        while (strpos($sql, '?') !== false) {
+            $value = array_shift($bindings);
+            $sql = preg_replace('/\?/', ($pdo->quote($value)), $sql, 1);
+        }
+        return $sql;
+    }
+
 
     /**
      *
@@ -58,7 +84,7 @@ class QueryBuilderHelper
      *
      * @param $builder
      */
-    public static function analyze($builder)
+    public static function analyzeByBuilder($builder)
     {
         $statement = DB::connection()->getPdo()->prepare("EXPLAIN EXTENDED " . $builder->toSql());
 
@@ -76,7 +102,7 @@ class QueryBuilderHelper
      * @return mixed
      * @throws \Exception
      */
-    public static function showOptimizedQuery($builder)
+    public static function showOptimizedQueryByBuilder($builder)
     {
         self::analyze($builder);
 
@@ -90,18 +116,13 @@ class QueryBuilderHelper
      * @param $builder
      * @return string
      */
-    protected static function addBindingsToQuery($builder): string
+    protected static function addBindingsToQueryByBuilder($builder): string
     {
-        $pdo = DB::connection()->getPdo();
-        $sql = $builder->toSql();
-        $bindings = $builder->getBindings();
-
-        while (strpos($sql, '?') !== false) {
-            $value = array_shift($bindings);
-            $sql = preg_replace('/\?/', ($pdo->quote($value)), $sql, 1);
-        }
-        return $sql;
+       return self::combineQueryAndBindings($builder->toSql(), $builder->getBindings());
     }
+
+
+
 
 
 }
