@@ -2,6 +2,9 @@
 
 namespace Socialblue\LaravelQueryAdviser;
 
+use App\Helper\QueryBuilderHelper;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelQueryAdviserServiceProvider extends ServiceProvider
@@ -17,7 +20,7 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-query-adviser');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-query-adviser');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadRoutesFrom(__DIR__.'../routes/web.php');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -25,9 +28,9 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
             ], 'config');
 
             // Publishing the views.
-            /*$this->publishes([
+            $this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/laravel-query-adviser'),
-            ], 'views');*/
+            ], 'views');
 
             // Publishing assets.
             /*$this->publishes([
@@ -35,9 +38,9 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
             ], 'assets');*/
 
             // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-query-adviser'),
-            ], 'lang');*/
+//            $this->publishes([
+//                __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-query-adviser'),
+//            ], 'lang');
 
             // Registering package commands.
             // $this->commands([]);
@@ -55,6 +58,15 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
         // Register the main class to use with the facade
         $this->app->singleton('laravel-query-adviser', function () {
             return new LaravelQueryAdviser;
+        });
+
+        DB::listen(function($query) {
+            $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
+            $data[time()] = $query;
+            if (count($data) > config('laravel-query-adviser.cache.maxEntries')) {
+                array_shift($data);
+            }
+            Cache::put(config('laravel-query-adviser.cache.key'), $data, config('laravel-query-adviser.cache.ttl'));
         });
     }
 }
