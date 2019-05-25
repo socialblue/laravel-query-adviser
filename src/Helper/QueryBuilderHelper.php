@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helper;
+namespace Socialblue\LaravelQueryAdviser\Helper;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
