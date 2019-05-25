@@ -3,7 +3,7 @@
 namespace Socialblue\LaravelQueryAdviser;
 
 use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
-use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
