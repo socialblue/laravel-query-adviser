@@ -58,7 +58,7 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
 
         DB::listen(function($query) {
             $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
-            $data[time()][] = [$query->sql, $query->bindings, $query->time];
+            $data[time()][] = ['sql' => $query->sql, 'bindings' => $query->bindings, 'time' => $query->time];
 
             if (count($data) > config('laravel-query-adviser.cache.max_entries')) {
                 array_shift($data);
