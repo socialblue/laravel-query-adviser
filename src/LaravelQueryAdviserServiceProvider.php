@@ -19,11 +19,11 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
          * Optional methods to load your package assets
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-query-adviser');
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-query-adviser');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'QueryAdviser');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         Route::group([
             'prefix' => 'query-adviser',
-            'namespace' => 'SocialBlue\LaravelQueryAdviser\Http\Controllers',
+            'namespace' => 'Socialblue\LaravelQueryAdviser\Http\Controllers',
             'middleware' =>'web',
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
@@ -55,6 +55,16 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
             // Registering package commands.
             // $this->commands([]);
         }
+
+        DB::listen(function($query) {
+            $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
+            $data[time()][] = ['sql' => $query->sql, 'bindings' => $query->bindings, 'time' => $query->time];
+
+            if (count($data) > config('laravel-query-adviser.cache.max_entries')) {
+                array_shift($data);
+            }
+            Cache::put(config('laravel-query-adviser.cache.key'), $data, config('laravel-query-adviser.cache.ttl'));
+        });
     }
 
     /**
@@ -70,13 +80,6 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
             return new LaravelQueryAdviser;
         });
 
-        DB::listen(function($query) {
-            $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
-            $data[time()] = $query;
-            if (count($data) > config('laravel-query-adviser.cache.maxEntries')) {
-                array_shift($data);
-            }
-            Cache::put(config('laravel-query-adviser.cache.key'), $data, config('laravel-query-adviser.cache.ttl'));
-        });
+
     }
 }
