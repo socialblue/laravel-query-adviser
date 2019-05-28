@@ -13,7 +13,7 @@
     <div>
         @foreach($queries as $time => $querys)
             <div class="query-group">
-                {{date("Y-m-d H:i:s")}}
+                {{date("Y-m-d H:i:s", $time)}} ({{count($querys)}})
             </div>
 
             @if(is_array($querys[0]))
