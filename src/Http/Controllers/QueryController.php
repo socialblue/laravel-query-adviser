@@ -5,6 +5,8 @@ namespace Socialblue\LaravelQueryAdviser\Http\Controllers;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 
 class QueryController extends Controller
 {
@@ -19,4 +21,31 @@ class QueryController extends Controller
     {
         return Cache::get(config('laravel-query-adviser.cache.key'), []);
     }
+
+    public function exec(Request $request)
+    {
+        $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
+
+        if (isset($data[$request->get('time')][$request->get('time-key')])) {
+            $query = $data[$request->get('time')][$request->get('time-key')];
+            return DB::connection()->select($query['sql'], $query['bindings']);
+        }
+
+        return false;
+    }
+
+
+    public function explain(Request $request)
+    {
+        $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
+        $queryData = [];
+        $query = '';
+        if (isset($data[$request->get('time')][$request->get('time-key')])) {
+            $query = $data[$request->get('time')][$request->get('time-key')];
+            $queryData = DB::connection()->select('EXPLAIN EXTENDED '. $query['sql'], $query['bindings']);
+        }
+
+        return view('QueryAdviser::explain', ['queryParts' => $queryData, 'query' => $query]);
+    }
+
 }
