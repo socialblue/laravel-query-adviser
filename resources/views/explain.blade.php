@@ -8,27 +8,55 @@
     <title>Laravel Query Adviser</title>
 </head>
 <body>
-<h1>Query Adviser</h1>
+<h1>Query Adviser - EXPLAIN</h1>
+<a href="/query-adviser/query">Back</a>
+
+<summary>
+    <dl>
+        <dt>sql</dt>
+        <dd>{{Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'], $query['bindings'])}}</dd>
+
+        <dt>Time</dt>
+        <dd>{{$query['time']}}</dd>
+        <dt>Route</dt>
+        <dd>{{$query['url']}}</dd>
+    </dl>
+
+
+
+</summary>
+
+
 <section>
     <div>
-        @foreach($queries as $time => $querys)
+        @foreach($queryParts as $queryPart)
             <div class="query-group">
-                {{date("Y-m-d H:i:s", $time)}} ({{count($querys)}})
+                {{$queryPart->table}}
             </div>
+            <div class="query">
+                <dl>
+                    <dt>Select type</dt>
+                    <dd>{{$queryPart->select_type}}</dd>
 
-            @if(is_array($querys[0]))
-                @foreach($querys as $key => $query)
-                    <div class="query">
-                        <div class="text">
-                            {{$query['time']}} | {{$query['url']}} | {{Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'] ?? $query[0], $query['bindings'] ?? $query[1])}}
-                        </div>
-                        <div class="btn" data-time="{{$time}}}" data-time-key="{{$key}}">
-                            <a target="_blank" href="/query-adviser/api/query/exec/?time={{$time}}&time-key={{$key}}">EXEC</a> | <a href="/query-adviser/query/explain/?time={{$time}}&time-key={{$key}}">EXPLAIN</a>
-                        </div>
-                    </div>
-                @endforeach
-            @endif
+                    <dt>Type</dt>
+                    <dd>{{$queryPart->type}}</dd>
 
+                    <dt>Possible keys</dt>
+                    <dd>{{$queryPart->possible_keys}}</dd>
+
+                    <dt>Key used</dt>
+                    <dd>{{$queryPart->key}}</dd>
+
+                    <dt>key len</dt>
+                    <dd>{{$queryPart->key_len}}</dd>
+
+                    <dt>rows</dt>
+                    <dd>{{$queryPart->rows}}</dd>
+
+                    <dt>filtered</dt>
+                    <dd>{{$queryPart->filtered}}</dd>
+                </dl>
+            </div>
         @endforeach
 
     </div>
@@ -79,4 +107,3 @@
 
 </body>
 </html>
-
