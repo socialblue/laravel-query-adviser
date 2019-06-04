@@ -59,7 +59,7 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
         DB::listen(function($query) {
 
             $url = url()->current();
-            if (strpos($url, '/query-adviser') === 0) {
+            if (strpos($url, '/query-adviser') !== false) {
                 return;
             }
 
