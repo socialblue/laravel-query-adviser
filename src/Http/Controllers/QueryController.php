@@ -40,12 +40,19 @@ class QueryController extends Controller
         $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
         $queryData = [];
         $query = '';
+        $sqlOptimized ='';
         if (isset($data[$request->get('time')][$request->get('time-key')])) {
             $query = $data[$request->get('time')][$request->get('time-key')];
             $queryData = DB::connection()->select('EXPLAIN EXTENDED '. $query['sql'], $query['bindings']);
+
+            $ws = DB::connection()->getPdo()->prepare("SHOW WARNINGS");
+            $ws->execute();
+
+            $sqlOptimized = $ws->fetchColumn(2);
+
         }
 
-        return view('QueryAdviser::explain', ['queryParts' => $queryData, 'query' => $query]);
+        return view('QueryAdviser::explain', ['queryParts' => $queryData, 'query' => $query, 'optimized' => $sqlOptimized]);
     }
 
 }
