@@ -14,7 +14,19 @@
 <summary>
     <dl>
         <dt>sql</dt>
-        <dd>{{Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'], $query['bindings'])}}</dd>
+        <dd>{!!
+            Socialblue\LaravelQueryAdviser\Helper\SqlFormatter::format(Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'], $query['bindings']))
+        !!}</dd>
+
+        <dt>sql</dt>
+        <dd>{!!
+            Socialblue\LaravelQueryAdviser\Helper\SqlFormatter::format(Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'], $query['bindings']))
+        !!}</dd>
+
+        <dt onclick="document.querySelector('#opt').style.display='block';">show optimized query</dt>
+        <dd id="opt" style="display: none">{!!
+            Socialblue\LaravelQueryAdviser\Helper\SqlFormatter::format($optimized)
+        !!}</dd>
 
         <dt>Time</dt>
         <dd>{{$query['time']}}</dd>
@@ -36,10 +48,10 @@
             <div class="query">
                 <dl>
                     <dt>Select type</dt>
-                    <dd>{{$queryPart->select_type}}</dd>
+                    <dd>{{Socialblue\LaravelQueryAdviser\Enum\SelectType::get($queryPart->select_type) }}</dd>
 
                     <dt>Type</dt>
-                    <dd>{{$queryPart->type}}</dd>
+                    <dd>{{Socialblue\LaravelQueryAdviser\Enum\JoinType::get($queryPart->type)}}</dd>
 
                     <dt>Possible keys</dt>
                     <dd>{{$queryPart->possible_keys}}</dd>

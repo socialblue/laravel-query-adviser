@@ -20,7 +20,7 @@
                 @foreach($querys as $key => $query)
                     <div class="query">
                         <div class="text">
-                            {{$query['time']}} | {{$query['url']}} | {{Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'] ?? $query[0], $query['bindings'] ?? $query[1])}}
+                            {{$query['time']}} | {{$query['url']}} | {!!Socialblue\LaravelQueryAdviser\Helper\SqlFormatter::format(Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'] ?? $query[0], $query['bindings'] ?? $query[1]))!!}
                         </div>
                         <div class="btn" data-time="{{$time}}}" data-time-key="{{$key}}">
                             <a target="_blank" href="/query-adviser/api/query/exec/?time={{$time}}&time-key={{$key}}">EXEC</a> | <a href="/query-adviser/query/explain/?time={{$time}}&time-key={{$key}}">EXPLAIN</a>
@@ -58,7 +58,7 @@
     .query .text {
         position: relative;
         width: calc(95% - 100px);
-        max-height: 40px;
+        max-height: 100px;
         padding: 10px 4px 4px 10px;
         overflow-y: scroll;
     }
