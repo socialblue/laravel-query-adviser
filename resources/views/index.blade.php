@@ -5,37 +5,80 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
     <title>Laravel Query Adviser</title>
+    <link href="{{ asset(mix('/app.css', 'vendor/socialblue/laravel-query-adviser')) }}" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>Query Adviser</h1>
-<section>
-    <div>
-        @foreach($queries as $time => $querys)
-            <div class="query-group">
-                {{date("Y-m-d H:i:s", $time)}} ({{count($querys)}})
+    <section class="hero is-primary">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    Laravel Query Adviser
+                </h1>
+                <h2 class="subtitle">
+                    Queries logged by application
+                </h2>
             </div>
+        </div>
+    </section>
+    <nav class="level">
+        <div class="level-item has-text-centered">
+            <div>
+                <p class="heading">Queries</p>
+                <p class="title">3,456</p>
+            </div>
+        </div>
+        <div class="level-item has-text-centered">
+            <div>
+                <p class="heading">Routes</p>
+                <p class="title">123</p>
+            </div>
+        </div>
+    </nav>
 
-            @if(is_array($querys[0]))
-                @foreach($querys as $key => $query)
-                    <div class="query">
-                        <div class="text">
-                            {{$query['time']}} | {{$query['url']}} | {!!Socialblue\LaravelQueryAdviser\Helper\SqlFormatter::format(Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'] ?? $query[0], $query['bindings'] ?? $query[1]))!!}
-                        </div>
-                        <div class="btn" data-time="{{$time}}}" data-time-key="{{$key}}">
-                            <a target="_blank" href="/query-adviser/api/query/exec/?time={{$time}}&time-key={{$key}}">EXEC</a> | <a href="/query-adviser/query/explain/?time={{$time}}&time-key={{$key}}">EXPLAIN</a>
-                        </div>
-                    </div>
-                @endforeach
-            @endif
 
-        @endforeach
+    <section id="app">
+        <div>
+            @foreach($queries as $time => $querys)
+                <div class="query-group">
+                    {{date("Y-m-d H:i:s", $time)}} ({{count($querys)}})
+                </div>
 
-    </div>
-</section>
+                @if(is_array($querys[0]))
+                    @foreach($querys as $key => $query)
+                        <query-block
+                                sql="{{Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'] ?? $query[0], $query['bindings'] ?? $query[1])}}"
+                                :time-key="{{(int)$key}}"
+                                :time="{{(int)$time}}"
+                                route="{{$query['url']}}"
+                        >
+                        </query-block>
+
+                        <query-explain v-if="true" :time-key="{{(int)$key}}" :time="{{(int)$time}}"></query-explain>
+                    @endforeach
+                @endif
+
+            @endforeach
+
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                <strong>Laravel Query Adviser</strong> by <a href="https://socialblue.com">Social Blue</a>.
+            </p>
+        </div>
+    </footer>
+
+
+<script src="{{asset(mix('/app.js', 'vendor/socialblue/laravel-query-adviser'))}}"></script>
 <style>
+    * {
+        font-family: 'Ubuntu', sans-serif;
+    }
+
     .query-group {
-        font-family: Consolas;
         font-size: 24px;
         font-weight: bold;
         padding: 10px 4px 4px 10px;
@@ -50,7 +93,6 @@
         clear: both;
         width: 90%;
         border: 1px solid rgba(128, 128, 128, 0.6);
-        font-family: Consolas;
         font-size: 16px;
         margin: 4px;
     }
@@ -80,3 +122,15 @@
 </body>
 </html>
 
+<script>
+    import QueryBlock from "../js/view/query-block";
+    export default {
+        components: {QueryBlock}
+    }
+</script>
+<script>
+    import QueryExplain from "../assets/js/view/query-explain";
+    export default {
+        components: {QueryExplain}
+    }
+</script>

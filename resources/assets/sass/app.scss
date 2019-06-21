@@ -1,0 +1,17 @@
+@import "~bulma/bulma";
+
+$fa-font-path:        "/vendor/socialblue/laravel-query-adviser/webfonts";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~highlight.js/styles/darcula.css";
+
+
+.component-fade-enter-active, .component-fade-leave-active {
+    transition: all 1.4s ease;
+}
+.component-fade-enter, .component-fade-leave-to
+    /* .component-fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+    bottom: -200px;
+    position: fixed;
+}
