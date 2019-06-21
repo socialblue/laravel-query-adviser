@@ -39,13 +39,13 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
 
             // Publishing the views.
             $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/laravel-query-adviser'),
+                __DIR__.'/../resources/views' => resource_path('views/vendor/socialblue/laravel-query-adviser'),
             ], 'views');
 
             // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/laravel-query-adviser'),
-            ], 'assets');*/
+            $this->publishes([
+                __DIR__.'/../resources/assets' => public_path('vendor/socialblue/laravel-query-adviser'),
+            ], 'assets');
 
             // Publishing the translation files.
 //            $this->publishes([

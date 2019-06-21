@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
     <title>Laravel Query Adviser</title>
 </head>
 <body>
@@ -18,24 +19,22 @@
             Socialblue\LaravelQueryAdviser\Helper\SqlFormatter::format(Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'], $query['bindings']))
         !!}</dd>
 
-        <dt>sql</dt>
-        <dd>{!!
-            Socialblue\LaravelQueryAdviser\Helper\SqlFormatter::format(Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper::combineQueryAndBindings($query['sql'], $query['bindings']))
-        !!}</dd>
+        <dt onclick="document.querySelector('#opt').classList.remove('hidden')">show optimized query</dt>
+        <section id="opt" class='hidden'>
+            <dt onclick="document.querySelector('#opt').classList.add('hidden');">hide optimized query</dt>
+            <dd  >
+            {!!
+                Socialblue\LaravelQueryAdviser\Helper\SqlFormatter::format($optimized)
+            !!}
+            </dd>
+        </section>
 
-        <dt onclick="document.querySelector('#opt').style.display='block';">show optimized query</dt>
-        <dd id="opt" style="display: none">{!!
-            Socialblue\LaravelQueryAdviser\Helper\SqlFormatter::format($optimized)
-        !!}</dd>
 
         <dt>Time</dt>
         <dd>{{$query['time']}}</dd>
         <dt>Route</dt>
         <dd>{{$query['url']}}</dd>
     </dl>
-
-
-
 </summary>
 
 
@@ -74,8 +73,11 @@
     </div>
 </section>
 <style>
+    * {
+        font-family: 'Ubuntu', sans-serif;
+    }
+
     .query-group {
-        font-family: Consolas;
         font-size: 24px;
         font-weight: bold;
         padding: 10px 4px 4px 10px;
@@ -90,7 +92,6 @@
         clear: both;
         width: 90%;
         border: 1px solid rgba(128, 128, 128, 0.6);
-        font-family: Consolas;
         font-size: 16px;
         margin: 4px;
     }
@@ -114,6 +115,11 @@
         text-decoration: underline;
         text-transform: uppercase;
     }
+
+    .hidden {
+        display: none;
+    }
+
 </style>
 
 

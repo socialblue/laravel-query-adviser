@@ -52,7 +52,7 @@ class QueryController extends Controller
 
         }
 
-        return view('QueryAdviser::explain', ['queryParts' => $queryData, 'query' => $query, 'optimized' => $sqlOptimized]);
+        return ['queryParts' => $queryData, 'query' => $query, 'optimized' => $sqlOptimized];
     }
 
 }
