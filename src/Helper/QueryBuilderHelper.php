@@ -65,15 +65,25 @@ class QueryBuilderHelper
      */
     public static function analyzeByBuilder($builder)
     {
-        $statement = DB::connection()->getPdo()->prepare("EXPLAIN EXTENDED " . $builder->toSql());
+        //todo fix to use
+        return self::analyze($builder->toSql(), $builder->bindings());
+    }
 
-        if (! ($statement instanceof \PDOStatement)) {
-            throw new \Exception("");
-        }
+    /**
+     * @param $sql
+     * @param $bindings
+     * @return array
+     */
+    public static function analyze($sql, $bindings)
+    {
+        $query = ['sql' => $sql, 'bindings' => $bindings];
+        $queryData = DB::connection()->select('EXPLAIN EXTENDED '. $sql,  $bindings);
 
-        $statement->execute($builder->getBindings());
+        //todo use
+//        $ws = DB::connection()->select("SHOW WARNINGS");
+//        $sqlOptimized = $ws->fetchColumn(2);
 
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return ['queryParts' => $queryData, 'query' => $query, 'optimized' => ""];
     }
 
     /**
@@ -99,12 +109,4 @@ class QueryBuilderHelper
     {
        return self::combineQueryAndBindings($builder->toSql(), $builder->getBindings());
     }
-
-
-
-    public static function print_pretty($sql)
-    {
-        explode($sql, " ");
-    }
-
 }

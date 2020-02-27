@@ -8,20 +8,42 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 
+/**
+ * Class QueryController
+ * @package Socialblue\LaravelQueryAdviser\Http\Controllers
+ */
 class QueryController extends Controller
 {
+    /**
+     * Show view
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index() {
         return view('QueryAdviser::index', [
             'queries' => Cache::get(config('laravel-query-adviser.cache.key'), [])
         ]);
     }
 
-
+    /**
+     * Get from cache
+     *
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function get(Request $request)
     {
         return Cache::get(config('laravel-query-adviser.cache.key'), []);
     }
 
+    /**
+     * Execute query
+     *
+     *
+     * @param Request $request
+     * @return array|bool
+     */
     public function exec(Request $request)
     {
         $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
@@ -34,25 +56,21 @@ class QueryController extends Controller
         return false;
     }
 
-
+    /**
+     * Use explain for query
+     *
+     *
+     * @param Request $request
+     * @return array
+     */
     public function explain(Request $request)
     {
         $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
-        $queryData = [];
-        $query = '';
-        $sqlOptimized ='';
         if (isset($data[$request->get('time')][$request->get('time-key')])) {
             $query = $data[$request->get('time')][$request->get('time-key')];
-            $queryData = DB::connection()->select('EXPLAIN EXTENDED '. $query['sql'], $query['bindings']);
-
-            $ws = DB::connection()->getPdo()->prepare("SHOW WARNINGS");
-            $ws->execute();
-
-            $sqlOptimized = $ws->fetchColumn(2);
-
+            return QueryBuilderHelper::analyze($query['sql'], $query['bindings']);
         }
 
-        return ['queryParts' => $queryData, 'query' => $query, 'optimized' => $sqlOptimized];
+        return ['queryParts' => "", 'query' => "", 'optimized' => ""];
     }
-
 }

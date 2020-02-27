@@ -1,5 +1,4 @@
 export default {
-
     filters: {
       selectType(value) {
             const selectTypes = {
@@ -17,6 +16,4 @@ export default {
             return selectTypes[value.toUpperCase().replace(" ", "_")]
         }
     }
-
-    
 }
