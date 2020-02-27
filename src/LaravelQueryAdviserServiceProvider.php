@@ -2,7 +2,6 @@
 
 namespace Socialblue\LaravelQueryAdviser;
 
-use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +17,8 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
         /*
          * Optional methods to load your package assets
          */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-query-adviser');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'QueryAdviser');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
         Route::group([
             'prefix' => 'query-adviser',
             'namespace' => 'Socialblue\LaravelQueryAdviser\Http\Controllers',
@@ -46,29 +44,27 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
             $this->publishes([
                 __DIR__.'/../resources/assets' => public_path('vendor/socialblue/laravel-query-adviser'),
             ], 'assets');
-
-            // Publishing the translation files.
-//            $this->publishes([
-//                __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-query-adviser'),
-//            ], 'lang');
-
-            // Registering package commands.
-            // $this->commands([]);
         }
 
-        DB::listen(function($query) {
 
+        //
+        DB::listen(static function($query) {
             $url = url()->current();
             if (strpos($url, '/query-adviser') !== false) {
                 return;
             }
 
             $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
+            if (!is_array($data)) {
+                $data = [];
+            }
+
             $data[time()][] = ['sql' => $query->sql, 'bindings' => $query->bindings, 'time' => $query->time, 'url' => $url];
 
             if (count($data) > config('laravel-query-adviser.cache.max_entries')) {
                 array_shift($data);
             }
+
             Cache::put(config('laravel-query-adviser.cache.key'), $data, config('laravel-query-adviser.cache.ttl'));
         });
     }
