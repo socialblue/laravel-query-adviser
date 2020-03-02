@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
+use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 
 class LaravelQueryAdviserServiceProvider extends ServiceProvider
 {
@@ -42,16 +43,26 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
 
             // Publishing assets.
             $this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/socialblue/laravel-query-adviser'),
+                __DIR__.'/../public' => public_path('vendor/socialblue/laravel-query-adviser'),
+            ], 'assets');
+
+            // Publishing assets.
+            $this->publishes([
+                __DIR__.'/../resources' => resource_path('vendor/socialblue/laravel-query-adviser'),
             ], 'assets');
         }
 
 
-        //
         DB::listen(static function($query) {
             $url = url()->current();
             if (strpos($url, '/query-adviser') !== false) {
                 return;
+            }
+
+            $referer = request()->headers->get('referer');
+
+            if (empty($url)) {
+                $url = '';
             }
 
             $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
@@ -59,7 +70,14 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
                 $data = [];
             }
 
-            $data[time()][] = ['sql' => $query->sql, 'bindings' => $query->bindings, 'time' => $query->time, 'url' => $url];
+            $data[time()][] = [
+                'rawsql' => $query->sql,
+                'sql' => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
+                'bindings' => $query->bindings,
+                'time' => $query->time,
+                'url' => $url,
+                'referer'=> $referer
+            ];
 
             if (count($data) > config('laravel-query-adviser.cache.max_entries')) {
                 array_shift($data);
