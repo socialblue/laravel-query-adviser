@@ -1,4 +1,4 @@
-<script type="text/ecmascript-6">
+<script>
     import highlight from "../mixin/hightlight";
 
     export default {
@@ -32,16 +32,19 @@
 
         data: () => {
             return {
-                showNotification: false
+                showNotification: false,
+                showContent: true,
             }
         },
 
         computed: {
-
             execUrl() {
                 return `/query-adviser/api/query/exec/?time=${this.time}&time-key=${this.timeKey}`;
-            }
+            },
 
+            dateTime() {
+                return (new Date(this.time*1000)).toISOString();
+            }
         },
 
 
@@ -56,27 +59,31 @@
             <p class="card-header-title">
                 {{route}}
             </p>
-            <a href="#" class="card-header-icon" aria-label="more options">
-              <span class="icon">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
-              </span>
-            </a>
+            <span v-on:click="showContent = !showContent" class="material-icons button is-pulled-right" title="expand">
+                    <template v-if="!showContent">expand_more</template>
+                    <template v-if="showContent">expand_less</template>
+            </span>
         </header>
-        <div class="card-content">
+        <div class="card-content" v-if="showContent">
             <div class="content">
+                <div class="tags has-addons">
+                    <span class="tag">time</span>
+                    <span class="tag is-primary">{{executionTime}} ms</span>
+                </div>
                 <pre class="highlight" ref="sqlcode">{{prettyPrint(sql)}}</pre>
-                <time :datetime="(new Date(time*1000)).toISOString()">{{ (new Date(time*1000)).toISOString() }}</time>
+                <time :datetime="dateTime">{{ dateTime }}</time>
+
             </div>
         </div>
         <footer class="card-footer">
             <a target="_blank" :href="execUrl" class="card-footer-item" title="execute sql">
-                <span class="icon is-small">
-                    <i class="fas fa-database"></i>
+                <span class="material-icons button is-small">
+                    replay
                 </span>
             </a>
             <a class="card-footer-item" title="explain sql" v-on:click="showExplainDialog">
-                <span class="icon is-small" >
-                    <i class="fas fa-procedures"></i>
+                <span class="material-icons button is-small" >
+                    info
                 </span>
             </a>
 
@@ -91,8 +98,8 @@
             </transition>
 
             <a class="card-footer-item" title="copy sql" v-clipboard="format(sql)" v-clipboard:success="() => {showNotification = true}">
-                <span class="icon is-small">
-                    <li class="fas fa-clipboard"></li>
+                <span class="material-icons button is-small">
+                    file_copy
                 </span>
             </a>
         </footer>
