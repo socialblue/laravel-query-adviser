@@ -20,9 +20,7 @@ class QueryController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        return view('QueryAdviser::index', [
-            'queries' => Cache::get(config('laravel-query-adviser.cache.key'), [])
-        ]);
+        return view('QueryAdviser::index');
     }
 
     /**
