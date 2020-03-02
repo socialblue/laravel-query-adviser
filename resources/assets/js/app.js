@@ -1,16 +1,12 @@
 import Vue from 'vue';
-import axios from 'axios';
-import queryBlock from './view/query-block';
-import queryExplain from './view/query-explain';
 import Clipboard from 'v-clipboard'
+import ViewIndex from './view/index.vue';
 
 window.Vue = Vue;
-window.Axios = axios;
 window.EventBus = new Vue();
 
 Vue.use(Clipboard);
-Vue.component('queryBlock', queryBlock);
-Vue.component('queryExplain', queryExplain);
+Vue.component('app', ViewIndex);
 
 window.App = new Vue({
     el: '#app',

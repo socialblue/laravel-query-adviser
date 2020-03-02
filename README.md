@@ -6,7 +6,27 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/socialblue/laravel-query-adviser.svg?style=flat-square)](https://packagist.org/packages/socialblue/laravel-query-adviser)
 
 This package can help you in optimizing your MySql queries created by your Eloquent models.
-It uses the Builder to get more information about the underlying query. 
+It logs the queries used by your application and provides a helpful overview of the queries.
+You can rerun the query analyze the database impact or just copy the query to your clipboard.
+
+The handy card view allows you to quickly see the pain points of your application.
+
+goto **{app_url}/query-adviser/query**
+> 
+
+
+![Query Overview](./img/overview.png)
+
+collapse and expand the panels for less or more information about the queries executed in that time frame.
+
+**Query card**
+![Query Card](./img/card.png)
+> | execute | information | copy to clipboard |
+
+Open the explain dialog to see more information about the query.
+
+**Query information**
+![Query Card](./img/query-information.png)
 
 ## Installation
 
@@ -14,6 +34,8 @@ You can install the package via composer:
 
 ```bash
 composer require socialblue/laravel-query-adviser
+
+php artisan vendor:publish
 ```
 
 ## Usage
