@@ -28,6 +28,10 @@ Open the explain dialog to see more information about the query.
 **Query information**
 ![Query Card](./img/query-information.png)
 
+**Re-execute Query**
+![Query Card](./img/query-execute.png)
+
+
 ## Installation
 
 You can install the package via composer:
