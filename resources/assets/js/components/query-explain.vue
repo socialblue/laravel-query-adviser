@@ -25,16 +25,6 @@
             ExplainPart
         },
 
-        props: {
-            time: {
-                type: Number
-            },
-
-            timeKey: {
-                type: Number
-            }
-        },
-
         data() {
             return {
                 explainParts: [],
@@ -62,12 +52,15 @@
         mounted() {
 
             window.EventBus.$on(`show-explain-dialog`, (data)=> {
-                if (data[0] === this.time && data[1] === this.timeKey) {
-                    this.loadExplainParts();
-                    this.$nextTick().then(() => {
-                        this.active = true;
-                    });
-                }
+
+                this.time = data.time;
+                this.timeKey = data.timeKey;
+
+                this.loadExplainParts();
+                this.$nextTick().then(() => {
+                    this.active = true;
+                });
+
             });
         }
     }
