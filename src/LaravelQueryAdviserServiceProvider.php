@@ -3,10 +3,9 @@
 namespace Socialblue\LaravelQueryAdviser;
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
+use Socialblue\LaravelQueryAdviser\DataListener\QueryListener;
 
 class LaravelQueryAdviserServiceProvider extends ServiceProvider
 {
@@ -54,36 +53,7 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
 
 
         DB::listen(static function($query) {
-            $url = url()->current();
-            if (strpos($url, '/query-adviser') !== false) {
-                return;
-            }
-
-            $referer = request()->headers->get('referer');
-
-            if (empty($url)) {
-                $url = '';
-            }
-
-            $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
-            if (!is_array($data)) {
-                $data = [];
-            }
-
-            $data[time()][] = [
-                'rawsql' => $query->sql,
-                'sql' => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
-                'bindings' => $query->bindings,
-                'time' => $query->time,
-                'url' => $url,
-                'referer'=> $referer
-            ];
-
-            if (count($data) > config('laravel-query-adviser.cache.max_entries')) {
-                array_shift($data);
-            }
-
-            Cache::put(config('laravel-query-adviser.cache.key'), $data, config('laravel-query-adviser.cache.ttl'));
+            QueryListener::listen($query);
         });
     }
 
@@ -99,7 +69,5 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
         $this->app->singleton('laravel-query-adviser', function () {
             return new LaravelQueryAdviser;
         });
-
-
     }
 }
