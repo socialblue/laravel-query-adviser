@@ -44,7 +44,7 @@ class QueryListener {
                 if (is_string($a)) {
                     $trace['model'] = $a;
                 } else {
-                    $a = get_class($a);
+                    $trace['model'] = get_class($a);
                 }
             }
             unset($trace['object']);
@@ -52,7 +52,7 @@ class QueryListener {
         });
 
         $data[time()][] = [
-            'backtrace' => debug_backtrace(0, 25),
+            'backtrace' => $possibleTraces,
             'sql' => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
             'rawsql' => $query->sql,
             'bindings' => $query->bindings,
