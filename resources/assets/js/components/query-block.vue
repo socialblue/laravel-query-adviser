@@ -26,7 +26,10 @@
 
         methods: {
             showExplainDialog() {
-                window.EventBus.$emit('show-explain-dialog', [this.time, this.timeKey])
+                window.EventBus.$emit('show-explain-dialog', {
+                    time: this.time,
+                    timeKey: this.timeKey,
+                })
             },
 
             showExecuteDialog() {
@@ -35,6 +38,13 @@
                     timeKey: this.timeKey,
                     sql: this.sql
                 })
+            },
+
+            clipboardSuccess() {
+                this.showNotification = true;
+                setTimeout(() => {
+                    this.showNotification = false;
+                }, 3000);
             }
         },
 
@@ -105,7 +115,7 @@
                 </nav>
             </transition>
 
-            <a class="card-footer-item" title="copy sql" v-clipboard="format(sql)" v-clipboard:success="() => {showNotification = true}">
+            <a class="card-footer-item" title="copy sql" v-clipboard="format(sql)" v-clipboard:success="clipboardSuccess">
                 <span class="material-icons button is-small">
                     file_copy
                 </span>
