@@ -13,6 +13,7 @@
             </p>
         </nav>
         <query-execute></query-execute>
+        <query-explain></query-explain>
 
         <nav class="panel" v-for="(queries, time) in cachedKeys">
             <p class="panel-heading">
@@ -35,8 +36,6 @@
                             :execution-time="query.time"
                     >
                     </query-block>
-
-                    <query-explain :time-key="key" :time="+time"></query-explain>
                 </div>
             </div>
         </nav>
