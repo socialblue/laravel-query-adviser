@@ -33,16 +33,22 @@ class QueryListener {
             static function ($trace) {
                 return isset($trace['file']) &&
                     strpos($trace['file'], 'vendor/laravel/framework/src') === false &&
-                    isset($trace['object']) &&
-                    property_exists($trace['object'], 'model');
+                    isset($trace['object']);
+
             }
         );
 
         array_walk($possibleTraces, static function (&$trace) {
             if (method_exists($trace['object'], 'getModel')) {
-                $trace['model'] = $trace['object']->getModel();
+                $a = $trace['object']->getModel();
+                if (is_string($a)) {
+                    $trace['model'] = $a;
+                } else {
+                    $a = get_class($a);
+                }
             }
             unset($trace['object']);
+            unset($trace['args']);
         });
 
         $data[time()][] = [
