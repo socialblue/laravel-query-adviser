@@ -12,7 +12,7 @@
                 <a>Routes</a>
             </p>
         </nav>
-
+        <query-execute></query-execute>
 
         <nav class="panel" v-for="(queries, time) in cachedKeys">
             <p class="panel-heading">
@@ -35,6 +35,7 @@
                             :execution-time="query.time"
                     >
                     </query-block>
+
                     <query-explain :time-key="key" :time="+time"></query-explain>
                 </div>
             </div>
@@ -49,6 +50,7 @@
 <script>
     import queryStatistics from '@/components/query-statistics';
     import queryBlock from '@/components/query-block';
+    import QueryExecute from '@/components/query-execute';
     import queryExplain from '@/components/query-explain';
     import pageHeader from '@/components/page-header';
     import pageFooter from '@/components/page-footer';
@@ -56,7 +58,7 @@
 
 
     export default {
-        components: {queryStatistics, queryBlock, queryExplain, pageHeader, pageFooter},
+        components: {queryStatistics, queryBlock, queryExplain, QueryExecute, pageHeader, pageFooter},
 
         data() {
             return {

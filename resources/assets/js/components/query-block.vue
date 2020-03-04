@@ -27,6 +27,14 @@
         methods: {
             showExplainDialog() {
                 window.EventBus.$emit('show-explain-dialog', [this.time, this.timeKey])
+            },
+
+            showExecuteDialog() {
+                window.EventBus.$emit('show-execute-dialog', {
+                    time: this.time,
+                    timeKey: this.timeKey,
+                    sql: this.sql
+                })
             }
         },
 
@@ -76,7 +84,7 @@
             </div>
         </div>
         <footer class="card-footer">
-            <a target="_blank" :href="execUrl" class="card-footer-item" title="execute sql">
+            <a v-on:click="showExecuteDialog" class="card-footer-item" title="execute sql">
                 <span class="material-icons button is-small">
                     replay
                 </span>
