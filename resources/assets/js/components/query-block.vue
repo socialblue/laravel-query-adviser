@@ -3,40 +3,24 @@
 
     export default {
         props: {
-            sql: {
-                type: String
-            },
-
-            route: {
-                type: String
-            },
-
-            time: {
-                type: Number
-            },
-
-            timeKey: {
-                type: Number
-            },
-
-            executionTime: {
-                type: Number
+            query: {
+                type: Object
             }
         },
 
         methods: {
             showExplainDialog() {
                 window.EventBus.$emit('show-explain-dialog', {
-                    time: this.time,
-                    timeKey: this.timeKey,
+                    time: this.query.time,
+                    timeKey: this.query.timeKey,
                 })
             },
 
             showExecuteDialog() {
                 window.EventBus.$emit('show-execute-dialog', {
-                    time: this.time,
-                    timeKey: this.timeKey,
-                    sql: this.sql
+                    time: this.query.time,
+                    timeKey: this.query.timeKey,
+                    sql: this.query.sql
                 })
             },
 
@@ -54,11 +38,11 @@
 
         computed: {
             execUrl() {
-                return `/query-adviser/api/query/exec/?time=${this.time}&time-key=${this.timeKey}`;
+                return `/query-adviser/api/query/exec/?time=${this.query.time}&time-key=${this.query.timeKey}`;
             },
 
             dateTime() {
-                return (new Date(this.time*1000)).toISOString();
+                return (new Date(this.query.time*1000)).toISOString();
             }
         },
 
@@ -72,7 +56,7 @@
     <div class="card">
         <header class="card-header">
             <p class="card-header-title">
-                {{route}}
+                {{query.url}} ({{query.referer}})
             </p>
             <span v-on:click="showContent = !showContent" class="material-icons button is-pulled-right" title="expand">
                     <template v-if="!showContent">expand_more</template>
@@ -81,11 +65,30 @@
         </header>
         <div class="card-content" v-if="showContent">
             <div class="content">
-                <div class="tags has-addons">
+                <div class="tags has-addons float-left">
                     <span class="tag">time</span>
-                    <span class="tag is-primary">{{executionTime}} ms</span>
+                    <span class="tag is-primary">{{query.queryTime}} ms</span>
                 </div>
-                <pre class="highlight" ref="sqlcode">{{prettyPrint(sql)}}</pre>
+                <template v-if="Object.values(query.backtrace)[0]">
+                    <div class="tags has-addons float-left">
+                        <span class="tag">file</span>
+                        <span class="tag is-primary">
+                            {{Object.values(query.backtrace)[0].file}}:{{Object.values(query.backtrace)[0].line}}
+                        </span>
+                    </div>
+
+                    <div class="tags has-addons float-left" v-if="Object.values(query.backtrace)[0].model">
+                        <span class="tag">class</span>
+                        <span class="tag is-primary">{{Object.values(query.backtrace)[0].model}}</span>
+                    </div>
+                    <!-- phpstorm://open?url=file:///{filename}&line={line}-->
+                    <div class="tags has-addons float-left">
+                        <span class="tag">function</span>
+                        <span class="tag is-primary">{{Object.values(query.backtrace)[0].function}}</span>
+                    </div>
+                </template>
+
+                <pre class="highlight" ref="sqlcode">{{prettyPrint(query.sql)}}</pre>
                 <time :datetime="dateTime">{{ dateTime }}</time>
 
             </div>
@@ -102,7 +105,7 @@
                 </span>
             </a>
 
-            <a class="card-footer-item" title="copy sql" v-clipboard="format(sql)" v-clipboard:success="clipboardSuccess">
+            <a class="card-footer-item" title="copy sql" v-clipboard="format(query.sql)" v-clipboard:success="clipboardSuccess">
                 <span class="material-icons button is-small">
                     file_copy
                 </span>

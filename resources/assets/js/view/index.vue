@@ -37,12 +37,7 @@
             <div class="columns panel-block is-multiline" v-if="showQueryGroup(key)">
                 <div class="column" v-for="(query) in queries" >
                     <query-block
-                            :sql="query.sql"
-                            :time-key="query.timeKey"
-                            :time="query.time"
-                            :route="query.url"
-                            :referer="query.referer"
-                            :execution-time="query.queryTime"
+                            :query="query"
                     >
                     </query-block>
                 </div>

@@ -30,6 +30,14 @@ Also you can clear the cached queries by pressing the eject button.
 ![Query Card](./img/card.png)
 > | execute | information | copy to clipboard |
 
+
+**Query labels**
+
+As of version 0.10.0, the query card has labels related to the class, 
+file and function of the query executed from your app folder.
+
+![Query labels](./img/labels.png)
+
 Open the explain dialog to see more information about the query.
 
 **Query information**
