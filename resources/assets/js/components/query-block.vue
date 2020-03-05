@@ -56,7 +56,7 @@
     <div class="card">
         <header class="card-header">
             <p class="card-header-title">
-                {{query.route}}
+                {{query.url}} ({{query.referer}})
             </p>
             <span v-on:click="showContent = !showContent" class="material-icons button is-pulled-right" title="expand">
                     <template v-if="!showContent">expand_more</template>
