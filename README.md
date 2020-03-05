@@ -19,6 +19,13 @@ goto **{app_url}/query-adviser/query**
 
 collapse and expand the panels for less or more information about the queries executed in that time frame.
 
+**Groups**
+
+You can group the queries by time, routes and rawQuery.
+Also you can clear the cached queries by pressing the eject button.
+
+![Query groups](./img/groupby.png)
+
 **Query card**
 ![Query Card](./img/card.png)
 > | execute | information | copy to clipboard |
