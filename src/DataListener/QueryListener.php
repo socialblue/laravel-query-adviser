@@ -36,7 +36,7 @@ class QueryListener {
         $possibleTraces = array_filter(debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 25),
             static function ($trace) {
                 return isset($trace['file']) &&
-                    strpos($trace['file'], 'vendor/laravel/framework/src') === false &&
+                    strpos($trace['file'], '/var/www/app/') !== false &&
                     isset($trace['object']);
 
             }
