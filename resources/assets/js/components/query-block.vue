@@ -41,10 +41,7 @@
             },
 
             clipboardSuccess() {
-                this.showNotification = true;
-                setTimeout(() => {
-                    this.showNotification = false;
-                }, 3000);
+                window.EventBus.$emit('show-notification', {message: 'Query is copied to your clipboard'});
             }
         },
 
@@ -104,16 +101,6 @@
                     info
                 </span>
             </a>
-
-
-            <transition name="component-fade" mode="out-in">
-                <nav class="navbar is-fixed-bottom" v-if="showNotification">
-                    <div class="notification is-info">
-                        <button class="delete" v-on:click="showNotification = false"></button>
-                        Query is copied to your clipboard
-                    </div>
-                </nav>
-            </transition>
 
             <a class="card-footer-item" title="copy sql" v-clipboard="format(sql)" v-clipboard:success="clipboardSuccess">
                 <span class="material-icons button is-small">

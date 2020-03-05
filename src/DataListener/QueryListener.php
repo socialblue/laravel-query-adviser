@@ -17,7 +17,7 @@ class QueryListener {
         if (strpos($url, '/query-adviser') !== false) {
             return;
         }
-
+        $time = time();
         $referer = request()->headers->get('referer');
 
         if (empty($url)) {
@@ -27,6 +27,10 @@ class QueryListener {
         $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
         if (!is_array($data)) {
             $data = [];
+        }
+
+        if (!isset($data[$time])) {
+            $data[$time] = [];
         }
 
         $possibleTraces = array_filter(debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 25),
@@ -51,12 +55,16 @@ class QueryListener {
             unset($trace['args']);
         });
 
-        $data[time()][] = [
+        $key = count($data[$time]);
+
+        $data[$time][$key] = [
+            'time' => $time,
+            'timeKey' => $key,
             'backtrace' => $possibleTraces,
             'sql' => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
-            'rawsql' => $query->sql,
+            'rawSql' => $query->sql,
             'bindings' => $query->bindings,
-            'time' => $query->time,
+            'queryTime' => $query->time,
             'url' => $url,
             'referer'=> $referer,
         ];
