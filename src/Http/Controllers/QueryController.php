@@ -36,6 +36,13 @@ class QueryController extends Controller
     }
 
     /**
+     * Clears cache
+     */
+    public function clear() {
+        return ['success' => Cache::forget(config('laravel-query-adviser.cache.key'))];
+    }
+
+    /**
      * Execute query
      *
      *
