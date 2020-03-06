@@ -33,6 +33,22 @@ class QueryListener {
             $data[$time] = [];
         }
 
+        $possibleTraces = self::formatPossibleTraces(self::getPossibleTraces());
+
+        $data = self::formatData($query, $data, $time, $possibleTraces, $url, $referer);
+
+        if (count($data) > config('laravel-query-adviser.cache.max_entries')) {
+            array_shift($data);
+        }
+
+        Cache::put(config('laravel-query-adviser.cache.key'), $data, config('laravel-query-adviser.cache.ttl'));
+    }
+
+    /**
+     * @return array
+     */
+    protected static function getPossibleTraces(): array
+    {
         $possibleTraces = array_filter(debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 25),
             static function ($trace) {
                 return isset($trace['file']) &&
@@ -41,7 +57,15 @@ class QueryListener {
 
             }
         );
+        return $possibleTraces;
+    }
 
+    /**
+     * @param possibleTraces
+     * @return mixed
+     */
+    protected static function formatPossibleTraces($possibleTraces)
+    {
         array_walk($possibleTraces, static function (&$trace) {
             if (method_exists($trace['object'], 'getModel')) {
                 $a = $trace['object']->getModel();
@@ -54,25 +78,33 @@ class QueryListener {
             unset($trace['object']);
             unset($trace['args']);
         });
+        return $possibleTraces;
+    }
 
+    /**
+     * @param QueryExecuted $query
+     * @param array $data
+     * @param int $time
+     * @param $possibleTraces
+     * @param string $url
+     * @param string|null $referer
+     * @return array
+     */
+    protected static function formatData(QueryExecuted $query, array $data, int $time, $possibleTraces, string $url, ?string $referer): array
+    {
         $key = count($data[$time]);
 
         $data[$time][$key] = [
-            'time' => $time,
-            'timeKey' => $key,
+            'time'      => $time,
+            'timeKey'   => $key,
             'backtrace' => $possibleTraces,
-            'sql' => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
-            'rawSql' => $query->sql,
-            'bindings' => $query->bindings,
+            'sql'       => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
+            'rawSql'    => $query->sql,
+            'bindings'  => $query->bindings,
             'queryTime' => $query->time,
-            'url' => $url,
-            'referer'=> $referer,
+            'url'       => $url,
+            'referer'   => $referer,
         ];
-
-        if (count($data) > config('laravel-query-adviser.cache.max_entries')) {
-            array_shift($data);
-        }
-
-        Cache::put(config('laravel-query-adviser.cache.key'), $data, config('laravel-query-adviser.cache.ttl'));
+        return $data;
     }
 }
