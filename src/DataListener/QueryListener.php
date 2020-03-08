@@ -20,28 +20,13 @@ class QueryListener {
         $time = time();
         $referer = request()->headers->get('referer');
 
-        if (empty($url)) {
-            $url = '';
-        }
-
-        $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
-        if (!is_array($data)) {
-            $data = [];
-        }
-
-        if (!isset($data[$time])) {
-            $data[$time] = [];
-        }
+        $data = self::getFromCache($time);
 
         $possibleTraces = self::formatPossibleTraces(self::getPossibleTraces());
 
-        $data = self::formatData($query, $data, $time, $possibleTraces, $url, $referer);
-
-        if (count($data) > config('laravel-query-adviser.cache.max_entries')) {
-            array_shift($data);
-        }
-
-        Cache::put(config('laravel-query-adviser.cache.key'), $data, config('laravel-query-adviser.cache.ttl'));
+        self::putToCache(
+            self::formatData($query, $data, $time, $possibleTraces, $url, $referer)
+        );
     }
 
     /**
@@ -92,6 +77,10 @@ class QueryListener {
      */
     protected static function formatData(QueryExecuted $query, array $data, int $time, $possibleTraces, string $url, ?string $referer): array
     {
+        if (empty($url)) {
+            $url = '';
+        }
+
         $key = count($data[$time]);
 
         $data[$time][$key] = [
@@ -105,6 +94,37 @@ class QueryListener {
             'url'       => $url,
             'referer'   => $referer,
         ];
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    protected static function putToCache(array $data): array
+    {
+        if (count($data) > config('laravel-query-adviser.cache.max_entries')) {
+            array_shift($data);
+        }
+
+        Cache::put(config('laravel-query-adviser.cache.key'), $data, config('laravel-query-adviser.cache.ttl'));
+        return $data;
+    }
+
+    /**
+     * @param int $time
+     * @return array|mixed
+     */
+    protected static function getFromCache(int $time)
+    {
+        $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
+        if (!is_array($data)) {
+            $data = [];
+        }
+
+        if (!isset($data[$time])) {
+            $data[$time] = [];
+        }
         return $data;
     }
 }

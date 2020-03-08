@@ -2,7 +2,7 @@
     <div>
         <page-header />
 
-        <query-statistics :queries="amountOfQueries" :routes="amountOfRoutes"></query-statistics>
+        <query-statistics :queries="amountOfQueries" :routes="amountOfRoutes" :query-time="totalQueryTime"></query-statistics>
         <nav class="panel is-primary">
 
             <div class="panel-heading">
@@ -82,6 +82,16 @@
                 }
 
                 return this.cachedKeys;
+            },
+
+            totalQueryTime() {
+                return Object.values(this.cachedKeys).flat().reduce((total, time, index) => {
+                    if (index === 1) {
+                        total = total.queryTime;
+                    }
+
+                    return total + time.queryTime;
+                });
             },
 
             amountOfQueries() {
