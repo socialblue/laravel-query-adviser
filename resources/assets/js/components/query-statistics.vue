@@ -12,6 +12,18 @@
                 <p class="title">{{routes}}</p>
             </div>
         </div>
+        <div class="level-item has-text-centered">
+            <div>
+                <p class="heading">Total Query time</p>
+                <p class="title">{{queryTime | round}} ms</p>
+            </div>
+        </div>
+        <div class="level-item has-text-centered">
+            <div>
+                <p class="heading">AVG Query time</p>
+                <p class="title">{{queryTime / queries | round}} ms</p>
+            </div>
+        </div>
     </nav>
 </template>
 
@@ -24,11 +36,25 @@
                     return 0;
                 }
             },
+
             routes: {
                 type: Number,
                 default() {
                     return 0;
                 }
+            },
+
+            queryTime: {
+                type: Number,
+                default() {
+                    return 0;
+                }
+            }
+        },
+
+        filters: {
+            round(val) {
+                return Math.round(val, 2);
             }
         }
     }
