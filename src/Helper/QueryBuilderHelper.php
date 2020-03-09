@@ -38,7 +38,7 @@ class QueryBuilderHelper
 
         while (strpos($sql, '?') !== false) {
             $value = array_shift($bindings);
-            $sql = preg_replace('/\?/', ($pdo->quote($value)), $sql, 1);
+            $sql = preg_replace('/\?/', $pdo->quote(addslashes(addslashes($value))), $sql, 1);
         }
         return $sql;
     }
