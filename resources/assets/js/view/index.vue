@@ -1,49 +1,68 @@
 <template>
     <div>
         <page-header />
-
-        <query-statistics :queries="amountOfQueries" :routes="amountOfRoutes" :query-time="totalQueryTime"></query-statistics>
-        <nav class="panel is-primary">
-
-            <div class="panel-heading">
-                <span>
-                    Queries
-                </span>
-                <span class="material-icons button is-pulled-right" title="clear query cache" v-on:click="clearQueryCache">
-                    eject
-                </span>
-
-            </div>
-
-            <p class="panel-tabs">
-                <a v-on:click="listType = 'time'" :class="{'is-active': (listType == 'time')}">Time</a>
-                <a v-on:click="listType = 'routes'" :class="{'is-active': (listType == 'routes')}">Routes</a>
-                <a v-on:click="listType = 'rawQueries'" :class="{'is-active': (listType == 'rawQueries')}">Raw queries</a>
-            </p>
-        </nav>
         <query-execute></query-execute>
         <query-explain></query-explain>
+        <query-statistics :queries="amountOfQueries" :routes="amountOfRoutes" :query-time="totalQueryTime"></query-statistics>
+        <div class="tile is-parent is-paddingless">
+            <main class="is-vertical tile">
+                <nav class="panel is-primary">
+                    <div class="panel-heading">
+                        <span>
+                            Queries
+                        </span>
+                        <span class="material-icons button is-pulled-right" title="clear query cache" v-on:click="clearQueryCache">
+                            eject
+                        </span>
+                    </div>
 
-        <nav class="panel" v-for="(queries, key) in dataList">
-            <p class="panel-heading">
-                <span>
-                    {{groupTitle(key)}} ({{queries.length}})
-                </span>
-                <span v-on:click="toggleQueryGroup(key)" class="material-icons button is-pulled-right" title="expand">
-                    <template v-if="!showQueryGroup(key)">expand_more</template>
-                    <template v-if="showQueryGroup(key)">expand_less</template>
-                </span>
-            </p>
-            <div class="columns panel-block is-multiline" v-if="showQueryGroup(key)">
-                <div class="column" v-for="(query) in queries" >
-                    <query-block
-                            :query="query"
-                    >
-                    </query-block>
+                    <p class="panel-tabs">
+                        <a v-on:click="listType = 'time'" :class="{'is-active': (listType == 'time')}">Time</a>
+                        <a v-on:click="listType = 'url'" :class="{'is-active': (listType == 'url')}">Routes</a>
+                        <a v-on:click="listType = 'referer'" :class="{'is-active': (listType == 'referer')}">Referer</a>
+                        <a v-on:click="listType = 'rawSql'" :class="{'is-active': (listType == 'rawSql')}">Raw queries</a>
+                        <a v-on:click="listType = 'sql'" :class="{'is-active': (listType == 'sql')}">Queries with bindings</a>
+                        <a v-on:click="listType = 'queryTime'" :class="{'is-active': (listType == 'queryTime')}">Query time</a>
+                    </p>
+                </nav>
+
+
+                <div class="timeline">
+                    <header class="timeline-header">
+                        <span class="tag is-medium is-primary">Start</span>
+                    </header>
+
+                    <div class="timeline-item is-primary" v-for="(queries, key) in dataList">
+                        <div class="timeline-marker is-icon button is-info">
+                            <span v-on:click="toggleQueryGroup(key)" class="material-icons" title="expand">
+                                    <template v-if="!showQueryGroup(key)">expand_more</template>
+                                    <template v-if="showQueryGroup(key)">expand_less</template>
+                            </span>
+                        </div>
+                        <div class="timeline-content">
+                            <p class="heading">{{groupTitle(key)}} ({{queries.length}})
+
+                            </p>
+                            <div>
+                                <div class="columns is-multiline" v-if="showQueryGroup(key)">
+                                    <div class="column" v-for="(query) in queries" >
+                                        <query-block
+                                                :query="query"
+                                        >
+                                        </query-block>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <header class="timeline-header">
+                        <span class="tag is-medium is-primary">End</span>
+                    </header>
+
                 </div>
-            </div>
-        </nav>
-
+            </main>
+        </div>
+        <side-panel />
         <page-footer />
         <notification />
     </div>
@@ -58,12 +77,13 @@
     import queryExplain from '@/components/query-explain';
     import pageHeader from '@/components/page-header';
     import pageFooter from '@/components/page-footer';
+    import sidePanel from '@/components/side-panel';
     import notification from '@/components/notification';
     import Axios from 'Axios';
 
 
     export default {
-        components: {queryStatistics, queryBlock, notification, queryExplain, QueryExecute, pageHeader, pageFooter},
+        components: {queryStatistics, sidePanel, queryBlock, notification, queryExplain, QueryExecute, pageHeader, pageFooter},
 
         data() {
             return {
@@ -75,27 +95,32 @@
 
         computed: {
             dataList() {
-                if (this.listType === 'routes') {
-                    return this.getRouteQueryList;
-                } else if (this.listType === 'rawQueries') {
-                    return this.getRawQueryList;
+                if (this.listType === 'time') {
+                    return this.cachedKeys;
                 }
 
-                return this.cachedKeys;
+                return this.groupValuesByKey(this.listType);
+            },
+
+            flattenedCachedKeys() {
+                return Object.values(this.cachedKeys).flat();
             },
 
             totalQueryTime() {
-                return Object.values(this.cachedKeys).flat().reduce((total, time, index) => {
+                if (this.flattenedCachedKeys.length === 0) {
+                    return 0;
+                }
+
+                return this.flattenedCachedKeys.reduce((total, time, index) => {
                     if (index === 1) {
                         total = total.queryTime;
                     }
-
                     return total + time.queryTime;
                 });
             },
 
             amountOfQueries() {
-                return Object.values(this.cachedKeys).flat().length;
+                return this.flattenedCachedKeys.length;
             },
 
             amountOfRoutes() {
@@ -103,31 +128,19 @@
             },
 
             getUniqueRoutes() {
-                return [...new Set(Object.values(this.cachedKeys).flat().map(val => val.url))];
+                return this.getUniqueValuesByKey('url');
             },
 
             getUniqueRawSql() {
-                return [...new Set(Object.values(this.cachedKeys).flat().map(val => val.rawSql))];
+                return this.getUniqueValuesByKey('rawSql');
             },
 
             getRawQueryList() {
-                let data = {};
-
-                this.getUniqueRawSql.forEach(rawSql => {
-                    data[rawSql] = Object.values(this.cachedKeys).flat().filter(val => val.rawSql === rawSql);
-                });
-
-                return data;
+                return this.groupValuesByKey('rawSql');
             },
 
             getRouteQueryList() {
-                let data = {};
-
-                this.getUniqueRoutes.forEach(route => {
-                    data[route] = Object.values(this.cachedKeys).flat().filter(val => val.url === route);
-                });
-
-                return data;
+                return this.groupValuesByKey('url');
             }
         },
 
@@ -162,6 +175,18 @@
                     return new Date(value * 1000).toISOString();
                 }
                 return value;
+            },
+
+            getUniqueValuesByKey(key) {
+                return [...new Set(this.flattenedCachedKeys.map(val => val[key]))];
+            },
+
+            groupValuesByKey(key) {
+                let data = {};
+                this.getUniqueValuesByKey(key).forEach((uniqueValue) => {
+                    data[uniqueValue] = this.flattenedCachedKeys.filter(row => row[key] === uniqueValue);
+                });
+                return data;
             }
         },
 
