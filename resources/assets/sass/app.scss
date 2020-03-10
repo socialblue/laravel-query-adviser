@@ -1,8 +1,8 @@
 @import "~bulma/bulma";
-
-$fa-font-path:"/vendor/socialblue/laravel-query-adviser/webfonts";
+@import "~bulma-extensions/bulma-timeline/src/sass/index";
+@import "~bulma-extensions/bulma-quickview/src/sass/index";
+@import "~bulma-extensions/bulma-checkradio/src/sass/index";
 @import "~highlight.js/styles/darcula.css";
-
 
 .component-fade-enter-active, .component-fade-leave-active {
     transition: all 1.4s ease;

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "bulma": "^0.7.5",
+    "bulma-extensions": "^6.2.7",
     "v-clipboard": "^2.2.2"
   }
 }
