@@ -65,29 +65,40 @@
         </header>
         <div class="card-content" v-if="showContent">
             <div class="content">
-                <div class="tags has-addons float-left">
-                    <span class="tag">time</span>
-                    <span class="tag is-primary">{{query.queryTime}} ms</span>
+                <div class="field is-grouped is-grouped-multiline">
+
+                    <div class="control">
+                        <div class="tags has-addons">
+                            <span class="tag">time</span>
+                            <span class="tag is-primary">{{query.queryTime}} ms</span>
+                        </div>
+                    </div>
+                    <template v-if="Object.values(query.backtrace)[0]">
+
+                        <div class="control">
+                            <div class="tags has-addons">
+                                <span class="tag">file</span>
+                                <span class="tag is-primary">
+                                    {{Object.values(query.backtrace)[0].file}}:{{Object.values(query.backtrace)[0].line}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="control" v-if="Object.values(query.backtrace)[0].model">
+                            <div class="tags has-addons">
+                                <span class="tag">class</span>
+                                <span class="tag is-primary">{{Object.values(query.backtrace)[0].model}}</span>
+                            </div>
+                        </div>
+                        <!-- phpstorm://open?url=file:///{filename}&line={line}-->
+                        <div class="control">
+                            <div class="tags has-addons">
+                                <span class="tag">function</span>
+                                <span class="tag is-primary">{{Object.values(query.backtrace)[0].function}}</span>
+                            </div>
+                        </div>
+                    </template>
                 </div>
-                <template v-if="Object.values(query.backtrace)[0]">
-                    <div class="tags has-addons float-left">
-                        <span class="tag">file</span>
-                        <span class="tag is-primary">
-                            {{Object.values(query.backtrace)[0].file}}:{{Object.values(query.backtrace)[0].line}}
-                        </span>
-                    </div>
-
-                    <div class="tags has-addons float-left" v-if="Object.values(query.backtrace)[0].model">
-                        <span class="tag">class</span>
-                        <span class="tag is-primary">{{Object.values(query.backtrace)[0].model}}</span>
-                    </div>
-                    <!-- phpstorm://open?url=file:///{filename}&line={line}-->
-                    <div class="tags has-addons float-left">
-                        <span class="tag">function</span>
-                        <span class="tag is-primary">{{Object.values(query.backtrace)[0].function}}</span>
-                    </div>
-                </template>
-
                 <pre class="highlight" ref="sqlcode">{{prettyPrint(query.sql)}}</pre>
                 <time :datetime="dateTime">{{ dateTime }}</time>
 

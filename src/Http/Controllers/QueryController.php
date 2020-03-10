@@ -28,17 +28,19 @@ class QueryController extends Controller
      *
      *
      * @param Request $request
-     * @return mixed
+     * @return array
      */
-    public function get(Request $request)
+    public function get(Request $request): array
     {
         return Cache::get(config('laravel-query-adviser.cache.key'), []);
     }
 
     /**
      * Clears cache
+     * @return array
      */
-    public function clear() {
+    public function clear():array
+    {
         return ['success' => Cache::forget(config('laravel-query-adviser.cache.key'))];
     }
 
@@ -47,9 +49,9 @@ class QueryController extends Controller
      *
      *
      * @param Request $request
-     * @return array|bool
+     * @return array
      */
-    public function exec(Request $request)
+    public function exec(Request $request): array
     {
         $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
 
@@ -58,7 +60,7 @@ class QueryController extends Controller
             return DB::connection()->select($query['sql'], $query['bindings']);
         }
 
-        return false;
+        return [];
     }
 
     /**
@@ -68,7 +70,7 @@ class QueryController extends Controller
      * @param Request $request
      * @return array
      */
-    public function explain(Request $request)
+    public function explain(Request $request): array
     {
         $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
         if (isset($data[$request->get('time')][$request->get('time-key')])) {
@@ -77,5 +79,14 @@ class QueryController extends Controller
         }
 
         return ['queryParts' => "", 'query' => "", 'optimized' => ""];
+    }
+
+    /**
+     *
+     * @return array
+     */
+    public function serverInfo(): array
+    {
+        return QueryBuilderHelper::getServerInfo();
     }
 }

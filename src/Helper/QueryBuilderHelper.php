@@ -5,7 +5,6 @@ namespace Socialblue\LaravelQueryAdviser\Helper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
-
 class QueryBuilderHelper
 {
     public static function infoByBuilder($builder)
@@ -43,6 +42,30 @@ class QueryBuilderHelper
         return $sql;
     }
 
+    /**
+     * @return array
+     */
+    public static function getServerInfo(): array
+    {
+        return [
+            'info' =>
+                DB::connection()
+                ->getPdo()
+                ->getAttribute(\PDO::ATTR_SERVER_INFO),
+            'version' =>
+                DB::connection()
+                    ->getPdo()
+                    ->getAttribute(\PDO::ATTR_SERVER_VERSION),
+            'client' =>
+                DB::connection()
+                    ->getPdo()
+                    ->getAttribute(\PDO::ATTR_CLIENT_VERSION),
+            'status' =>
+                DB::connection()
+                    ->getPdo()
+                    ->getAttribute(\PDO::ATTR_CONNECTION_STATUS),
+        ];
+    }
 
     /**
      *

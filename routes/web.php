@@ -12,5 +12,6 @@ Route::prefix('api')->group(function () {
     Route::get('/query/clear', 'QueryController@clear');
     Route::get('/query/exec', 'QueryController@exec');
     Route::get('/query/explain', 'QueryController@explain');
+    Route::get('/query/server-info', 'QueryController@serverInfo');
 });
 
