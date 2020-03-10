@@ -54,7 +54,7 @@
 
         filters: {
             round(val) {
-                return Math.round(val, 2);
+                return val.toFixed(2);
             }
         }
     }
