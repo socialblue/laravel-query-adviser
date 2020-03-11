@@ -62,7 +62,7 @@
                 </div>
             </main>
         </div>
-        <side-panel />
+        <side-panel :sort-field.sync="sortKey"/>
         <page-footer />
         <notification />
     </div>
@@ -87,7 +87,7 @@
 
         data() {
             return {
-                sortKey: 'queryTime',
+                sortKey: 'time',
                 sortDirection: 1,
                 listType: 'time',
                 cachedKeys: {},

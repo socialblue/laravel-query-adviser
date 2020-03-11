@@ -10,16 +10,16 @@
                 <div class="rows">
                     <h3 class="subtitle">Order</h3>
                     <div class="field">
-                        <input class="is-checkradio" id="exampleRadioInline1" type="radio" name="exampleRadioInline" checked="checked">
-                        <label for="exampleRadioInline1">Default</label>
+                        <input class="is-checkradio" id="default" type="radio" value="time" name="sortField" v-model="sortField">
+                        <label for="default">Default</label>
                     </div>
                     <div class="field">
-                        <input class="is-checkradio" id="exampleRadioInline2" type="radio" name="exampleRadioInline">
-                        <label for="exampleRadioInline2">QueryTime</label>
+                        <input class="is-checkradio" id="querytime" type="radio" value="queryTime" name="sortField" v-model="sortField">
+                        <label for="querytime">QueryTime</label>
                     </div>
                     <div class="field">
-                        <input class="is-checkradio" id="exampleRadioInline3" type="radio" name="exampleRadioInline">
-                        <label for="exampleRadioInline3">Grouped Amount</label>
+                        <input class="is-checkradio" id="amount" type="radio" value="amount" name="sortField" v-model="sortField">
+                        <label for="amount">Grouped Amount</label>
                     </div>
                 </div>
             </div>
@@ -36,6 +36,19 @@
         data() {
             return {
                 active: false,
+            }
+        },
+
+        computed: {
+            sortField: {
+                get() {
+                    return this.$attrs['sort-field'];
+                },
+
+                set(field) {
+                    console.log(field);
+                    this.$emit('update:sort-field', field);
+                }
             }
         },
 
