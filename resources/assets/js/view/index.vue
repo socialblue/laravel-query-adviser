@@ -32,7 +32,7 @@
                         <span class="tag is-medium is-primary">Start</span>
                     </header>
 
-                    <div class="timeline-item is-primary" v-for="(queries, key) in dataList">
+                    <div class="timeline-item is-primary" v-for="key in dataListKey">
                         <div class="timeline-marker is-icon button is-info">
                             <span v-on:click="toggleQueryGroup(key)" class="material-icons" title="expand">
                                     <template v-if="!showQueryGroup(key)">expand_more</template>
@@ -40,12 +40,12 @@
                             </span>
                         </div>
                         <div class="timeline-content">
-                            <p class="heading">{{groupTitle(key)}} ({{queries.length}})
+                            <p class="heading">{{groupTitle(key)}} ({{dataList[key].length}})
 
                             </p>
                             <div>
                                 <div class="columns is-multiline" v-if="showQueryGroup(key)">
-                                    <div class="column" v-for="(query) in queries" >
+                                    <div class="column" v-for="query in dataList[key]" >
                                         <query-block
                                                 :query="query"
                                         >
@@ -62,7 +62,7 @@
                 </div>
             </main>
         </div>
-        <side-panel />
+        <side-panel :sort-field.sync="sortKey"/>
         <page-footer />
         <notification />
     </div>
@@ -87,6 +87,8 @@
 
         data() {
             return {
+                sortKey: 'time',
+                sortDirection: 1,
                 listType: 'time',
                 cachedKeys: {},
                 showTime: []
@@ -100,6 +102,19 @@
                 }
 
                 return this.groupValuesByKey(this.listType);
+            },
+
+            dataListKey() {
+                let list = this.dataList;
+
+                return Object.keys(list).sort((a, b) => {
+                    if (list[a][0][this.sortKey] === list[b][0][this.sortKey]) {
+                        return 0;
+                    } else if(list[a][0][this.sortKey] > list[b][0][this.sortKey]) {
+                        return -1 * this.sortDirection
+                    }
+                    return this.sortDirection;
+                });
             },
 
             flattenedCachedKeys() {
@@ -184,7 +199,14 @@
             groupValuesByKey(key) {
                 let data = {};
                 this.getUniqueValuesByKey(key).forEach((uniqueValue) => {
-                    data[uniqueValue] = this.flattenedCachedKeys.filter(row => row[key] === uniqueValue);
+                    data[uniqueValue] = this.flattenedCachedKeys.filter(row => row[key] === uniqueValue).sort((a, b) => {
+                        if (a[this.sortKey] === b[this.sortKey]) {
+                            return 0;
+                        } else if(a[this.sortKey] > b[this.sortKey]) {
+                            return -1 * this.sortDirection
+                        }
+                        return this.sortDirection;
+                    });
                 });
                 return data;
             }
