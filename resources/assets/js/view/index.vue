@@ -36,8 +36,8 @@
                     </header>
 
                     <div class="timeline-item is-primary" v-for="key in dataListKey">
-                        <div class="timeline-marker is-icon button is-info">
-                            <span v-on:click="toggleQueryGroup(key)" class="material-icons" title="expand">
+                        <div class="timeline-marker is-icon button is-info" v-on:click="toggleQueryGroup(key)">
+                            <span class="material-icons" title="expand">
                                     <template v-if="!showQueryGroup(key)">expand_more</template>
                                     <template v-if="showQueryGroup(key)">expand_less</template>
                             </span>
