@@ -75,7 +75,7 @@ class QueryListener {
      * @param string|null $referer
      * @return array
      */
-    protected static function formatData(QueryExecuted $query, array $data, int $time, $possibleTraces, string $url, ?string $referer): array
+    protected static function formatData(QueryExecuted $query, array $data, int $time, $possibleTraces, string $url, $referer = ''): array
     {
         if (empty($url)) {
             $url = '';
