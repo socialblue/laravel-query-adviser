@@ -4,7 +4,7 @@
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">Sql execute</p>
-                <button class="delete" aria-label="close" v-on:click="active = false"></button>
+                <button class="delete" aria-label="close" v-on:click="hide"></button>
             </header>
             <section class="modal-card-body">
                 <nav class="panel">
@@ -64,11 +64,18 @@
                 Axios.get(`/query-adviser/api/query/exec/?time=${this.time}&time-key=${this.timeKey}`).then((response) => {
                     this.result = response.data;
                 });
+            },
+
+            hide() {
+                this.active = false;
+                this.timeKey = null;
+                this.time = null;
             }
+
         },
 
         created() {
-            window.EventBus.$on(`show-execute-dialog`, (data) => {
+            window.EventBus.$on('show-execute-dialog', (data) => {
                 this.time = data.time;
                 this.timeKey = data.timeKey;
                 this.sql = this.format(data.sql);
