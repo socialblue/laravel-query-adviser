@@ -11,6 +11,9 @@
                         <span>
                             Queries
                         </span>
+                        <span class="material-icons button is-pulled-right" title="show filter menu" v-on:click="showFilterMenu">
+                            filter_list
+                        </span>
                         <span class="material-icons button is-pulled-right" title="clear query cache" v-on:click="clearQueryCache">
                             eject
                         </span>
@@ -66,8 +69,6 @@
         <page-footer />
         <notification />
     </div>
-
-
 </template>
 
 <script>
@@ -97,24 +98,33 @@
 
         computed: {
             dataList() {
-                if (this.listType === 'time') {
-                    return this.cachedKeys;
-                }
-
                 return this.groupValuesByKey(this.listType);
             },
 
             dataListKey() {
                 let list = this.dataList;
 
-                return Object.keys(list).sort((a, b) => {
+                let sortClosure = (a, b) => {
                     if (list[a][0][this.sortKey] === list[b][0][this.sortKey]) {
                         return 0;
                     } else if(list[a][0][this.sortKey] > list[b][0][this.sortKey]) {
                         return -1 * this.sortDirection
                     }
                     return this.sortDirection;
-                });
+                };
+
+                if (this.sortKey === 'amount') {
+                    sortClosure = (a, b) => {
+                        if (list[a].length === list[b].length) {
+                            return 0;
+                        } else if(list[a].length > list[b].length) {
+                            return -1 * this.sortDirection;
+                        }
+                        return this.sortDirection;
+                    }
+                }
+
+                return Object.keys(list).sort(sortClosure);
             },
 
             flattenedCachedKeys() {
@@ -197,18 +207,36 @@
             },
 
             groupValuesByKey(key) {
+
+                let sortClosure = (a, b) => {
+                    if (a[this.sortKey] === b[this.sortKey]) {
+                        return 0;
+                    } else if(a[this.sortKey] > b[this.sortKey]) {
+                        return -1 * this.sortDirection
+                    }
+                    return this.sortDirection;
+                };
+
+                if (this.sortKey === 'amount') {
+                    sortClosure = (a, b) => {
+                        return 0;
+                    }
+                }
+
                 let data = {};
                 this.getUniqueValuesByKey(key).forEach((uniqueValue) => {
-                    data[uniqueValue] = this.flattenedCachedKeys.filter(row => row[key] === uniqueValue).sort((a, b) => {
-                        if (a[this.sortKey] === b[this.sortKey]) {
-                            return 0;
-                        } else if(a[this.sortKey] > b[this.sortKey]) {
-                            return -1 * this.sortDirection
-                        }
-                        return this.sortDirection;
-                    });
+                    data[uniqueValue] = this.flattenedCachedKeys
+                        .filter(row => row[key] === uniqueValue)
+                        .sort(
+                            sortClosure
+                        );
                 });
+
                 return data;
+            },
+
+            showFilterMenu() {
+                window.EventBus.$emit('show-filter-bar');
             }
         },
 

@@ -11,11 +11,11 @@
                     <h3 class="subtitle">Order</h3>
                     <div class="field">
                         <input class="is-checkradio" id="default" type="radio" value="time" name="sortField" v-model="sortField">
-                        <label for="default">Default</label>
+                        <label for="default">Last inserted first</label>
                     </div>
                     <div class="field">
                         <input class="is-checkradio" id="querytime" type="radio" value="queryTime" name="sortField" v-model="sortField">
-                        <label for="querytime">QueryTime</label>
+                        <label for="querytime">Slowest query first</label>
                     </div>
                     <div class="field">
                         <input class="is-checkradio" id="amount" type="radio" value="amount" name="sortField" v-model="sortField">
@@ -46,7 +46,6 @@
                 },
 
                 set(field) {
-                    console.log(field);
                     this.$emit('update:sort-field', field);
                 }
             }
