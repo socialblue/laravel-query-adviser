@@ -77,10 +77,6 @@ class QueryListener {
      */
     protected static function formatData(QueryExecuted $query, array $data, int $time, $possibleTraces, string $url, $referer = ''): array
     {
-        if (empty($url)) {
-            $url = '';
-        }
-
         $key = count($data[$time]);
 
         $data[$time][$key] = [
@@ -91,8 +87,8 @@ class QueryListener {
             'rawSql'    => $query->sql,
             'bindings'  => $query->bindings,
             'queryTime' => $query->time,
-            'url'       => $url,
-            'referer'   => $referer,
+            'url'       => empty($url) ? '/' : $url,
+            'referer'   => empty($referer) ? '/' : $referer,
         ];
         return $data;
     }
