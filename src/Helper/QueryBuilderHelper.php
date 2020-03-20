@@ -12,8 +12,8 @@ class QueryBuilderHelper
         return [
             'toSql' => $builder->toSql(),
             'bindings' => $builder->getBindings(),
-            'query' =>  self::addBindingsToQuery($builder),
-            'optimizeQuery' => self::showOptimizedQuery($builder)
+            'query' =>  self::addBindingsToQueryByBuilder($builder),
+            'optimizeQuery' => self::showOptimizedQueryByBuilder($builder)
         ];
     }
 
@@ -23,7 +23,7 @@ class QueryBuilderHelper
      */
     public static function getQueryByBuilder($builder)
     {
-       return self::addBindingsToQuery($builder);
+        return self::addBindingsToQueryByBuilder($builder);
     }
 
     /**
@@ -50,8 +50,8 @@ class QueryBuilderHelper
         return [
             'info' =>
                 DB::connection()
-                ->getPdo()
-                ->getAttribute(\PDO::ATTR_SERVER_INFO),
+                    ->getPdo()
+                    ->getAttribute(\PDO::ATTR_SERVER_INFO),
             'version' =>
                 DB::connection()
                     ->getPdo()
@@ -89,7 +89,7 @@ class QueryBuilderHelper
     public static function analyzeByBuilder($builder)
     {
         //todo fix to use
-        return self::analyze($builder->toSql(), $builder->bindings());
+        return self::analyze($builder->toSql(), $builder->getBindings());
     }
 
     /**
@@ -116,12 +116,14 @@ class QueryBuilderHelper
      */
     public static function showOptimizedQueryByBuilder($builder)
     {
-        self::analyze($builder);
+        self::analyzeByBuilder($builder);
 
-        $ws = DB::connection()->getPdo()->prepare("SHOW WARNINGS");
-        $ws->execute();
+        //todo fix to use
+//        $ws = DB::connection()->getPdo()->prepare("SHOW WARNINGS");
+//        $ws->execute()
+//         return $ws->fetchColumn(2);
 
-        return $ws->fetchColumn(2);
+        return [];
     }
 
     /**
@@ -130,6 +132,6 @@ class QueryBuilderHelper
      */
     protected static function addBindingsToQueryByBuilder($builder): string
     {
-       return self::combineQueryAndBindings($builder->toSql(), $builder->getBindings());
+        return self::combineQueryAndBindings($builder->toSql(), $builder->getBindings());
     }
 }
