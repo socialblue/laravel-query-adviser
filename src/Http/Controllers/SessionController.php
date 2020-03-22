@@ -44,6 +44,19 @@ class SessionController extends Controller
     }
 
     /**
+     * Stop current query log session
+     *
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function isActive(Request $request): array
+    {
+        return Cache::has(config('laravel-query-adviser.cache.session_id'));
+    }
+
+
+    /**
      * @return array
      */
     public function getList()
