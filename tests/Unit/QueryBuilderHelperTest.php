@@ -42,6 +42,12 @@ class QueryBuilderHelperTest extends TestCase {
                 'bindings' => [1, QueryBuilderHelper::class],
                 'result' => "select * from user WHERE id = '1' AND name = '". addslashes(QueryBuilderHelper::class) . "'",
             ],
+
+            'with_one_date_object' => [
+                'query' => 'select * from user WHERE date = ?',
+                'bindings' => [now()->setDate(2019,1, 1)->setTime(0,0,0)],
+                'result' => "select * from user WHERE date = '2019-01-01 00:00:00'",
+            ],
         ];
     }
 
