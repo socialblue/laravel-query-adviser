@@ -37,6 +37,10 @@ class QueryBuilderHelper
 
         while (strpos($sql, '?') !== false) {
             $value = array_shift($bindings);
+            if ($value instanceof \DateTime) {
+                $value = $value->format('Y-m-d H:i:s');
+            }
+
             $sql = preg_replace('/\?/', $pdo->quote(addslashes(addslashes($value))), $sql, 1);
         }
         return $sql;
