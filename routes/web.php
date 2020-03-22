@@ -1,7 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
 
-Route::get('/query', 'QueryController@index');
+Route::get('/', 'QueryController@index');
+Route::get('/session', 'QueryController@index');
 
 
 /**
