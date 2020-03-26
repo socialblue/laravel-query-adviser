@@ -1,11 +1,11 @@
-import Index from '@/view/index.vue';
+import Sessions from '@/view/sessions.vue';
 import Session from '@/view/session.vue';
 import VueRouter from 'vue-router';
 import Vue from 'vue';
 
 const routes = [
     {
-        path: '/query-adviser/query',
+        path: '/query-adviser/session',
         name: 'session',
         component: Session,
         meta: {permission: 1},
@@ -13,7 +13,7 @@ const routes = [
     {
         path: '/query-adviser/',
         name: 'query',
-        component: Index,
+        component: Sessions,
         meta: {permission: 1},
     },
 ];

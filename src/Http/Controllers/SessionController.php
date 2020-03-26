@@ -23,6 +23,9 @@ class SessionController extends Controller
     {
         $sessionId = uniqid('laravel-query-adviser', true);
         $sessionIds = Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
+        if (!is_array($sessionIds)) {
+            $sessionIds = [$sessionId];
+        }
         $sessionIds[] = $sessionId;
 
         Cache::put(config('laravel-query-adviser.cache.session.key_list'), $sessionIds, null);
@@ -43,6 +46,24 @@ class SessionController extends Controller
         return ['session_id' => ''];
     }
 
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function show(Request $request)
+    {
+        $data = Cache::tags(['laravel-query-adviser-sessions'])->get($request->input('id'));
+
+        if (!is_array($data)) {
+            return [];
+        }
+
+        return $data;
+    }
+
+
+
     /**
      * Stop current query log session
      *
@@ -59,7 +80,7 @@ class SessionController extends Controller
     /**
      * @return array
      */
-    public function getList()
+    public function getList(): array
     {
         return Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
     }

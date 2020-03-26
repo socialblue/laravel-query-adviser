@@ -69,11 +69,185 @@
 </template>
 
 <script>
-    import session from '@/components/session';
     import pageHeader from '@/components/page-header';
     import pageFooter from '@/components/page-footer';
+    import queryBlock from '@/components/query-block';
+    import queryExplain from '@/components/query-explain';
+    import queryStatistics from '@/components/query-statistics';
+    import sidePanel from '@/components/side-panel';
+    import queryExecute from '@/components/query-execute';
+    import Axios from 'Axios';
+
 
     export default {
-        components: {pageHeader, pageFooter, session}
+        components: {pageHeader, pageFooter, queryBlock, queryExplain, queryStatistics, queryExecute, sidePanel},
+
+        data() {
+            return {
+                sortKey: 'time',
+                sortDirection: 1,
+                listType: 'time',
+                cachedKeys: {},
+                showTime: []
+            }
+        },
+
+        computed: {
+            dataList() {
+                return this.groupValuesByKey(this.listType);
+            },
+
+            dataListKey() {
+                let list = this.dataList;
+
+                let sortClosure = (a, b) => {
+                    if (list[a][0][this.sortKey] === list[b][0][this.sortKey]) {
+                        return 0;
+                    } else if(list[a][0][this.sortKey] > list[b][0][this.sortKey]) {
+                        return -1 * this.sortDirection
+                    }
+                    return this.sortDirection;
+                };
+
+                if (this.sortKey === 'amount') {
+                    sortClosure = (a, b) => {
+                        if (list[a].length === list[b].length) {
+                            return 0;
+                        } else if(list[a].length > list[b].length) {
+                            return -1 * this.sortDirection;
+                        }
+                        return this.sortDirection;
+                    }
+                }
+
+                return Object.keys(list).sort(sortClosure);
+            },
+
+            flattenedCachedKeys() {
+                return Object.values(this.cachedKeys).flat();
+            },
+
+            totalQueryTime() {
+                if (this.flattenedCachedKeys.length === 0) {
+                    return 0;
+                }
+
+                return this.flattenedCachedKeys.reduce((total, time, index) => {
+                    if (index === 1) {
+                        total = total.queryTime;
+                    }
+                    return total + time.queryTime;
+                });
+            },
+
+            amountOfQueries() {
+                return this.flattenedCachedKeys.length;
+            },
+
+            amountOfRoutes() {
+                return this.getUniqueRoutes.length;
+            },
+
+            getUniqueRoutes() {
+                return this.getUniqueValuesByKey('url');
+            },
+
+            getUniqueRawSql() {
+                return this.getUniqueValuesByKey('rawSql');
+            },
+
+            getRawQueryList() {
+                return this.groupValuesByKey('rawSql');
+            },
+
+            getRouteQueryList() {
+                return this.groupValuesByKey('url');
+            }
+        },
+
+        methods: {
+            clearQueryCache() {
+                Axios.get('/query-adviser/api/query/clear').then((response) => {
+                    this.cachedKeys = [];
+                    window.EventBus.$emit('show-notification', {message: 'Query cache cleared'});
+                });
+            },
+
+            getQueries() {
+                console.log(this.$route.params);
+
+                let params = this.$route.params;
+
+                Axios.get('/query-adviser/api/session/show', { params }).then((response) => {
+                    this.cachedKeys = response.data;
+                });
+            },
+
+            showQueryGroup(time) {
+                return this.showTime.includes(time);
+            },
+
+            toggleQueryGroup(time) {
+                if (this.showTime.includes(time)) {
+                    this.showTime = this.showTime.filter(val => val !== time);
+                    return;
+                }
+                this.showTime.push(time);
+            },
+
+            groupTitle(value) {
+                if (this.listType === "time") {
+                    return new Date(value * 1000).toISOString();
+                }
+                return value;
+            },
+
+            getUniqueValuesByKey(key) {
+                return [...new Set(this.flattenedCachedKeys.map(val => val[key]))];
+            },
+
+            groupValuesByKey(key) {
+
+                let sortClosure = (a, b) => {
+                    if (a[this.sortKey] === b[this.sortKey]) {
+                        return 0;
+                    } else if(a[this.sortKey] > b[this.sortKey]) {
+                        return -1 * this.sortDirection
+                    }
+                    return this.sortDirection;
+                };
+
+                if (this.sortKey === 'amount') {
+                    sortClosure = (a, b) => {
+                        return 0;
+                    }
+                }
+
+                let data = {};
+                this.getUniqueValuesByKey(key).forEach((uniqueValue) => {
+                    data[uniqueValue] = this.flattenedCachedKeys
+                        .filter(row => row[key] === uniqueValue)
+                        .sort(
+                            sortClosure
+                        );
+                });
+
+                return data;
+            },
+
+            showFilterMenu() {
+                window.EventBus.$emit('show-filter-bar');
+            }
+        },
+
+        created() {
+            this.getQueries();
+        }
+
+
+
+
+
+
     }
 </script>

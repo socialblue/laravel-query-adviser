@@ -15,8 +15,10 @@ Route::prefix('api')->group(function () {
     Route::get('/query/explain', 'QueryController@explain');
     Route::get('/query/server-info', 'QueryController@serverInfo');
 
-    Route::get('/session/list', 'SessionController@list');
+    Route::get('/session/show', 'SessionController@show');
+    Route::get('/session/list', 'SessionController@getList');
     Route::get('/session/stop', 'SessionController@stop');
     Route::get('/session/start', 'SessionController@start');
+    Route::get('/session/is-active', 'SessionController@isActive');
 });
 

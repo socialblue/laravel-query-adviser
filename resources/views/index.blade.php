@@ -12,7 +12,7 @@
     </head>
     <body>
         <section id="app">
-            <app></app>
+            <view-layout />
         </section>
         <script src="{{asset(mix('/app.js', 'vendor/socialblue/laravel-query-adviser'))}}"></script>
         <style>
