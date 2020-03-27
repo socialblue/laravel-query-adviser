@@ -2,10 +2,12 @@
 
 namespace Socialblue\LaravelQueryAdviser;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Socialblue\LaravelQueryAdviser\DataListener\QueryListener;
+use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 
 class LaravelQueryAdviserServiceProvider extends ServiceProvider
 {
@@ -54,6 +56,10 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
 
         DB::listen(static function($query) {
             QueryListener::listen($query);
+        });
+
+        Builder::macro('dd', function() {
+            dd(QueryBuilderHelper::infoByBuilder($this));
         });
     }
 
