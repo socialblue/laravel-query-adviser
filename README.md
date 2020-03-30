@@ -54,17 +54,17 @@ You can install the package via composer:
 ```bash
 composer require socialblue/laravel-query-adviser
 
-php artisan vendor:publish
+php artisan vendor:publish --provider="Socialblue\LaravelQueryAdviser\LaravelQueryAdviserServiceProvider"
 ```
 
 ## Usage
 
 ``` php
 
-$userBuilder = User::getQuery()
+User::getQuery()
 ->join('post', 'post.user_id', '=', 'user.id')
-->select([DB::raw('SUM(post.id)')]);
-dd(QueryBuilderHelper::info($userBuilder));
+->select([DB::raw('SUM(post.id)')])->dd();
+
 
 
 ```
