@@ -84,4 +84,12 @@ class SessionController extends Controller
     {
         return Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
     }
+
+    /**
+     * @return array
+     */
+    public function clear(): array
+    {
+        return ['success' => Cache::forget(config('laravel-query-adviser.cache.session.key_list'))];
+    }
 }

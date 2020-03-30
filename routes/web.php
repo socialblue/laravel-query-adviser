@@ -15,6 +15,7 @@ Route::prefix('api')->group(function () {
     Route::get('/query/explain', 'QueryController@explain');
     Route::get('/query/server-info', 'QueryController@serverInfo');
 
+    Route::get('/session/clear', 'SessionController@clear');
     Route::get('/session/show', 'SessionController@show');
     Route::get('/session/list', 'SessionController@getList');
     Route::get('/session/stop', 'SessionController@stop');

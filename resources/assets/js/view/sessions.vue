@@ -1,5 +1,18 @@
 <template>
-    <div>
+    <main class="is-vertical tile">
+
+        <nav class="panel is-primary">
+            <div class="panel-heading">
+                <span>
+                    Sessions
+                </span>
+
+                <span class="material-icons button is-pulled-right" title="clear query cache" v-on:click="clearSessionCache">
+                    eject
+                </span>
+            </div>
+        </nav>
+
         <div>
             <div class="material-icons button" v-on:click="startSession" v-if="!isActive ">play_arrow</div>
             <div class="material-icons button" v-on:click="stopSession" v-if="isActive">stop</div>
@@ -8,7 +21,7 @@
         <div v-for="session in sessions" class="card">
             <router-link :to="{ name: 'session', params: { id: session }}">{{session}}</router-link>
         </div>
-    </div>
+    </main>
 
 </template>
 
@@ -60,6 +73,13 @@
                     }
                 })
 
+            },
+
+            clearSessionCache() {
+                Axios.get('/query-adviser/api/session/clear').then((response) => {
+                    this.cachedKeys = [];
+                    window.EventBus.$emit('show-notification', {message: 'Session cache cleared'});
+                });
             }
 
         },
