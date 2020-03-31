@@ -4,13 +4,19 @@
     export default {
         props: {
             query: {
-                type: Object
+                type: Object,
+            },
+
+            sessionId: {
+                type: String,
             }
+
         },
 
         methods: {
             showExplainDialog() {
                 window.EventBus.$emit('show-explain-dialog', {
+                    sessionId: this.sessionId,
                     time: this.query.time,
                     timeKey: this.query.timeKey,
                 })
@@ -18,6 +24,7 @@
 
             showExecuteDialog() {
                 window.EventBus.$emit('show-execute-dialog', {
+                    sessionId: this.sessionId,
                     time: this.query.time,
                     timeKey: this.query.timeKey,
                     sql: this.query.sql

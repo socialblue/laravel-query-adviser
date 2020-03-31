@@ -50,6 +50,7 @@
                                     <div class="column" v-for="query in dataList[key]" >
                                         <query-block
                                                 :query="query"
+                                                :session-id="$route.params.id"
                                         >
                                         </query-block>
                                     </div>
