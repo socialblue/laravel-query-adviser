@@ -57,7 +57,7 @@ class QueryController extends Controller
      */
     public function exec(Request $request): array
     {
-        $sessionId = $request->input('id');
+        $sessionId = $request->input('session-id');
 
         $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionId);
 
@@ -78,7 +78,7 @@ class QueryController extends Controller
      */
     public function explain(Request $request): array
     {
-        $sessionId = $request->input('id');
+        $sessionId = $request->input('session-id');
 
         $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionId);
         if (isset($data[$request->get('time')][$request->get('time-key')])) {
