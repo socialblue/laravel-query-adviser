@@ -61,11 +61,8 @@ php artisan vendor:publish
 
 ``` php
 
-$userBuilder = User::getQuery()
-->join('post', 'post.user_id', '=', 'user.id')
-->select([DB::raw('SUM(post.id)')]);
-dd(QueryBuilderHelper::info($userBuilder));
-
+User::join('post', 'post.user_id', '=', 'user.id')
+->select([DB::raw('SUM(post.id)')])->dd();
 
 ```
 

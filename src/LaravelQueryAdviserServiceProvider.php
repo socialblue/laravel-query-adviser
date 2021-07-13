@@ -61,6 +61,10 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
         Builder::macro('dd', function() {
             dd(QueryBuilderHelper::infoByBuilder($this));
         });
+        
+        Builder::macro('dump', function() {
+            dump(QueryBuilderHelper::infoByBuilder($this));
+        });
     }
 
     /**
