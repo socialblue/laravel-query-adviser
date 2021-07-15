@@ -56,7 +56,6 @@ class SessionControllerTest extends TestCase {
         $query = new QueryExecuted('select * from user where id = ?', [3], 33, DB::connection());
         QueryListener::listen($query);
 
-
         $data = (new SessionController())->getList(request());
 
         $this->assertCount(2, $data);

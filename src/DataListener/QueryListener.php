@@ -4,6 +4,7 @@ namespace Socialblue\LaravelQueryAdviser\DataListener;
 
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 
 class QueryListener {

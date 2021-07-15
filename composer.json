@@ -19,7 +19,7 @@
         "php": "^7.0"
     },
     "require-dev": {
-        "orchestra/testbench": "^3.8"
+        "orchestra/testbench": "^6.19"
     },
     "autoload": {
         "psr-4": {

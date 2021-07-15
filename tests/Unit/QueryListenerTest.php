@@ -24,17 +24,17 @@ class QueryListenerTest extends TestCase {
 
         $data = current($data);
 
-        $this->assertCount( 1, $data);
+        $this->assertCount(1, $data);
 
         $data = current($data);
 
-        $this->assertContains('time', $data);
-        $this->assertContains('timeKey', $data);
-        $this->assertContains('rawSql', $data);
-        $this->assertContains('bindings', $data);
-        $this->assertContains('backtrace', $data);
-        $this->assertContains('queryTime', $data);
-        $this->assertContains('url', $data);
+        $this->assertArrayHasKey('time', $data);
+        $this->assertArrayHasKey('timeKey', $data);
+        $this->assertArrayHasKey('rawSql', $data);
+        $this->assertArrayHasKey('bindings', $data);
+        $this->assertArrayHasKey('backtrace', $data);
+        $this->assertArrayHasKey('queryTime', $data);
+        $this->assertArrayHasKey('url', $data);
 
         $this->assertEquals('select * from user where id = \'1\'', $data['sql']);
 
