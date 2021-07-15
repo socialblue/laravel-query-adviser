@@ -62,8 +62,6 @@ class SessionController extends Controller
         return $data;
     }
 
-
-
     /**
      * Stop current query log session
      *
