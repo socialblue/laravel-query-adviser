@@ -104,7 +104,7 @@ class QueryBuilderHelper
     public static function analyze($sql, $bindings)
     {
         $query = ['sql' => $sql, 'bindings' => $bindings];
-        $queryData = DB::connection()->select('EXPLAIN EXTENDED '. $sql,  $bindings);
+        $queryData = DB::connection()->select('EXPLAIN '. $sql,  $bindings);
 
         //todo use
 //        $ws = DB::connection()->select("SHOW WARNINGS");
