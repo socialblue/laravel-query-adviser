@@ -42,14 +42,27 @@ class QueryListener {
      */
     protected static function getPossibleTraces(): array
     {
-        $possibleTraces = array_filter(debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 25),
+        $traces = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 25);
+        krsort($traces);
+
+        $possibleTraces = array_filter($traces,
             static function ($trace) {
                 return isset($trace['file']) &&
-                    strpos($trace['file'], '/var/www/app/') !== false &&
-                    isset($trace['object']);
-
+                    isset($trace['object']) &&
+                    strpos($trace['file'], base_path('vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php')) !== false;
             }
         );
+
+        $currentPossibleTrace = current($possibleTraces);
+
+        if (!empty($currentPossibleTrace)) {
+            $calledBy = $traces[key($possibleTraces) +1];
+            $currentPossibleTrace['file'] = $calledBy['file'];
+            $currentPossibleTrace['line'] = $calledBy['line'];
+            $currentPossibleTrace['function'] = $calledBy['function'];
+            return [$currentPossibleTrace];
+        }
+
         return $possibleTraces;
     }
 
