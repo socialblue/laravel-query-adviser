@@ -63,7 +63,6 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
         });
     }
 
-
     /**
      * Add helper functions to app
      */

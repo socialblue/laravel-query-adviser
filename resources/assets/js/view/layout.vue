@@ -8,9 +8,9 @@
 </template>
 
 <script>
-    import pageHeader from '@/components/page-header';
-    import pageFooter from '@/components/page-footer';
-    import notification from '@/components/notification';
+    import pageHeader from '../components/page-header';
+    import pageFooter from '../components/page-footer';
+    import notification from '../components/notification';
 
 
     export default {

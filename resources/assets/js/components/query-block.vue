@@ -1,64 +1,3 @@
-<script>
-    import highlight from "../mixin/hightlight";
-
-    export default {
-        props: {
-            query: {
-                type: Object,
-            },
-
-            sessionId: {
-                type: String,
-            }
-
-        },
-
-        methods: {
-            showExplainDialog() {
-                window.EventBus.$emit('show-explain-dialog', {
-                    sessionId: this.sessionId,
-                    time: this.query.time,
-                    timeKey: this.query.timeKey,
-                })
-            },
-
-            showExecuteDialog() {
-                window.EventBus.$emit('show-execute-dialog', {
-                    sessionId: this.sessionId,
-                    time: this.query.time,
-                    timeKey: this.query.timeKey,
-                    sql: this.query.sql
-                })
-            },
-
-            clipboardSuccess() {
-                window.EventBus.$emit('show-notification', {message: 'Query is copied to your clipboard'});
-            }
-        },
-
-        data: () => {
-            return {
-                showNotification: false,
-                showContent: true,
-            }
-        },
-
-        computed: {
-            execUrl() {
-                return `/query-adviser/api/query/exec/?time=${this.query.time}&time-key=${this.query.timeKey}`;
-            },
-
-            dateTime() {
-                return (new Date(this.query.time*1000)).toISOString();
-            }
-        },
-
-
-        mixins: [highlight]
-
-    }
-</script>
-
 <template>
     <div class="card">
         <header class="card-header">
@@ -131,3 +70,65 @@
         </footer>
     </div>
 </template>
+
+<script>
+import highlight from "../mixin/hightlight";
+
+export default {
+    mixins: [highlight],
+
+    props: {
+        query: {
+            type: Object,
+        },
+
+        sessionId: {
+            type: String,
+        }
+
+    },
+
+    data: () => {
+        return {
+            showNotification: false,
+            showContent: true,
+        }
+    },
+
+    methods: {
+        showExplainDialog() {
+            window.EventBus.$emit('show-explain-dialog', {
+                sessionId: this.sessionId,
+                time: this.query.time,
+                timeKey: this.query.timeKey,
+            })
+        },
+
+        showExecuteDialog() {
+            window.EventBus.$emit('show-execute-dialog', {
+                sessionId: this.sessionId,
+                time: this.query.time,
+                timeKey: this.query.timeKey,
+                sql: this.query.sql
+            })
+        },
+
+        clipboardSuccess() {
+            window.EventBus.$emit('show-notification', {message: 'Query is copied to your clipboard'});
+        }
+    },
+
+    computed: {
+        execUrl() {
+            return `/query-adviser/api/query/exec/?time=${this.query.time}&time-key=${this.query.timeKey}`;
+        },
+
+        dateTime() {
+            return (new Date(this.query.time*1000)).toISOString();
+        }
+    },
+
+
+
+}
+</script>

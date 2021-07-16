@@ -1,5 +1,5 @@
-import Sessions from '@/view/sessions.vue';
-import Session from '@/view/session.vue';
+import Sessions from '../view/sessions.vue';
+import Session from '../view/session.vue';
 import VueRouter from 'vue-router';
 import Vue from 'vue';
 

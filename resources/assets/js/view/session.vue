@@ -70,13 +70,13 @@
 </template>
 
 <script>
-    import pageHeader from '@/components/page-header';
-    import pageFooter from '@/components/page-footer';
-    import queryBlock from '@/components/query-block';
-    import queryExplain from '@/components/query-explain';
-    import queryStatistics from '@/components/query-statistics';
-    import sidePanel from '@/components/side-panel';
-    import queryExecute from '@/components/query-execute';
+    import pageHeader from '../components/page-header';
+    import pageFooter from '../components/page-footer';
+    import queryBlock from '../components/query-block';
+    import queryExplain from '../components/query-explain';
+    import queryStatistics from '../components/query-statistics';
+    import sidePanel from '../components/side-panel';
+    import queryExecute from '../components/query-execute';
     import Axios from 'Axios';
 
 
