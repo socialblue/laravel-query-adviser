@@ -8,13 +8,13 @@
         <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <title>Laravel Query Adviser</title>
-        <link href="{{ mix('/css/app.css', 'vendor/socialblue/laravel-query-adviser') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset(mix('/css/app.css', 'vendor/socialblue/laravel-query-adviser')) }}" rel="stylesheet" type="text/css">
     </head>
     <body>
         <section id="app">
             <view-layout />
         </section>
-        <script src="{{mix('/js/app.js', 'vendor/socialblue/laravel-query-adviser')}}"></script>
+        <script src="{{ asset(mix('/js/app.js', 'vendor/socialblue/laravel-query-adviser')) }}"></script>
         <style>
             * {
                 font-family: 'Ubuntu', sans-serif;

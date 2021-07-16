@@ -33,18 +33,9 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
             __DIR__.'/../public' => public_path('vendor/socialblue/laravel-query-adviser'),
         ], 'public');
 
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
-
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('laravel-query-adviser.php'),
-            ], 'config');
-
-            // Publishing the views.
-            $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/socialblue/laravel-query-adviser'),
-            ], 'views');
-        }
+        $this->publishes([
+            __DIR__.'/../config/config.php' => config_path('laravel-query-adviser.php'),
+        ], 'config');
 
         $this->bootLaravelQueryAdviser();
     }
