@@ -10,7 +10,7 @@
     "bulma": "^0.7.5",
     "bulma-extensions": "^6.2.7",
     "cross-env": "^5.2.1",
-    "highlight.js": "^10.7.3",
+    "highlight.js": "^11.0.1",
     "laravel-mix": "^6.0.25",
     "node-sass": "^6.0.1",
     "postcss": "^8.3.5",

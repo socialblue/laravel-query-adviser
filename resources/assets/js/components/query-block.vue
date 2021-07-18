@@ -45,7 +45,7 @@
                         </div>
                     </template>
                 </div>
-                <pre class="highlight" ref="sqlcode">{{prettyPrint(query.sql)}}</pre>
+                <pre class="highlight" ref="sqlcode" ><code class="language-sql">{{prettyPrint(query.sql)}}</code></pre>
                 <time :datetime="dateTime">{{ dateTime }}</time>
 
             </div>
