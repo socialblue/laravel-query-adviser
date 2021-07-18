@@ -11,7 +11,7 @@ You can rerun the query analyze the database impact or just copy the query to yo
 
 The handy card view allows you to quickly see the pain points of your application.
 
-goto **{app_url}/query-adviser/query**
+goto **{app_url}/query-adviser/**
 > 
 
 
@@ -52,9 +52,19 @@ Open the explain dialog to see more information about the query.
 You can install the package via composer:
 
 ```bash
-composer require socialblue/laravel-query-adviser
+composer require socialblue/laravel-query-adviser --dev
+```
 
-php artisan vendor:publish
+Publish Laravel-Query-Adviser 
+
+```bash
+php artisan vendor:publish --provider="Socialblue\LaravelQueryAdviser\LaravelQueryAdviserServiceProvider"
+```
+
+**When updating from 13.2 to 14.0 please use**
+
+```bash
+php artisan vendor:publish --provider="Socialblue\LaravelQueryAdviser\LaravelQueryAdviserServiceProvider" --force
 ```
 
 ## Usage
@@ -65,6 +75,13 @@ User::join('post', 'post.user_id', '=', 'user.id')
 ->select([DB::raw('SUM(post.id)')])->dd();
 
 ```
+
+### Start query logging
+
+1. To start a query log session goto {app_url}/query-adviser/
+2. Press play and open the pages of your app you want to log the queries of
+3. Click on the session id to see all the details.
+
 
 ### Testing
 
