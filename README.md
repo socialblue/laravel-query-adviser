@@ -61,7 +61,7 @@ Publish Laravel-Query-Adviser
 php artisan vendor:publish --provider="Socialblue\LaravelQueryAdviser\LaravelQueryAdviserServiceProvider"
 ```
 
-**When updating from 13.2 to 14.0 please use**
+**When updating from `0.13.2` to `0.14.0` please use**
 
 ```bash
 php artisan vendor:publish --provider="Socialblue\LaravelQueryAdviser\LaravelQueryAdviserServiceProvider" --force
@@ -69,6 +69,7 @@ php artisan vendor:publish --provider="Socialblue\LaravelQueryAdviser\LaravelQue
 
 ## Usage
 
+Dump and die
 ``` php
 
 User::join('post', 'post.user_id', '=', 'user.id')
@@ -76,11 +77,20 @@ User::join('post', 'post.user_id', '=', 'user.id')
 
 ```
 
+Just dump
+``` php
+
+User::join('post', 'post.user_id', '=', 'user.id')
+->select([DB::raw('SUM(post.id)')])->dump();
+
+```
+
+
 ### Start query logging
 
 1. To start a query log session goto {app_url}/query-adviser/
 2. Press play and open the pages of your app you want to log the queries of
-3. Click on the session id to see all the details.
+3. Stop the session and click on the session bar to see all the details.
 
 
 ### Testing
