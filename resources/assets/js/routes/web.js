@@ -7,12 +7,17 @@ const routes = [
     {
         path: '/query-adviser/session',
         name: 'session',
-        component: Session,
+        components: {default: Session},
         meta: {permission: 1},
+        props: {
+            default: (route) => {
+                return route.params
+            }
+        }
     },
     {
         path: '/query-adviser/',
-        name: 'query',
+        name: 'sessions',
         component: Sessions,
         meta: {permission: 1},
     },

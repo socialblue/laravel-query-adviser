@@ -4,6 +4,7 @@ namespace Socialblue\LaravelQueryAdviser\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -71,7 +72,7 @@ class SessionController extends Controller
      */
     public function isActive(Request $request): array
     {
-        return Cache::has(config('laravel-query-adviser.cache.session_id'));
+        return ['active' => Cache::has(config('laravel-query-adviser.cache.session_id'))];
     }
 
 
@@ -80,7 +81,33 @@ class SessionController extends Controller
      */
     public function getList(): array
     {
-        return Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
+        $keys = Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
+
+        foreach ($keys as $key) {
+            $sessionData = Cache::tags(['laravel-query-adviser-sessions'])->get($key) ?? [];
+            $flattedSessionData = Arr::flatten($sessionData, 1);
+
+            if (empty($flattedSessionData)) {
+                continue;
+            }
+
+            $queries = count($flattedSessionData);
+            $totalQueryTime = array_sum(array_column($flattedSessionData, 'queryTime'));
+            $routes = count(array_unique(array_column($flattedSessionData, 'url')));
+            $firstQueryLoggedTime = min(array_keys($sessionData));
+            $lastQueryLoggedTime = max(array_keys($sessionData));
+
+            $dataList[] = [
+                'sessionKey' => $key,
+                'queries' => $queries,
+                'queryTime' => $totalQueryTime,
+                'routes' => $routes,
+                'firstQueryLogged' => $firstQueryLoggedTime,
+                'lastQueryLogged' => $lastQueryLoggedTime,
+            ];
+        }
+
+        return $dataList ?? [];
     }
 
     /**

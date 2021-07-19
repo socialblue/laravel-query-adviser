@@ -2,7 +2,7 @@
     <div>
         <query-execute></query-execute>
         <query-explain></query-explain>
-        <query-statistics :queries="amountOfQueries" :routes="amountOfRoutes" :query-time="totalQueryTime"></query-statistics>
+        <query-statistics v-bind="{queries, queryTime, routes, firstQueryLogged, lastQueryLogged}"></query-statistics>
         <div class="tile is-parent is-paddingless">
             <main class="is-vertical tile">
                 <nav class="panel is-primary">
@@ -82,6 +82,29 @@
 
     export default {
         components: {pageHeader, pageFooter, queryBlock, queryExplain, queryStatistics, queryExecute, sidePanel},
+
+        props: {
+            sessionKey: {
+
+            },
+
+            queries: {
+
+            },
+
+            queryTime: {
+            },
+
+            routes: {
+            },
+
+            firstQueryLogged: {
+            },
+
+            lastQueryLogged: {
+            }
+        },
+
 
         data() {
             return {
@@ -178,6 +201,7 @@
                 console.log(this.$route.params);
 
                 let params = this.$route.params;
+                params.id = this.sessionKey;
 
                 Axios.get('/query-adviser/api/session/show', { params }).then((response) => {
                     this.cachedKeys = response.data;
@@ -244,11 +268,6 @@
         created() {
             this.getQueries();
         }
-
-
-
-
-
 
     }
 </script>

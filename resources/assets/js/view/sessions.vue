@@ -19,7 +19,7 @@
         </div>
 
         <div v-for="session in sessions" class="card">
-            <router-link :to="{ name: 'session', params: { id: session }}">{{session}}</router-link>
+            <query-statistics v-bind="session" />
         </div>
     </main>
 
@@ -28,9 +28,10 @@
 
 <script>
     import Axios from "Axios";
+    import QueryStatistics from "../components/query-statistics";
 
     export default {
-
+        components: {QueryStatistics},
         data() {
             return {
                 sessions: [],
@@ -77,7 +78,7 @@
 
             clearSessionCache() {
                 Axios.get('/query-adviser/api/session/clear').then((response) => {
-                    this.cachedKeys = [];
+                    this.sessions = [];
                     window.EventBus.$emit('show-notification', {message: 'Session cache cleared'});
                 });
             }
@@ -86,6 +87,7 @@
 
         mounted() {
             this.getList();
+            this.pollActiveSession();
         }
     }
 </script>
