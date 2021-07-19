@@ -32,6 +32,7 @@
                 active: false,
                 loading: false,
                 timeKey: 0,
+                sessionId: 0,
                 time: 0,
             }
         },
@@ -41,7 +42,7 @@
             loadExplainParts()
             {
                 this.loading = true;
-                Axios.get('/query-adviser/api/query/explain', {params:{time: this.time, 'time-key': this.timeKey}}).then(resp => {
+                Axios.get('/query-adviser/api/query/explain', {params:{'session-id': this.sessionId, time: this.time, 'time-key': this.timeKey}}).then(resp => {
                     this.loading = false;
                     this.explainParts = resp.data.queryParts;
                 });
@@ -51,6 +52,7 @@
                 this.active = false;
                 this.time = 0;
                 this.timeKey = 0;
+                this.sessionId = 0;
                 this.explainParts = [];
             }
         },
@@ -60,6 +62,7 @@
             window.EventBus.$on(`show-explain-dialog`, (data)=> {
                 this.time = data.time;
                 this.timeKey = data.timeKey;
+                this.sessionId = data.sessionId;
 
                 this.loadExplainParts();
                 this.$nextTick().then(() => {

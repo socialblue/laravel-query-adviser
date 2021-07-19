@@ -1,9 +1,8 @@
 <template>
     <div>
-        <page-header />
         <query-execute></query-execute>
         <query-explain></query-explain>
-        <query-statistics :queries="amountOfQueries" :routes="amountOfRoutes" :query-time="totalQueryTime"></query-statistics>
+        <query-statistics v-bind="{queries, queryTime, routes, firstQueryLogged, lastQueryLogged}"></query-statistics>
         <div class="tile is-parent is-paddingless">
             <main class="is-vertical tile">
                 <nav class="panel is-primary">
@@ -51,6 +50,7 @@
                                     <div class="column" v-for="query in dataList[key]" >
                                         <query-block
                                                 :query="query"
+                                                :session-id="$route.params.id"
                                         >
                                         </query-block>
                                     </div>
@@ -66,25 +66,45 @@
             </main>
         </div>
         <side-panel :sort-field.sync="sortKey"/>
-        <page-footer />
-        <notification />
     </div>
 </template>
 
 <script>
-    import queryStatistics from '@/components/query-statistics';
-    import queryBlock from '@/components/query-block';
-    import QueryExecute from '@/components/query-execute';
-    import queryExplain from '@/components/query-explain';
-    import pageHeader from '@/components/page-header';
-    import pageFooter from '@/components/page-footer';
-    import sidePanel from '@/components/side-panel';
-    import notification from '@/components/notification';
+    import pageHeader from '../components/page-header';
+    import pageFooter from '../components/page-footer';
+    import queryBlock from '../components/query-block';
+    import queryExplain from '../components/query-explain';
+    import queryStatistics from '../components/query-statistics';
+    import sidePanel from '../components/side-panel';
+    import queryExecute from '../components/query-execute';
     import Axios from 'Axios';
 
 
     export default {
-        components: {queryStatistics, sidePanel, queryBlock, notification, queryExplain, QueryExecute, pageHeader, pageFooter},
+        components: {pageHeader, pageFooter, queryBlock, queryExplain, queryStatistics, queryExecute, sidePanel},
+
+        props: {
+            sessionKey: {
+
+            },
+
+            queries: {
+
+            },
+
+            queryTime: {
+            },
+
+            routes: {
+            },
+
+            firstQueryLogged: {
+            },
+
+            lastQueryLogged: {
+            }
+        },
+
 
         data() {
             return {
@@ -178,7 +198,12 @@
             },
 
             getQueries() {
-                Axios.get('/query-adviser/api/query/get').then((response) => {
+                console.log(this.$route.params);
+
+                let params = this.$route.params;
+                params.id = this.sessionKey;
+
+                Axios.get('/query-adviser/api/session/show', { params }).then((response) => {
                     this.cachedKeys = response.data;
                 });
             },
@@ -243,5 +268,6 @@
         created() {
             this.getQueries();
         }
+
     }
 </script>

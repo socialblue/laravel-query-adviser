@@ -23,17 +23,21 @@ class QueryController extends Controller
         return view('QueryAdviser::index');
     }
 
-    /**
-     * Get from cache
-     *
-     *
-     * @param Request $request
-     * @return array
-     */
-    public function get(Request $request): array
-    {
-        return Cache::get(config('laravel-query-adviser.cache.key'), []);
-    }
+//    /**
+//     * Get from cache
+//     *
+//     *
+//     * @param Request $request
+//     * @return array
+//     */
+//    public function get(Request $request): array
+//    {
+//        $sessionKey = $request->get('session_key');
+//        return Cache::rememberForever(config('laravel-query-adviser.cache.session_key'), static function () use ($sessionKey) {
+//            return Cache::get(config('laravel-query-adviser.cache.key'), [$sessionKey => []])[$sessionKey];
+//        });
+//
+//    }
 
     /**
      * Clears cache
@@ -41,7 +45,7 @@ class QueryController extends Controller
      */
     public function clear():array
     {
-        return ['success' => Cache::forget(config('laravel-query-adviser.cache.key'))];
+        return ['success' => Cache::forget(config('laravel-query-adviser.cache.display_key'))];
     }
 
     /**
@@ -53,7 +57,9 @@ class QueryController extends Controller
      */
     public function exec(Request $request): array
     {
-        $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
+        $sessionId = $request->input('session-id');
+
+        $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionId);
 
         if (isset($data[$request->get('time')][$request->get('time-key')])) {
             $query = $data[$request->get('time')][$request->get('time-key')];
@@ -72,7 +78,9 @@ class QueryController extends Controller
      */
     public function explain(Request $request): array
     {
-        $data = Cache::get(config('laravel-query-adviser.cache.key'), []);
+        $sessionId = $request->input('session-id');
+
+        $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionId);
         if (isset($data[$request->get('time')][$request->get('time-key')])) {
             $query = $data[$request->get('time')][$request->get('time-key')];
             return QueryBuilderHelper::analyze($query['sql'], $query['bindings']);

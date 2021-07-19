@@ -52,6 +52,7 @@
             return {
                 timeKey: 0,
                 time: 0,
+                sessionId: 0,
                 sql: null,
                 active: false,
                 result: [
@@ -61,7 +62,7 @@
 
         methods: {
             getQuery() {
-                Axios.get(`/query-adviser/api/query/exec/?time=${this.time}&time-key=${this.timeKey}`).then((response) => {
+                Axios.get('/query-adviser/api/query/exec/', {params:{'session-id': this.sessionId, time: this.time, 'time-key': this.timeKey}}).then((response) => {
                     this.result = response.data;
                 });
             },
@@ -70,6 +71,7 @@
                 this.active = false;
                 this.timeKey = null;
                 this.time = null;
+                this.sessionId = 0;
             }
 
         },
@@ -78,6 +80,7 @@
             window.EventBus.$on('show-execute-dialog', (data) => {
                 this.time = data.time;
                 this.timeKey = data.timeKey;
+                this.sessionId = data.sessionId;
                 this.sql = this.format(data.sql);
 
                 this.getQuery();
