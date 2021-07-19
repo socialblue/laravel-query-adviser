@@ -1,15 +1,17 @@
-@import "~bulma/bulma";
-@import "~bulma-extensions/bulma-timeline/src/sass/index";
-@import "~bulma-extensions/bulma-quickview/src/sass/index";
-@import "~bulma-extensions/bulma-checkradio/src/sass/index";
-@import "~highlight.js/styles/darcula.css";
+@import "~bulma/bulma.sass";
+@import "~bulma-extensions/bulma-timeline/src/sass/index.sass";
+@import "~bulma-extensions/bulma-quickview/src/sass/index.sass";
+@import "~bulma-extensions/bulma-checkradio/src/sass/index.sass";
+@import "~highlight.js/styles/night-owl.css";
 
 .component-fade-enter-active, .component-fade-leave-active {
     transition: all 1.4s ease;
 }
-.component-fade-enter, .component-fade-leave-to
-    /* .component-fade-leave-active below version 2.1.8 */ {
+
+.component-fade-enter, .component-fade-leave-to {
+    /* .component-fade-leave-active below version 2.1.8 */
     opacity: 0;
     bottom: -200px;
     position: fixed;
+
 }

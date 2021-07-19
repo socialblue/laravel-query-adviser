@@ -27,5 +27,11 @@ class TestCase extends BaseTestCase
         $app['config']->set('laravel-query-adviser.enable_query_logging', true);
         $app['config']->set('laravel-query-adviser.cache.ttl', 60);
         $app['config']->set('laravel-query-adviser.cache.max_entries', 60);
+        $app['config']->set('laravel-query-adviser.cache.session.key', 60);
+        $app['config']->set('laravel-query-adviser.cache.session.key_list', 'query_advisor_session_key_list');
+        $app['config']->set('laravel-query-adviser.cache.session.max', 25);
+        $app['config']->set('laravel-query-adviser.cache.session_id', 'query_advisor_sessions_id');
+        $app['config']->set('laravel-query-adviser.cache.display_key', 'query_adviser_display');
+        $app['config']->set('laravel-query-adviser.cache.session_max_time', 120);
     }
 }

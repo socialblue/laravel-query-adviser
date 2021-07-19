@@ -29,42 +29,15 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
         });
 
+        $this->publishes([
+            __DIR__.'/../public' => public_path('vendor/socialblue/laravel-query-adviser'),
+        ], 'public');
 
-        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->publishes([
+            __DIR__.'/../config/config.php' => config_path('laravel-query-adviser.php'),
+        ], 'config');
 
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('laravel-query-adviser.php'),
-            ], 'config');
-
-            // Publishing the views.
-            $this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/socialblue/laravel-query-adviser'),
-            ], 'views');
-
-            // Publishing assets.
-            $this->publishes([
-                __DIR__.'/../public' => public_path('vendor/socialblue/laravel-query-adviser'),
-            ], 'assets');
-
-            // Publishing assets.
-            $this->publishes([
-                __DIR__.'/../resources' => resource_path('vendor/socialblue/laravel-query-adviser'),
-            ], 'assets');
-        }
-
-
-        DB::listen(static function($query) {
-            QueryListener::listen($query);
-        });
-
-        Builder::macro('dd', function() {
-            dd(QueryBuilderHelper::infoByBuilder($this));
-        });
-        
-        Builder::macro('dump', function() {
-            dump(QueryBuilderHelper::infoByBuilder($this));
-        });
+        $this->bootLaravelQueryAdviser();
     }
 
     /**
@@ -78,6 +51,24 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
         // Register the main class to use with the facade
         $this->app->singleton('laravel-query-adviser', function () {
             return new LaravelQueryAdviser;
+        });
+    }
+
+    /**
+     * Add helper functions to app
+     */
+    protected function bootLaravelQueryAdviser()
+    {
+        DB::listen(static function ($query) {
+            QueryListener::listen($query);
+        });
+
+        Builder::macro('dd', function () {
+            dd(QueryBuilderHelper::infoByBuilder($this));
+        });
+
+        Builder::macro('dump', function () {
+            dump(QueryBuilderHelper::infoByBuilder($this));
         });
     }
 }

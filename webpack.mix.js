@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-const webpack = require('webpack');
+require('dotenv').config();
 
 /*
  |--------------------------------------------------------------------------
@@ -13,24 +13,12 @@ const webpack = require('webpack');
  */
 
 mix.options({
-    uglify: {
-        uglifyOptions: {
-            compress: {
-                drop_console: true,
-            },
-        },
-    },
-})
-    .setPublicPath('public')
-    .js('resources/assets/js/app.js', 'public')
-    .sass('resources/assets/sass/app.scss', 'public')
-    .version()
-    .webpackConfig({
-        resolve: {
-            symlinks: false,
-            alias: {
-                '@': path.resolve(__dirname, 'resources/assets/js/'),
-            },
-        },
-        plugins: [new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)],
-    });
+    terser: {
+        parallel: true,
+    }
+}).setPublicPath('public');
+
+mix.js('resources/assets/js/app.js', 'public/js')
+    .sass('resources/assets/sass/app.scss', 'public/css')
+    .vue({ version: 2})
+    .version();

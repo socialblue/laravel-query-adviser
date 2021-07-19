@@ -25,9 +25,7 @@
             </div>
         </div>
 
-        <footer class="quickview-footer">
-
-        </footer>
+        <footer class="quickview-footer" />
     </aside>
 </template>
 
