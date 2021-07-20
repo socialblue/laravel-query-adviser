@@ -1,6 +1,8 @@
 name: unit_test
 
 on:
+    push:
+        branches: [ develop ]
     pull_request:
         branches: [ develop ]
     workflow_dispatch:
@@ -9,13 +11,17 @@ jobs:
     build-test:
         runs-on: ubuntu-latest
 
+        strategy:
+            matrix:
+                php-version: [ 7.4, 8.0 ]
+
         steps:
             - uses: actions/checkout@v2
             - uses: php-actions/composer@v5 # or alternative dependency management
-            - name: "phpunit 7.4"
+            - name: "phpunit ${{ matrix.php-version }}"
               uses: php-actions/phpunit@v3
               with:
-                  php_version: "7.4"
+                  php_version: ${{ matrix.php-version }}
                   php_extensions: xdebug
                   bootstrap: vendor/autoload.php
                   configuration: test/phpunit.xml
