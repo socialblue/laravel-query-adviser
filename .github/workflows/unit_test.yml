@@ -17,14 +17,15 @@ jobs:
 
         steps:
             - uses: actions/checkout@v2
-            - uses: php-actions/composer@v5 # or alternative dependency management
-            - name: "phpunit ${{ matrix.php-version }}"
-              uses: php-actions/phpunit@v3
-              with:
-                  php_version: ${{ matrix.php-version }}
-                  php_extensions: xdebug
-                  bootstrap: vendor/autoload.php
-                  configuration: test/phpunit.xml
-                  args: --coverage-text
-              env:
-                  XDEBUG_MODE: coverage
+            - uses: php-actions/composer@v4 # or alternative dependency management
+            - name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{matrix.php-versions}}
+            - name: Install dependencies
+                uses: php-actions/composer@v4
+                with:
+                    dev: yes
+                    args: --prefer-source
+            - name: PHPUnit Tests
+                run: vendor/bin/phpunit -v -c phpunit.xml
