@@ -28,6 +28,6 @@ jobs:
                   dev: yes
                   args: --prefer-source
             - name: bootstrap writable
-              run: chmod -R 755 vendor/orchestra/testbench-core/laravel/bootstrap/cache/
+              run: composer run prepare
             - name: PHPUnit Tests
               run: composer test
