@@ -28,4 +28,4 @@ jobs:
                   dev: yes
                   args: --prefer-source
             - name: PHPUnit Tests
-              run: vendor/bin/phpunit -v -c phpunit.xml
+              run: composer test
