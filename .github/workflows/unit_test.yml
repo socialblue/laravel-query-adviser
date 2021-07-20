@@ -19,13 +19,13 @@ jobs:
             - uses: actions/checkout@v2
             - uses: php-actions/composer@v4 # or alternative dependency management
             - name: Setup PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{matrix.php-versions}}
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{matrix.php-versions}}
             - name: Install dependencies
-                uses: php-actions/composer@v4
-                with:
-                    dev: yes
-                    args: --prefer-source
+              uses: php-actions/composer@v4
+              with:
+                  dev: yes
+                  args: --prefer-source
             - name: PHPUnit Tests
-                run: vendor/bin/phpunit -v -c phpunit.xml
+              run: vendor/bin/phpunit -v -c phpunit.xml
