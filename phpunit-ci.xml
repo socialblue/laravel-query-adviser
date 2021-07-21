@@ -19,5 +19,11 @@
         <env name="APP_ENV" value="testing" />
         <env name="CACHE_DRIVER" value="array" />
         <env name="SESSION_DRIVER" value="array"/>
+        <env name="APP_STORAGE_PATH" value="/tmp/storage"/>
+        <env name="APP_SERVICES_CACHE" value="/tmp/bootstrap/cache/services.php"/>
+        <env name="APP_PACKAGES_CACHE" value="/tmp/bootstrap/cache/packages.php"/>
+        <env name="APP_CONFIG_CACHE" value="/tmp/bootstrap/cache/config.php"/>
+        <env name="APP_ROUTES_CACHE" value="/tmp/bootstrap/cache/routes.php"/>
+        <env name="APP_EVENTS_CACHE" value="/tmp/bootstrap/cache/events.php"/>
     </php>
 </phpunit>
