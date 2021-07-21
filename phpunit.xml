@@ -19,6 +19,6 @@
         <server name="APP_ENV" value="testing" />
         <server name="CACHE_DRIVER" value="array" />
         <server name="SESSION_DRIVER" value="array"/>
-
+        <server name="APP_STORAGE" value="/tmp"/>
     </php>
 </phpunit>
