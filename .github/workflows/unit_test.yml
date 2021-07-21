@@ -29,6 +29,7 @@ jobs:
                   args: --prefer-source
             - name: rights
               run: chmod -R 777 vendor/orchestra/testbench-core/laravel/bootstrap/cache
+              shell: bash
             - name: prepare
               run: composer run prepare
               shell: bash
