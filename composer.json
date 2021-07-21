@@ -36,8 +36,10 @@
             "@php vendor/bin/testbench package:discover --ansi"
         ],
         "test": [
-            "@composer run prepare",
             "@php vendor/bin/phpunit -c ./ --color"
+        ],
+        "test-ci": [
+            "@php vendor/bin/phpunit -c ./phpunit-ci.xml --color"
         ],
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
         "post-autoload-dump": [

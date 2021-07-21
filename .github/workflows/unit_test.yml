@@ -31,9 +31,6 @@ jobs:
             - name: add bootstrap cachedir
               run: mkdir /tmp/bootstrap && mkdir /tmp/bootstrap/cache && chmod 777 /tmp/bootstrap/cache
               shell: bash
-            - name: prepare
-              run: composer run prepare
-              shell: bash
             - name: PHPUnit Tests
-              run: composer test
+              run: composer test-ci
               shell: bash
