@@ -11,13 +11,14 @@
          stopOnFailure="false">
     <testsuites>
         <testsuite name="Test Suite">
-            <directory>tests</directory>
+            <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
     <php>
-        <env name="APP_ENV" value="testing" />
-        <env name="CACHE_DRIVER" value="array" />
-        <env name="SESSION_DRIVER" value="array"/>
+        <server name="APP_KEY" value="base64:cE+/JHPKHcMoPrMBo3tpPT9igJ2tLFaVGe5A2WAzsvg=" />
+        <server name="APP_ENV" value="testing" />
+        <server name="CACHE_DRIVER" value="array" />
+        <server name="SESSION_DRIVER" value="array"/>
 
     </php>
 </phpunit>
