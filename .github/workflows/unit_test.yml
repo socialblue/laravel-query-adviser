@@ -29,7 +29,7 @@ jobs:
                   args: --prefer-source
 
             - name: add bootstrap cachedir
-              run: mkdir -R /tmp/bootstrap/cache && chmod 777 /tmp/bootstrap/cache
+              run: mkdir /tmp/bootstrap && mkdir /tmp/bootstrap/cache && chmod 777 /tmp/bootstrap/cache
               shell: bash
             - name: prepare
               run: composer run prepare
