@@ -72,7 +72,11 @@ class SessionController extends Controller
      */
     public function isActive(Request $request): array
     {
-        return ['active' => Cache::has(config('laravel-query-adviser.cache.session_id'))];
+        return [
+            'active' => Cache::has(config('laravel-query-adviser.cache.session_id')),
+            'active_session_id' => Cache::get(config('laravel-query-adviser.cache.session_id')),
+            'has_queries' => Cache::tags(['laravel-query-adviser-sessions'])->has(Cache::get(config('laravel-query-adviser.cache.session_id'))),
+        ];
     }
 
 
