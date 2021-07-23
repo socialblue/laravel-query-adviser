@@ -1,5 +1,5 @@
 <template>
-    <nav class="level">
+    <nav class="level is-normal">
         <div class="level-item has-text-centered">
             <div>
                 <p class="heading">Queries</p>
@@ -32,8 +32,8 @@
         </div>
         <div class="level-item level-right">
             <p class="level-item">
-                <router-link class="button" :to="{ name: 'session', params: { sessionKey, queries, routes, queryTime, firstQueryLogged, lastQueryLogged}}" v-if="sessionKey">Show Details</router-link>
-                <router-link class="button" :to="{ name: 'sessions'}" v-else>Session List</router-link>
+                <router-link class="button" :to="{ name: 'session', params: { sessionKey, queries, routes, queryTime, firstQueryLogged, lastQueryLogged}}" v-if="sessionKey"><i class="material-icons">info</i></router-link>
+                <router-link class="button" :to="{ name: 'sessions'}" v-else><i class="material-icons">domain</i></router-link>
             </p>
         </div>
     </nav>
