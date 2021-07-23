@@ -12,10 +12,13 @@ You can rerun the query analyze the database impact or just copy the query to yo
 The handy card view allows you to quickly see the pain points of your application.
 
 goto **{app_url}/query-adviser/**
-> 
+> ![Query Overview](./img/stepper.png)
 
+## Session list
+> ![Query Overview](./img/session-list.png)
 
-![Query Overview](./img/overview.png)
+## Query time line
+> ![Query Overview](./img/overview.png)
 
 collapse and expand the panels for less or more information about the queries executed in that time frame.
 
@@ -23,28 +26,30 @@ collapse and expand the panels for less or more information about the queries ex
 
 You can group the queries by time, routes and rawQuery.
 Also you can clear the cached queries by pressing the eject button.
-
+> group by time, routes, referer, raw queries, queries with bindings, and query time
 ![Query groups](./img/groupby.png)
 
-**Query card**
-![Query Card](./img/card.png)
-> | execute | information | copy to clipboard |
+**Sort**
+> Sort the time line by last inserted, slowest query, and most occurrences
+![Query Card](./img/sorting.png)
 
+**Query card**
+> Re-execute a query, get query information, and copy the query to your clipboard
+![Query Card](./img/card.png)
 
 **Query labels**
-
 As of version 0.10.0, the query card has labels related to the class, 
 file and function of the query executed from your app folder.
 
-![Query labels](./img/labels.png)
+> ![Query labels](./img/labels.png)
 
 Open the explain dialog to see more information about the query.
 
 **Query information**
-![Query Card](./img/query-information.png)
+> ![Query Card](./img/query-information.png)
 
 **Re-execute Query**
-![Query Card](./img/query-execute.png)
+> ![Query Card](./img/query-execute.png)
 
 
 ## Installation
