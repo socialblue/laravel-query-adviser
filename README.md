@@ -27,7 +27,7 @@ collapse and expand the panels for less or more information about the queries ex
 You can group the queries by time, routes and rawQuery.
 Also you can clear the cached queries by pressing the eject button.
 > group by time, routes, referer, raw queries, queries with bindings, and query time
-![Query groups](./img/groupby.png)
+![Query groups](img/group-by-new.png)
 
 **Sort**
 > Sort the time line by last inserted, slowest query, and most occurrences
