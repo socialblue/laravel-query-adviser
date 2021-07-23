@@ -5,11 +5,10 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/socialblue/laravel-query-adviser.svg?style=flat-square)](https://scrutinizer-ci.com/g/socialblue/laravel-query-adviser)
 [![Total Downloads](https://img.shields.io/packagist/dt/socialblue/laravel-query-adviser.svg?style=flat-square)](https://packagist.org/packages/socialblue/laravel-query-adviser)
 
-This package can help you in optimizing your MySql queries created by your Eloquent models.
-It logs the queries used by your application and provides a helpful overview of the queries.
-You can rerun the query analyze the database impact or just copy the query to your clipboard.
+With Laravel Query Adviser you can get more insights into the SQL queries created by Eloquent models used in your app.
+It logs the queries used by your application and provides a helpful overview of the SQL queries. You can rerun the SQL query to analyze the database impact or copy the SQL query to your clipboard.
 
-The handy card view allows you to quickly see the pain points of your application.
+The handy card view allows you to quickly point out the pain points of your application's SQL queries.
 
 goto **{app_url}/query-adviser/**
 > ![Query Overview](./img/stepper.png)
