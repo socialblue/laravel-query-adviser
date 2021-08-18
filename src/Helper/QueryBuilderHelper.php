@@ -104,13 +104,14 @@ class QueryBuilderHelper
     public static function analyze($sql, $bindings)
     {
         $query = ['sql' => $sql, 'bindings' => $bindings];
-        $queryData = DB::connection()->select('EXPLAIN '. $sql,  $bindings);
+        $queryData = DB::connection()->select('EXPLAIN '. $sql, $bindings);
 
-        //todo use
-//        $ws = DB::connection()->select("SHOW WARNINGS");
-//        $sqlOptimized = $ws->fetchColumn(2);
+        DB::connection()->getPdo()->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
+        $showWarnings =  DB::connection()->getPdo()->query("SHOW WARNINGS");
+        $sqlOptimized = $showWarnings->fetchColumn(2);
+        DB::connection()->getPdo()->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
 
-        return ['queryParts' => $queryData, 'query' => $query, 'optimized' => ""];
+        return ['queryParts' => $queryData, 'query' => $query, 'optimized' => $sqlOptimized];
     }
 
     /**
@@ -120,14 +121,7 @@ class QueryBuilderHelper
      */
     public static function showOptimizedQueryByBuilder($builder)
     {
-        self::analyzeByBuilder($builder);
-
-        //todo fix to use
-//        $ws = DB::connection()->getPdo()->prepare("SHOW WARNINGS");
-//        $ws->execute()
-//         return $ws->fetchColumn(2);
-
-        return [];
+        return self::analyzeByBuilder($builder)['optimized'];
     }
 
     /**
