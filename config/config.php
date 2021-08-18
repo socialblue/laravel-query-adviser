@@ -17,5 +17,9 @@ return [
         ],
         'session_max_time' => env('QUERY_ADVISER_CACHE_SESSION_MAX_TIME', 120),
     ],
+    'macros' => [
+        'dd' => 'qadd',
+        'dump' => 'qadump',
+    ],
     'enable_query_logging' => env('QUERY_ADVISER_ENABLE_QUERY_LOGGING', true)
 ];
