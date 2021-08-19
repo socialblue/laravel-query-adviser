@@ -21,7 +21,8 @@
     "support": {
         "issues": "https://github.com/socialblue/laravel-query-adviser/issues",
         "source": "https://github.com/socialblue/laravel-query-adviser/tree/develop",
-        "docs": "https://github.com/socialblue/laravel-query-adviser#readme"
+        "docs": "https://github.com/socialblue/laravel-query-adviser#readme",
+        "wiki": "https://github.com/socialblue/laravel-query-adviser/wiki"
     },
     "license": "MIT",
     "type": "library",
