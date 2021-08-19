@@ -1,6 +1,6 @@
 {
     "name": "socialblue/laravel-query-adviser",
-    "description": "shows query usage of your laravel application",
+    "description": "With Laravel Query Adviser you can get more insights into the SQL queries created by Eloquent models used in your app. It logs the queries used by your application and provides a helpful overview of the SQL queries. You can rerun the SQL query to analyze the database impact or copy the SQL query to your clipboard. The handy card view allows you to quickly point out the pain points of your application's SQL queries.",
     "keywords": [
         "socialblue",
         "laravel-query-adviser"
