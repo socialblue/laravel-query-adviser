@@ -101,6 +101,23 @@ class SessionController extends Controller
     }
 
     /**
+     * @param Request $request
+     */
+    public function import(Request $request)
+    {
+        //todo validate and dry code
+        $sessionKey = uniqid('laravel-query-adviser', true);
+        Cache::tags(['laravel-query-adviser-sessions'])->put(
+            $sessionKey,
+            json_decode($request->file('json-import')->getContent(), true),
+            config('laravel-query-adviser.cache.ttl')
+        );
+
+        return ['success' => true];
+    }
+
+
+    /**
      * @return array
      */
     public function getList(): array
