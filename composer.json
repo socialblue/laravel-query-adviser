@@ -16,7 +16,8 @@
         }
     ],
     "require": {
-        "php": "^7.0"
+        "php": "^7.0",
+        "ext-json": "*"
     },
     "require-dev": {
         "orchestra/testbench": "^6.19"
