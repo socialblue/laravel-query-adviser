@@ -2,6 +2,8 @@
 
 namespace Socialblue\LaravelQueryAdviser\Http\Controllers;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -79,6 +81,24 @@ class SessionController extends Controller
         ];
     }
 
+    /**
+     * @param Request $request
+     * @return BinaryFileResponse
+     */
+    public function export(Request $request)
+    {
+        $sessionKey = $request->input('id');
+        $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionKey);
+
+        $file = storage_path('query-adviser-export.json');
+        file_put_contents($file, json_encode($data, JSON_PRETTY_PRINT));
+
+        return Response::download(
+            $file,
+            'query-adviser-export.json',
+            ['Content-Type: application/json']
+        );
+    }
 
     /**
      * @return array
