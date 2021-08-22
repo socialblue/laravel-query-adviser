@@ -111,9 +111,15 @@ class SessionController extends Controller
     {
         //todo validate and dry code
         $sessionKey = uniqid('laravel-query-adviser', true);
+        $sessionKeys = Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
+        if (!is_array($sessionKeys)) {
+            $sessionKeys = [$sessionKey];
+        }
+        $sessionKeys[] = $sessionKey;
+        Cache::put(config('laravel-query-adviser.cache.session.key_list'), $sessionKeys, null);
         Cache::tags(['laravel-query-adviser-sessions'])->put(
             $sessionKey,
-            json_decode($request->file('json-import')->getContent(), true),
+            json_decode($request->file('session')->getContent(), true),
             config('laravel-query-adviser.cache.ttl')
         );
 

@@ -23,22 +23,6 @@ class QueryController extends Controller
         return view('QueryAdviser::index');
     }
 
-//    /**
-//     * Get from cache
-//     *
-//     *
-//     * @param Request $request
-//     * @return array
-//     */
-//    public function get(Request $request): array
-//    {
-//        $sessionKey = $request->get('session_key');
-//        return Cache::rememberForever(config('laravel-query-adviser.cache.session_key'), static function () use ($sessionKey) {
-//            return Cache::get(config('laravel-query-adviser.cache.key'), [$sessionKey => []])[$sessionKey];
-//        });
-//
-//    }
-
     /**
      * Clears cache
      * @return array
