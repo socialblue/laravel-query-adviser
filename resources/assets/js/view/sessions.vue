@@ -150,6 +150,19 @@
                 })
             },
 
+            exportSession(to) {
+                return fetch(`/query-adviser/api/session/export?session-key=${to.params.sessionKey}`)
+                    .then((resp) => {
+                        return resp.blob();
+                    }).then((blob) => {
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        const link = document.createElement("a");
+                        link.href = blobUrl;
+                        link.download = `${to.params.sessionKey}.json`;
+                        link.click();
+                    });
+            },
+
             pollActiveSession() {
                 this.hasActiveSession().then((response) => {
                     this.isActive = response.data.active ?? false;
@@ -180,21 +193,10 @@
 
         beforeRouteUpdate(to, from, next) {
             if (to.name === 'session-export') {
-                fetch(`/query-adviser/api/session/export?session-key=${to.params.sessionKey}`)
-                    .then((resp) => {
-                        return resp.blob();
-                    }).then((blob) => {
-                    const blobUrl = window.URL.createObjectURL(blob);
-                    const link = document.createElement("a");
-                    link.href = blobUrl;
-                    link.download = `${to.params.sessionKey}.json`;
-                    link.click();
-                }).then(next);
+                this.exportSession(to).then(next);
             } else {
                 next();
             }
-
-
         },
     }
 </script>
