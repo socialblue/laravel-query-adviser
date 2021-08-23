@@ -77,8 +77,6 @@
     import queryStatistics from '../components/query-statistics';
     import sidePanel from '../components/side-panel';
     import queryExecute from '../components/query-execute';
-    import Axios from 'Axios';
-
 
     export default {
         components: {pageHeader, pageFooter, queryBlock, queryExplain, queryStatistics, queryExecute, sidePanel},
@@ -191,20 +189,21 @@
 
         methods: {
             clearQueryCache() {
-                Axios.get('/query-adviser/api/query/clear').then((response) => {
+                fetch('/query-adviser/api/query/clear').then(() => {
                     this.cachedKeys = [];
                     window.EventBus.$emit('show-notification', {message: 'Query cache cleared'});
                 });
             },
 
             getQueries() {
-                console.log(this.$route.params);
-
                 let params = this.$route.params;
                 params.id = this.sessionKey;
 
-                Axios.get('/query-adviser/api/session/show', { params }).then((response) => {
-                    this.cachedKeys = response.data;
+                fetch(`/query-adviser/api/session/show?${new URLSearchParams(params)}`)
+                    .then((response) => {
+                       return response.json();
+                    }).then((cachedKeys) => {
+                        this.cachedKeys = cachedKeys;
                 });
             },
 

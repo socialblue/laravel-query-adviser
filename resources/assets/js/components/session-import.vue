@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import Axios from "axios";
 export default {
     data() {
         return {
@@ -26,8 +25,19 @@ export default {
 
     methods: {
         uploadSession() {
-            Axios.post('/query-adviser/api/session/import', new FormData(this.$refs['fileUpload']))
-                .then(() => this.hide());
+            const body = new FormData(this.$refs['fileUpload']);
+            const method = 'POST';
+            const headers = {
+                'Accept': 'application/json, text-plain, */*',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': window.Laravel.csrfToken
+            };
+
+            fetch('/query-adviser/api/session/import', {
+                method,
+                body,
+                headers
+            }).then(() => this.hide());
         },
 
         hide() {
@@ -35,5 +45,4 @@ export default {
         }
     }
 }
-
 </script>

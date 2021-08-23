@@ -99,7 +99,6 @@
 </template>
 
 <script>
-    import Axios from "Axios";
     import QueryStatistics from "../components/query-statistics";
 
     export default {
@@ -126,13 +125,13 @@
 
         methods: {
             startSession() {
-                Axios.get('/query-adviser/api/session/start').then(() => {
+                fetch('/query-adviser/api/session/start').then(() => {
                      this.pollActiveSession();
                 });
             },
 
             stopSession() {
-                Axios.get('/query-adviser/api/session/stop', () => {
+                fetch('/query-adviser/api/session/stop').then(() => {
                     this.getList();
                     this.isActive = false;
                     this.hasQueries = false;
@@ -141,12 +140,14 @@
             },
 
             hasActiveSession() {
-                return Axios.get('/query-adviser/api/session/is-active')
+                return fetch('/query-adviser/api/session/is-active')
             },
 
             getList() {
-                Axios.get('/query-adviser/api/session/list').then((response) => {
-                    this.sessions = response.data;
+                return fetch('/query-adviser/api/session/list').then((response) => {
+                    return response.json();
+                }).then((sessions) => {
+                    this.sessions = sessions;
                 })
             },
 
@@ -164,22 +165,24 @@
             },
 
             pollActiveSession() {
-                this.hasActiveSession().then((response) => {
-                    this.isActive = response.data.active ?? false;
-                    this.hasQueries = response.data?.has_queries ?? false;
-                    this.activeSessionId = response.data?.active_session_id ?? false;
-                    if (this.isActive) {
-                        setTimeout(() => {
-                            this.pollActiveSession();
-                        }, 1000);
-                    } else {
-                        this.getList();
-                    }
-                })
+                this.hasActiveSession()
+                    .then((response) => response.json())
+                    .then((response) => {
+                        this.isActive = response.active ?? false;
+                        this.hasQueries = response?.has_queries ?? false;
+                        this.activeSessionId = response?.active_session_id ?? false;
+                        if (this.isActive) {
+                            setTimeout(() => {
+                                this.pollActiveSession();
+                            }, 1000);
+                        } else {
+                            this.getList();
+                        }
+                    });
             },
 
             clearSessionCache() {
-                Axios.get('/query-adviser/api/session/clear').then((response) => {
+                fetch('/query-adviser/api/session/clear').then(() => {
                     this.sessions = [];
                     window.EventBus.$emit('show-notification', {message: 'Session cache cleared'});
                 });

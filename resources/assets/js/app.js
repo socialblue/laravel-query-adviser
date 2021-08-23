@@ -3,7 +3,6 @@ import Clipboard from 'v-clipboard'
 import ViewLayout from './view/layout.vue';
 import router from './routes/web.js';
 
-
 window.Vue = Vue;
 window.EventBus = new Vue();
 
