@@ -27,7 +27,7 @@ class QueryController extends Controller
      * Clears cache
      * @return array
      */
-    public function clear():array
+    public function clear(): array
     {
         return ['success' => Cache::forget(config('laravel-query-adviser.cache.display_key'))];
     }

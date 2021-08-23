@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Log;
 use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 
 class QueryListener {
-
     public static function listen(QueryExecuted $query) {
         if (config('laravel-query-adviser.enable_query_logging') === false) {
             return;
@@ -45,7 +44,8 @@ class QueryListener {
         $traces = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 25);
         krsort($traces);
 
-        $possibleTraces = array_filter($traces,
+        $possibleTraces = array_filter(
+            $traces,
             static function ($trace) {
                 return isset($trace['file']) &&
                     isset($trace['object']) &&
@@ -55,8 +55,8 @@ class QueryListener {
 
         $currentPossibleTrace = current($possibleTraces);
 
-        if (!empty($currentPossibleTrace)) {
-            $calledBy = $traces[key($possibleTraces) +1];
+        if (! empty($currentPossibleTrace)) {
+            $calledBy = $traces[key($possibleTraces) + 1];
             $currentPossibleTrace['file'] = $calledBy['file'];
             $currentPossibleTrace['line'] = $calledBy['line'];
             $currentPossibleTrace['function'] = $calledBy['function'];
@@ -101,15 +101,15 @@ class QueryListener {
         $key = count($data[$time]);
 
         $data[$time][$key] = [
-            'time'      => $time,
-            'timeKey'   => $key,
+            'time' => $time,
+            'timeKey' => $key,
             'backtrace' => $possibleTraces,
-            'sql'       => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
-            'rawSql'    => $query->sql,
-            'bindings'  => $query->bindings,
+            'sql' => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
+            'rawSql' => $query->sql,
+            'bindings' => $query->bindings,
             'queryTime' => $query->time,
-            'url'       => empty($url) ? '/' : $url,
-            'referer'   => empty($referer) ? '/' : $referer,
+            'url' => empty($url) ? '/' : $url,
+            'referer' => empty($referer) ? '/' : $referer,
         ];
         return $data;
     }
@@ -143,11 +143,11 @@ class QueryListener {
     {
 
         $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionKey, []);
-        if (!is_array($data)) {
+        if (! is_array($data)) {
             $data = [];
         }
 
-        if (!isset($data[$time])) {
+        if (! isset($data[$time])) {
             $data[$time] = [];
         }
 

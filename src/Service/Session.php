@@ -1,4 +1,5 @@
 <?php
+
 namespace Socialblue\LaravelQueryAdviser\Service;
 
 use Illuminate\Support\Facades\Cache;
@@ -8,14 +9,13 @@ use Socialblue\LaravelQueryAdviser\Helper\SessionFormatter;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Session {
-
     /**
      * @param string $sessionId
      */
     public static function add(string $sessionId)
     {
         $sessionIds = Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
-        if (!is_array($sessionIds)) {
+        if (! is_array($sessionIds)) {
             $sessionIds = [$sessionId];
         }
         $sessionIds[] = $sessionId;
@@ -49,7 +49,6 @@ class Session {
         );
     }
 
-
     /**
      * @param string $sessionId
      * @return array
@@ -58,7 +57,7 @@ class Session {
     {
         $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionId);
 
-        if (!is_array($data)) {
+        if (! is_array($data)) {
             return [];
         }
 
@@ -148,5 +147,4 @@ class Session {
     {
         return uniqid('laravel-query-adviser', true);
     }
-
 }

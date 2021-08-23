@@ -5,7 +5,6 @@ namespace Socialblue\LaravelQueryAdviser\Helper;
 use Illuminate\Support\Arr;
 
 class SessionFormatter {
-
     public static function format(array $data, string $sessionKey): array
     {
         $flattedSessionData = Arr::flatten($data, 1);

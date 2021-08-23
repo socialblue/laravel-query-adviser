@@ -12,7 +12,7 @@ class QueryBuilderHelper
         return [
             'toSql' => $builder->toSql(),
             'bindings' => $builder->getBindings(),
-            'query' =>  self::addBindingsToQueryByBuilder($builder),
+            'query' => self::addBindingsToQueryByBuilder($builder),
             'optimizeQuery' => self::showOptimizedQueryByBuilder($builder)
         ];
     }
