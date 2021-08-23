@@ -28,7 +28,9 @@ class Session {
      */
     public static function clearList(): array
     {
-        return ['success' => Cache::forget(config('laravel-query-adviser.cache.session.key_list'))];
+        return [
+            'success' => Cache::forget(config('laravel-query-adviser.cache.session.key_list')),
+        ];
     }
 
     /**
@@ -78,7 +80,9 @@ class Session {
             config('laravel-query-adviser.cache.ttl')
         );
 
-        return ['success' => true];
+        return [
+            'success' => true,
+        ];
     }
 
     /**
@@ -101,7 +105,9 @@ class Session {
         $sessionId = self::newSessionKey();
         self::add($sessionId);
         Cache::put(config('laravel-query-adviser.cache.session_id'), $sessionId, config('laravel-query-adviser.cache.session.max_time'));
-        return ['session_id' => $sessionId];
+        return [
+            'session_id' => $sessionId,
+        ];
     }
 
     /**
@@ -110,7 +116,9 @@ class Session {
     public static function stop(): array
     {
         Cache::forget(config('laravel-query-adviser.cache.session_id'));
-        return ['session_id' => ''];
+        return [
+            'session_id' => '',
+        ];
     }
 
     /**

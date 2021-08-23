@@ -29,7 +29,9 @@ class QueryController extends Controller
      */
     public function clear(): array
     {
-        return ['success' => Cache::forget(config('laravel-query-adviser.cache.display_key'))];
+        return [
+            'success' => Cache::forget(config('laravel-query-adviser.cache.display_key')),
+        ];
     }
 
     /**
@@ -70,7 +72,11 @@ class QueryController extends Controller
             return QueryBuilderHelper::analyze($query['sql'], $query['bindings']);
         }
 
-        return ['queryParts' => "", 'query' => "", 'optimized' => ""];
+        return [
+            'queryParts' => "",
+            'query' => "",
+            'optimized' => "",
+        ];
     }
 
     /**
