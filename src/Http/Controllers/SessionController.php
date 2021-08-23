@@ -2,10 +2,10 @@
 
 namespace Socialblue\LaravelQueryAdviser\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Socialblue\LaravelQueryAdviser\Service\Session;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Illuminate\Routing\Controller;
-use Illuminate\Http\Request;
 
 /**
  * Class SessionController
@@ -36,7 +36,7 @@ class SessionController extends Controller
      */
     public function show(Request $request): array
     {
-       return Session::get($request->input('id'));
+        return Session::get($request->input('id'));
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace Socialblue\LaravelQueryAdviser;
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Socialblue\LaravelQueryAdviser\DataListener\QueryListener;
 use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
@@ -49,7 +49,7 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton('laravel-query-adviser', function () {
-            return new LaravelQueryAdviser;
+            return new LaravelQueryAdviser();
         });
     }
 

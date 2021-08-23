@@ -4,11 +4,12 @@ namespace Socialblue\LaravelQueryAdviser\DataListener;
 
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 
-class QueryListener {
-    public static function listen(QueryExecuted $query) {
+class QueryListener
+{
+    public static function listen(QueryExecuted $query)
+    {
         if (config('laravel-query-adviser.enable_query_logging') === false) {
             return;
         }
@@ -35,7 +36,6 @@ class QueryListener {
             $sessionKey
         );
     }
-
 
     protected static function getPossibleTraces(): array
     {
@@ -131,7 +131,6 @@ class QueryListener {
      */
     protected static function getFromCache(int $time, $sessionKey)
     {
-
         $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionKey, []);
         if (! is_array($data)) {
             $data = [];

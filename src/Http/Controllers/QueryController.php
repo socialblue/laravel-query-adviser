@@ -2,8 +2,8 @@
 
 namespace Socialblue\LaravelQueryAdviser\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
@@ -19,7 +19,8 @@ class QueryController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index() {
+    public function index()
+    {
         return view('QueryAdviser::index');
     }
 
@@ -69,7 +70,6 @@ class QueryController extends Controller
             'optimized' => "",
         ];
     }
-
 
     public function serverInfo(): array
     {

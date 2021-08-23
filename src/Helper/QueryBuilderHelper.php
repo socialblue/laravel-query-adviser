@@ -46,7 +46,6 @@ class QueryBuilderHelper
         return $sql;
     }
 
-
     public static function getServerInfo(): array
     {
         return [
