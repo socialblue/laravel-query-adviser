@@ -2,10 +2,10 @@
 
 namespace Socialblue\LaravelQueryAdviser\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Routing\Controller;
+use Socialblue\LaravelQueryAdviser\Service\Session;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Class SessionController
@@ -15,110 +15,69 @@ class SessionController extends Controller
 {
     /**
      * Start a new query log session
-     *
-     *
-     * @param Request $request
-     * @return array
      */
-    public function start(Request $request): array
+    public function start(): array
     {
-        $sessionId = uniqid('laravel-query-adviser', true);
-        $sessionIds = Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
-        if (!is_array($sessionIds)) {
-            $sessionIds = [$sessionId];
-        }
-        $sessionIds[] = $sessionId;
-
-        Cache::put(config('laravel-query-adviser.cache.session.key_list'), $sessionIds, null);
-        Cache::put(config('laravel-query-adviser.cache.session_id'), $sessionId, config('laravel-query-adviser.cache.session.max_time'));
-        return ['session_id' => $sessionId];
+        return Session::start();
     }
 
     /**
      * Stop current query log session
-     *
-     *
-     * @param Request $request
-     * @return array
      */
-    public function stop(Request $request): array
+    public function stop(): array
     {
-        Cache::forget(config('laravel-query-adviser.cache.session_id'));
-        return ['session_id' => ''];
+        return Session::stop();
     }
 
-
     /**
-     * @param Request $request
+     * Get the data of a session
+     *
      * @return mixed
      */
-    public function show(Request $request)
+    public function show(Request $request): array
     {
-        $data = Cache::tags(['laravel-query-adviser-sessions'])->get($request->input('id'));
-
-        if (!is_array($data)) {
-            return [];
-        }
-
-        return $data;
+        return Session::get($request->input('id'));
     }
 
     /**
-     * Stop current query log session
-     *
-     *
-     * @param Request $request
-     * @return array
+     * Get the status of session
      */
-    public function isActive(Request $request): array
+    public function isActive(): array
     {
-        return [
-            'active' => Cache::has(config('laravel-query-adviser.cache.session_id')),
-            'active_session_id' => Cache::get(config('laravel-query-adviser.cache.session_id')),
-            'has_queries' => Cache::tags(['laravel-query-adviser-sessions'])->has(Cache::get(config('laravel-query-adviser.cache.session_id'))),
-        ];
+        return Session::status();
     }
 
+    /**
+     * Export a session
+     */
+    public function export(Request $request): BinaryFileResponse
+    {
+        $sessionKey = $request->input('session-key');
+        return Session::export($sessionKey);
+    }
 
     /**
-     * @return array
+     * Import a session
+     */
+    public function import(Request $request): array
+    {
+        $data = json_decode($request->file('session')->getContent() ?? "[]", true);
+        return Session::import($data);
+    }
+
+    /**
+     * Get the session list
      */
     public function getList(): array
     {
-        $keys = Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
-
-        foreach ($keys as $key) {
-            $sessionData = Cache::tags(['laravel-query-adviser-sessions'])->get($key) ?? [];
-            $flattedSessionData = Arr::flatten($sessionData, 1);
-
-            if (empty($flattedSessionData)) {
-                continue;
-            }
-
-            $queries = count($flattedSessionData);
-            $totalQueryTime = array_sum(array_column($flattedSessionData, 'queryTime'));
-            $routes = count(array_unique(array_column($flattedSessionData, 'url')));
-            $firstQueryLoggedTime = min(array_keys($sessionData));
-            $lastQueryLoggedTime = max(array_keys($sessionData));
-
-            $dataList[] = [
-                'sessionKey' => $key,
-                'queries' => $queries,
-                'queryTime' => $totalQueryTime,
-                'routes' => $routes,
-                'firstQueryLogged' => $firstQueryLoggedTime,
-                'lastQueryLogged' => $lastQueryLoggedTime,
-            ];
-        }
-
-        return $dataList ?? [];
+        return Session::sessions();
     }
 
     /**
-     * @return array
+     * Clear session list
      */
     public function clear(): array
     {
-        return ['success' => Cache::forget(config('laravel-query-adviser.cache.session.key_list'))];
+        return Session::clearList();
     }
 }

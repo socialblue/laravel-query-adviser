@@ -1,12 +1,13 @@
 <template>
     <main class="is-vertical tile">
-
+        <router-view name="dialog"></router-view>
         <nav class="panel is-primary">
             <div class="panel-heading">
                 <span>
                     Sessions
                 </span>
 
+                <router-link class="button is-pulled-right" :to="{ name: 'session-import'}" ><i class="material-icons">file_upload</i></router-link>
                 <span class="material-icons button is-pulled-right" title="clear query cache" v-on:click="clearSessionCache">
                     eject
                 </span>
@@ -149,6 +150,19 @@
                 })
             },
 
+            exportSession(to) {
+                return fetch(`/query-adviser/api/session/export?session-key=${to.params.sessionKey}`)
+                    .then((resp) => {
+                        return resp.blob();
+                    }).then((blob) => {
+                        const blobUrl = window.URL.createObjectURL(blob);
+                        const link = document.createElement("a");
+                        link.href = blobUrl;
+                        link.download = `${to.params.sessionKey}.json`;
+                        link.click();
+                    });
+            },
+
             pollActiveSession() {
                 this.hasActiveSession().then((response) => {
                     this.isActive = response.data.active ?? false;
@@ -175,6 +189,14 @@
         mounted() {
             this.getList();
             this.pollActiveSession();
+        },
+
+        beforeRouteUpdate(to, from, next) {
+            if (to.name === 'session-export') {
+                this.exportSession(to).then(next);
+            } else {
+                next();
+            }
         },
     }
 </script>
