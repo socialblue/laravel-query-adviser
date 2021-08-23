@@ -12,8 +12,8 @@ class QueryBuilderHelper
         return [
             'toSql' => $builder->toSql(),
             'bindings' => $builder->getBindings(),
-            'query' =>  self::addBindingsToQueryByBuilder($builder),
-            'optimizeQuery' => self::showOptimizedQueryByBuilder($builder)
+            'query' => self::addBindingsToQueryByBuilder($builder),
+            'optimizeQuery' => self::showOptimizedQueryByBuilder($builder),
         ];
     }
 
@@ -46,9 +46,6 @@ class QueryBuilderHelper
         return $sql;
     }
 
-    /**
-     * @return array
-     */
     public static function getServerInfo(): array
     {
         return [
@@ -72,8 +69,6 @@ class QueryBuilderHelper
     }
 
     /**
-     *
-     *
     id – a sequential identifier for each SELECT within the query (for when you have nested subqueries)
     select_type – the type of SELECT query. Possible values are:
     table – the table referred to by the row
@@ -103,15 +98,22 @@ class QueryBuilderHelper
      */
     public static function analyze($sql, $bindings)
     {
-        $query = ['sql' => $sql, 'bindings' => $bindings];
-        $queryData = DB::connection()->select('EXPLAIN '. $sql, $bindings);
+        $query = [
+            'sql' => $sql,
+            'bindings' => $bindings,
+        ];
+        $queryData = DB::connection()->select('EXPLAIN ' . $sql, $bindings);
 
         DB::connection()->getPdo()->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
-        $showWarnings =  DB::connection()->getPdo()->query("SHOW WARNINGS");
+        $showWarnings = DB::connection()->getPdo()->query("SHOW WARNINGS");
         $sqlOptimized = $showWarnings->fetchColumn(2);
         DB::connection()->getPdo()->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
 
-        return ['queryParts' => $queryData, 'query' => $query, 'optimized' => $sqlOptimized];
+        return [
+            'queryParts' => $queryData,
+            'query' => $query,
+            'optimized' => $sqlOptimized,
+        ];
     }
 
     /**
@@ -126,7 +128,6 @@ class QueryBuilderHelper
 
     /**
      * @param $builder
-     * @return string
      */
     protected static function addBindingsToQueryByBuilder($builder): string
     {

@@ -21,5 +21,7 @@ Route::prefix('api')->group(function () {
     Route::get('/session/stop', 'SessionController@stop');
     Route::get('/session/start', 'SessionController@start');
     Route::get('/session/is-active', 'SessionController@isActive');
+    Route::get('/session/export', 'SessionController@export');
+    Route::post('/session/import', 'SessionController@import');
 });
 

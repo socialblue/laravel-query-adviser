@@ -2,8 +2,8 @@
 
 namespace Socialblue\LaravelQueryAdviser\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
@@ -19,41 +19,23 @@ class QueryController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index() {
+    public function index()
+    {
         return view('QueryAdviser::index');
     }
 
-//    /**
-//     * Get from cache
-//     *
-//     *
-//     * @param Request $request
-//     * @return array
-//     */
-//    public function get(Request $request): array
-//    {
-//        $sessionKey = $request->get('session_key');
-//        return Cache::rememberForever(config('laravel-query-adviser.cache.session_key'), static function () use ($sessionKey) {
-//            return Cache::get(config('laravel-query-adviser.cache.key'), [$sessionKey => []])[$sessionKey];
-//        });
-//
-//    }
-
     /**
      * Clears cache
-     * @return array
      */
-    public function clear():array
+    public function clear(): array
     {
-        return ['success' => Cache::forget(config('laravel-query-adviser.cache.display_key'))];
+        return [
+            'success' => Cache::forget(config('laravel-query-adviser.cache.display_key')),
+        ];
     }
 
     /**
      * Execute query
-     *
-     *
-     * @param Request $request
-     * @return array
      */
     public function exec(Request $request): array
     {
@@ -71,10 +53,6 @@ class QueryController extends Controller
 
     /**
      * Use explain for query
-     *
-     *
-     * @param Request $request
-     * @return array
      */
     public function explain(Request $request): array
     {
@@ -86,13 +64,13 @@ class QueryController extends Controller
             return QueryBuilderHelper::analyze($query['sql'], $query['bindings']);
         }
 
-        return ['queryParts' => "", 'query' => "", 'optimized' => ""];
+        return [
+            'queryParts' => "",
+            'query' => "",
+            'optimized' => "",
+        ];
     }
 
-    /**
-     *
-     * @return array
-     */
     public function serverInfo(): array
     {
         return QueryBuilderHelper::getServerInfo();

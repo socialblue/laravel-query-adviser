@@ -17,7 +17,7 @@
 
 <script>
     import ExplainPart from "./query-explain/explain-part";
-    import Axios from "Axios";
+    import Axios from "axios";
     export default {
         name: "query-explain",
 
@@ -38,9 +38,7 @@
         },
 
         methods: {
-
-            loadExplainParts()
-            {
+            loadExplainParts() {
                 this.loading = true;
                 Axios.get('/query-adviser/api/query/explain', {params:{'session-id': this.sessionId, time: this.time, 'time-key': this.timeKey}}).then(resp => {
                     this.loading = false;
@@ -58,7 +56,6 @@
         },
 
         mounted() {
-
             window.EventBus.$on(`show-explain-dialog`, (data)=> {
                 this.time = data.time;
                 this.timeKey = data.timeKey;

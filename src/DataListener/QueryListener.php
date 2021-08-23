@@ -4,12 +4,12 @@ namespace Socialblue\LaravelQueryAdviser\DataListener;
 
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 
-class QueryListener {
-
-    public static function listen(QueryExecuted $query) {
+class QueryListener
+{
+    public static function listen(QueryExecuted $query)
+    {
         if (config('laravel-query-adviser.enable_query_logging') === false) {
             return;
         }
@@ -37,15 +37,13 @@ class QueryListener {
         );
     }
 
-    /**
-     * @return array
-     */
     protected static function getPossibleTraces(): array
     {
         $traces = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 25);
         krsort($traces);
 
-        $possibleTraces = array_filter($traces,
+        $possibleTraces = array_filter(
+            $traces,
             static function ($trace) {
                 return isset($trace['file']) &&
                     isset($trace['object']) &&
@@ -55,8 +53,8 @@ class QueryListener {
 
         $currentPossibleTrace = current($possibleTraces);
 
-        if (!empty($currentPossibleTrace)) {
-            $calledBy = $traces[key($possibleTraces) +1];
+        if (! empty($currentPossibleTrace)) {
+            $calledBy = $traces[key($possibleTraces) + 1];
             $currentPossibleTrace['file'] = $calledBy['file'];
             $currentPossibleTrace['line'] = $calledBy['line'];
             $currentPossibleTrace['function'] = $calledBy['function'];
@@ -88,36 +86,29 @@ class QueryListener {
     }
 
     /**
-     * @param QueryExecuted $query
-     * @param array $data
-     * @param int $time
      * @param $possibleTraces
-     * @param string $url
      * @param string|null $referer
-     * @return array
      */
     protected static function formatData(QueryExecuted $query, array $data, int $time, $possibleTraces, string $url, $referer = ''): array
     {
         $key = count($data[$time]);
 
         $data[$time][$key] = [
-            'time'      => $time,
-            'timeKey'   => $key,
+            'time' => $time,
+            'timeKey' => $key,
             'backtrace' => $possibleTraces,
-            'sql'       => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
-            'rawSql'    => $query->sql,
-            'bindings'  => $query->bindings,
+            'sql' => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
+            'rawSql' => $query->sql,
+            'bindings' => $query->bindings,
             'queryTime' => $query->time,
-            'url'       => empty($url) ? '/' : $url,
-            'referer'   => empty($referer) ? '/' : $referer,
+            'url' => empty($url) ? '/' : $url,
+            'referer' => empty($referer) ? '/' : $referer,
         ];
         return $data;
     }
 
     /**
-     * @param array $data
      * @param $sessionKey
-     * @return array
      */
     protected static function putToCache(array $data, $sessionKey): array
     {
@@ -135,19 +126,17 @@ class QueryListener {
     }
 
     /**
-     * @param int $time
      * @param $sessionKey
      * @return array|mixed
      */
     protected static function getFromCache(int $time, $sessionKey)
     {
-
         $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionKey, []);
-        if (!is_array($data)) {
+        if (! is_array($data)) {
             $data = [];
         }
 
-        if (!isset($data[$time])) {
+        if (! isset($data[$time])) {
             $data[$time] = [];
         }
 
