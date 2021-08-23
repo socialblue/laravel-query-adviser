@@ -9,9 +9,6 @@ use Socialblue\LaravelQueryAdviser\Helper\SessionFormatter;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Session {
-    /**
-     * @param string $sessionId
-     */
     public static function add(string $sessionId)
     {
         $sessionIds = Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
@@ -23,9 +20,7 @@ class Session {
         Cache::put(config('laravel-query-adviser.cache.session.key_list'), $sessionIds, null);
     }
 
-    /**
-     * @return array
-     */
+
     public static function clearList(): array
     {
         return [
@@ -51,10 +46,7 @@ class Session {
         );
     }
 
-    /**
-     * @param string $sessionId
-     * @return array
-     */
+
     public static function get(string $sessionId): array
     {
         $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionId);
@@ -85,9 +77,7 @@ class Session {
         ];
     }
 
-    /**
-     * @return array
-     */
+
     public static function status(): array
     {
         return [
@@ -121,9 +111,7 @@ class Session {
         ];
     }
 
-    /**
-     * @return array
-     */
+
     public static function keyList(): array
     {
         return Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
@@ -148,9 +136,7 @@ class Session {
         return $dataList ?? [];
     }
 
-    /**
-     * @return string
-     */
+
     protected static function newSessionKey(): string
     {
         return uniqid('laravel-query-adviser', true);

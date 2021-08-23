@@ -36,9 +36,7 @@ class QueryListener {
         );
     }
 
-    /**
-     * @return array
-     */
+
     protected static function getPossibleTraces(): array
     {
         $traces = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 25);
@@ -88,13 +86,8 @@ class QueryListener {
     }
 
     /**
-     * @param QueryExecuted $query
-     * @param array $data
-     * @param int $time
      * @param $possibleTraces
-     * @param string $url
      * @param string|null $referer
-     * @return array
      */
     protected static function formatData(QueryExecuted $query, array $data, int $time, $possibleTraces, string $url, $referer = ''): array
     {
@@ -115,9 +108,7 @@ class QueryListener {
     }
 
     /**
-     * @param array $data
      * @param $sessionKey
-     * @return array
      */
     protected static function putToCache(array $data, $sessionKey): array
     {
@@ -135,7 +126,6 @@ class QueryListener {
     }
 
     /**
-     * @param int $time
      * @param $sessionKey
      * @return array|mixed
      */

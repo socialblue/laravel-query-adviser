@@ -15,8 +15,6 @@ class SessionController extends Controller
 {
     /**
      * Start a new query log session
-     *
-     * @return array
      */
     public function start(): array
     {
@@ -25,9 +23,6 @@ class SessionController extends Controller
 
     /**
      * Stop current query log session
-     *
-     *
-     * @return array
      */
     public function stop(): array
     {
@@ -37,7 +32,6 @@ class SessionController extends Controller
     /**
      * Get the data of a session
      *
-     * @param Request $request
      * @return mixed
      */
     public function show(Request $request): array
@@ -47,8 +41,6 @@ class SessionController extends Controller
 
     /**
      * Get the status of session
-     *
-     * @return array
      */
     public function isActive(): array
     {
@@ -57,9 +49,6 @@ class SessionController extends Controller
 
     /**
      * Export a session
-     *
-     * @param Request $request
-     * @return BinaryFileResponse
      */
     public function export(Request $request): BinaryFileResponse
     {
@@ -69,9 +58,6 @@ class SessionController extends Controller
 
     /**
      * Import a session
-     *
-     * @param Request $request
-     * @return array
      */
     public function import(Request $request): array
     {
@@ -81,8 +67,6 @@ class SessionController extends Controller
 
     /**
      * Get the session list
-     *
-     * @return array
      */
     public function getList(): array
     {
@@ -91,8 +75,6 @@ class SessionController extends Controller
 
     /**
      * Clear session list
-     *
-     * @return array
      */
     public function clear(): array
     {

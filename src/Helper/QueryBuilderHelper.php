@@ -46,9 +46,7 @@ class QueryBuilderHelper
         return $sql;
     }
 
-    /**
-     * @return array
-     */
+
     public static function getServerInfo(): array
     {
         return [
@@ -72,8 +70,6 @@ class QueryBuilderHelper
     }
 
     /**
-     *
-     *
     id – a sequential identifier for each SELECT within the query (for when you have nested subqueries)
     select_type – the type of SELECT query. Possible values are:
     table – the table referred to by the row
@@ -133,7 +129,6 @@ class QueryBuilderHelper
 
     /**
      * @param $builder
-     * @return string
      */
     protected static function addBindingsToQueryByBuilder($builder): string
     {

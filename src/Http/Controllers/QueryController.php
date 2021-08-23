@@ -25,7 +25,6 @@ class QueryController extends Controller
 
     /**
      * Clears cache
-     * @return array
      */
     public function clear(): array
     {
@@ -36,10 +35,6 @@ class QueryController extends Controller
 
     /**
      * Execute query
-     *
-     *
-     * @param Request $request
-     * @return array
      */
     public function exec(Request $request): array
     {
@@ -57,10 +52,6 @@ class QueryController extends Controller
 
     /**
      * Use explain for query
-     *
-     *
-     * @param Request $request
-     * @return array
      */
     public function explain(Request $request): array
     {
@@ -79,10 +70,7 @@ class QueryController extends Controller
         ];
     }
 
-    /**
-     *
-     * @return array
-     */
+
     public function serverInfo(): array
     {
         return QueryBuilderHelper::getServerInfo();
