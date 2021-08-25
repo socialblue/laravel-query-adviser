@@ -7,7 +7,6 @@
     "watch": "mix watch"
   },
   "devDependencies": {
-    "axios": "^0.21",
     "bulma": "^0.7.5",
     "bulma-extensions": "^6.2.7",
     "cross-env": "^5.2.1",

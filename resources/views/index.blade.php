@@ -64,5 +64,6 @@
                 text-transform: uppercase;
             }
         </style>
+        <script>window.Laravel = {csrfToken: '{{ csrf_token() }}'}</script>
     </body>
 </html>
