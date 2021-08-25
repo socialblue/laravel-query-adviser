@@ -13,8 +13,6 @@
 </template>
 
 <script>
-    import Axios from "Axios";
-
     export default {
         data() {
             return {
@@ -23,9 +21,11 @@
         },
 
         created() {
-            Axios.get('/query-adviser/api/query/server-info').then((response) => {
-                this.serverInfo = response.data;
-            });
+            fetch('/query-adviser/api/query/server-info')
+                .then((response) => response.json())
+                .then((serverInfo) => {
+                    this.serverInfo = serverInfo;
+                });
         }
     }
 </script>

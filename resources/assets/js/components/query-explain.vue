@@ -17,7 +17,6 @@
 
 <script>
     import ExplainPart from "./query-explain/explain-part";
-    import Axios from "axios";
     export default {
         name: "query-explain",
 
@@ -40,9 +39,12 @@
         methods: {
             loadExplainParts() {
                 this.loading = true;
-                Axios.get('/query-adviser/api/query/explain', {params:{'session-id': this.sessionId, time: this.time, 'time-key': this.timeKey}}).then(resp => {
+                const params = {'session-id': this.sessionId, time: this.time, 'time-key': this.timeKey};
+                fetch(`/query-adviser/api/query/explain?${new URLSearchParams(params)}`).then(resp => {
+                    return resp.json();
+                }).then(explainParts => {
                     this.loading = false;
-                    this.explainParts = resp.data.queryParts;
+                    this.explainParts = explainParts.queryParts;
                 });
             },
 

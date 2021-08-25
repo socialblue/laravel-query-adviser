@@ -43,7 +43,6 @@
 
 <script>
     import highlight from "../mixin/hightlight";
-    import Axios from "Axios";
 
     export default {
         mixins: [highlight],
@@ -62,8 +61,13 @@
 
         methods: {
             getQuery() {
-                Axios.get('/query-adviser/api/query/exec/', {params:{'session-id': this.sessionId, time: this.time, 'time-key': this.timeKey}}).then((response) => {
-                    this.result = response.data;
+
+                const params = {'session-id': this.sessionId, time: this.time, 'time-key': this.timeKey};
+                fetch(`/query-adviser/api/query/exec?${new URLSearchParams(params)}`).then(resp => {
+                    return resp.json();
+                }).then(result => {
+                    this.loading = false;
+                    this.result = result;
                 });
             },
 
