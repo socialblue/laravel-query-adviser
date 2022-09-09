@@ -33,6 +33,10 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
         ], 'public');
 
         $this->publishes([
+            __DIR__ . '/../public' => public_path('vendor/socialblue/laravel-query-adviser'),
+        ], 'public');
+
+        $this->publishes([
             __DIR__ . '/../config/config.php' => config_path('laravel-query-adviser.php'),
         ], 'config');
 
