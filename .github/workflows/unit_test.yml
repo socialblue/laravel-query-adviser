@@ -16,21 +16,17 @@ jobs:
                 php-versions: [ 8.0, 8.1 ]
 
         steps:
-            - uses: actions/checkout@v2
-            - uses: php-actions/composer@v4 # or alternative dependency management
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: ${{matrix.php-versions}}
-            - name: Install dependencies
-              uses: php-actions/composer@v4
-              with:
-                  dev: yes
-                  args: --prefer-source
+            -   uses: actions/checkout@v2
 
-            - name: add bootstrap cachedir
-              run: mkdir /tmp/bootstrap && mkdir /tmp/bootstrap/cache && chmod 777 /tmp/bootstrap/cache
-              shell: bash
-            - name: PHPUnit Tests
-              run: composer test-ci
-              shell: bash
+            -   uses: php-actions/composer@v6
+
+            -   name: PHPUnit Tests
+                uses: php-actions/phpunit@v3
+                env:
+                    TEST_NAME: Mark
+                with:
+                    bootstrap: vendor/autoload.php
+                    configuration: phpunit-ci.xml
+                    args: --coverage-text
+                    php_version: ${{matrix.php-versions}}
+
