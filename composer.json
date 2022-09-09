@@ -34,7 +34,7 @@
         }
     ],
     "require": {
-        "php": "^7.0",
+        "php": "8.*",
         "ext-json": "*"
     },
     "require-dev": {

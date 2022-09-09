@@ -13,21 +13,16 @@ jobs:
 
         strategy:
             matrix:
-                php-versions: [ 7.4, 8.0 ]
+                php-versions: [ 8.0, 8.1 ]
 
         steps:
             - uses: actions/checkout@v2
-            - uses: php-actions/composer@v4 # or alternative dependency management
+            - uses: php-actions/composer@v6 # or alternative dependency management
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{matrix.php-versions}}
-            - name: Install dependencies
-              uses: php-actions/composer@v4
-              with:
-                  dev: yes
-                  args: --prefer-source
-
+                  tools: phpunit:9.5
             - name: add bootstrap cachedir
               run: mkdir /tmp/bootstrap && mkdir /tmp/bootstrap/cache && chmod 777 /tmp/bootstrap/cache
               shell: bash
