@@ -85,7 +85,7 @@
                 this.time = data.time;
                 this.timeKey = data.timeKey;
                 this.sessionId = data.sessionId;
-                this.sql = this.format(data.sql);
+                this.sql = data.sql;
 
                 this.getQuery();
                 this.$nextTick().then(() => {
