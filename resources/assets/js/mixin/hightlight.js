@@ -6,15 +6,11 @@ export default {
 
     methods: {
         prettyPrint(sql) {
-            this.$nextTick(() => {
-                hljs.highlightElement(this.$refs.sqlcode);
-            });
-
-            return this.format(sql);
+            return sql;
         },
 
         format(sql) {
-            return sqlFormatter.format(sql);
+            return sql;
         }
     },
 
