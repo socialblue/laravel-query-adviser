@@ -30,6 +30,13 @@
                     <query-statistics v-bind="session" />
                 </div>
             </template>
+            <div v-else-if="loading" class="hero-body">
+                <div class="container">
+                    <h1 class="title">
+                        Loading..
+                    </h1>
+                </div>
+            </div>
             <div v-else class="hero-body">
                 <div class="container">
                     <h1 class="title" v-if="sessions.length > 0">
@@ -120,6 +127,7 @@
                 isActive: false,
                 hasQueries: false,
                 activeSessionsId: null,
+                loading: false,
             }
         },
 
@@ -144,10 +152,14 @@
             },
 
             getList() {
+                this.loading = true;
+
                 return fetch('/query-adviser/api/session/list').then((response) => {
                     return response.json();
                 }).then((sessions) => {
                     this.sessions = sessions;
+                }).finally(() => {
+                    this.loading = false;
                 })
             },
 
@@ -189,14 +201,21 @@
             }
         },
 
-        mounted() {
-            this.getList();
-            this.pollActiveSession();
+        beforeRouteEnter(to, from, next) {
+
+            next((vm) => {
+                vm.getList();
+                vm.pollActiveSession();
+            });
         },
 
         beforeRouteUpdate(to, from, next) {
             if (to.name === 'session-export') {
                 this.exportSession(to).then(next);
+            } else if (to.name === 'sessions') {
+                this.getList();
+                this.pollActiveSession();
+                next();
             } else {
                 next();
             }
