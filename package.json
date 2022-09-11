@@ -7,10 +7,9 @@
     "watch": "mix watch"
   },
   "devDependencies": {
-    "bulma": "^0.7.5",
+    "bulma": "^0.9.4",
     "bulma-extensions": "^6.2.7",
     "cross-env": "^5.2.1",
-    "highlight.js": "^11.6.0",
     "laravel-mix": "^6.0.49",
     "node-sass": "^7.0.3",
     "postcss": "^8.4.16",
@@ -18,11 +17,12 @@
     "sass": "^1.54.9",
     "sass-loader": "^12.6.0",
     "sql-formatter": "^10.6.0",
+    "sql-highlight": "^4.2.1",
     "v-clipboard": "^2.2.3",
     "vue": "^2.7.10",
-    "vue-json-pretty": "^1.9.2",
     "vue-loader": "^15.10.0",
     "vue-router": "^3.6.5",
     "vue-template-compiler": "^2.7.10"
-  }
+  },
+  "dependencies": {}
 }

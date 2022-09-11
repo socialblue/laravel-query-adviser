@@ -78,7 +78,7 @@
 
         methods: {
             openSession() {
-                this.$router.push('session', {id: this.id});
+                this.$router.push({name: 'session', params: {id: this.id}});
             }
         }
     }
