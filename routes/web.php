@@ -23,5 +23,6 @@ Route::prefix('api')->group(function () {
 });
 
 
+Route::get('/', [QueryController::class, 'index']);
 Route::get('{any}', [QueryController::class, 'index'])
     ->where('any','^(?!(api)).*$');
