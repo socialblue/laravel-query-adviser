@@ -45,7 +45,7 @@
                         </div>
                     </template>
                 </div>
-                <pre class="highlight" ref="sqlcode" ><code class="language-sql">{{prettyPrint(query.sql)}}</code></pre>
+                <sqlHighlight :sql="query.sql" />
                 <time :datetime="dateTime">{{ dateTime }}</time>
 
             </div>
@@ -72,10 +72,13 @@
 </template>
 
 <script>
-import highlight from "../mixin/hightlight";
+import sqlHighlight from "./sql-highlight";
+import { format } from 'sql-formatter';
 
 export default {
-    mixins: [highlight],
+    components: {
+        sqlHighlight
+    },
 
     props: {
         query: {
@@ -115,6 +118,13 @@ export default {
 
         clipboardSuccess() {
             window.EventBus.$emit('show-notification', {message: 'Query is copied to your clipboard'});
+        },
+
+        format(sql) {
+            return format(`${sql};`, {
+                language: 'mysql',
+                keywordCase: "upper",
+            });
         }
     },
 
