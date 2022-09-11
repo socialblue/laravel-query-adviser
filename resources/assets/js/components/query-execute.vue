@@ -42,10 +42,7 @@
 </template>
 
 <script>
-    import highlight from "../mixin/hightlight";
-
     export default {
-        mixins: [highlight],
 
         data() {
             return {

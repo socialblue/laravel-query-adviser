@@ -1,9 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', 'QueryController@index');
-Route::get('/session', 'QueryController@index');
-
+use Socialblue\LaravelQueryAdviser\Http\Controllers\QueryController;
 
 /**
  * Api routes
@@ -25,3 +22,7 @@ Route::prefix('api')->group(function () {
     Route::post('/session/import', 'SessionController@import');
 });
 
+
+Route::get('/', [QueryController::class, 'index']);
+Route::get('{any}', [QueryController::class, 'index'])
+    ->where('any','^(?!(api)).*$');

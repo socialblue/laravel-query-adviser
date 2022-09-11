@@ -37,7 +37,9 @@ export default {
                 method,
                 body,
                 headers
-            }).then(() => this.hide());
+            }).then(() => {
+                this.$router.push({name: 'sessions'});
+            });
         },
 
         hide() {
