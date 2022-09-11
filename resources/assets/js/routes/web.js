@@ -6,7 +6,7 @@ import Vue from 'vue';
 
 const routes = [
     {
-        path: '/query-adviser/session',
+        path: '/query-adviser/session/:sessionKey',
         name: 'session',
         components: {default: Session},
         meta: {permission: 1},
