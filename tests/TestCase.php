@@ -3,9 +3,14 @@
 namespace Socialblue\LaravelQueryAdviser\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Socialblue\LaravelQueryAdviser\LaravelQueryAdviserServiceProvider;
 
 class TestCase extends BaseTestCase
 {
+    protected function getPackageProviders($app)
+    {
+        return [LaravelQueryAdviserServiceProvider::class];
+    }
 
     /**
      * Define environment setup.
@@ -23,6 +28,8 @@ class TestCase extends BaseTestCase
             'prefix'   => '',
         ]);
 
+        $app['config']->set('laravel-query-adviser.macros.dd', 'qadd');
+        $app['config']->set('laravel-query-adviser.macros.dump', 'qad');
         $app['config']->set('laravel-query-adviser.cache.key', 'test');
         $app['config']->set('laravel-query-adviser.enable_query_logging', true);
         $app['config']->set('laravel-query-adviser.cache.ttl', 60);
