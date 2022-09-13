@@ -22,7 +22,8 @@ Publish Laravel-Query-Adviser
 php artisan vendor:publish --provider="Socialblue\LaravelQueryAdviser\LaravelQueryAdviserServiceProvider"
 ```
 
-** publish the front-end application after updating **
+**Publish the front-end application after updating**
+
 ```bash
 php artisan vendor:publish --tag=public --force
 ```
