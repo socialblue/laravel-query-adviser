@@ -15,31 +15,7 @@
     position: fixed;
 }
 
-.sql-hl {
-    padding: 0;
 
-    pre {
-        display: block;
-        background: rgba(0, 0, 0, 1);
-
-        .sql-hl-string {
-            color: rgba(0, 220, 40, .9);
-        }
-
-        .sql-hl-special {
-            color: rgba(213, 213, 0, .9);
-        }
-
-        .sql-hl-keyword {
-            color: rgba(255, 150, 0, .9);
-            text-transform: uppercase;
-        }
-
-        .sql-hl-number {
-            color: rgba(0, 120, 220, .9);
-        }
-    }
-}
 
 
 
