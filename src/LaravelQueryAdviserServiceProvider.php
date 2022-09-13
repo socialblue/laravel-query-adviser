@@ -66,11 +66,11 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
             QueryListener::listen($query);
         });
 
-        \Illuminate\Database\Eloquent\Builder::macro('laravel-query-adviser.macros.dd', function () {
+        \Illuminate\Database\Eloquent\Builder::macro(config('laravel-query-adviser.macros.dd'), function () {
             dd(QueryBuilderHelper::infoByBuilder($this));
         });
 
-        \Illuminate\Database\Query\Builder::macro('laravel-query-adviser.macros.dd', function () {
+        \Illuminate\Database\Query\Builder::macro(config('laravel-query-adviser.macros.dd'), function () {
             dd(QueryBuilderHelper::infoByBuilder($this));
         });
 
