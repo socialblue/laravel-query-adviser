@@ -1,28 +1,40 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use Socialblue\LaravelQueryAdviser\Http\Controllers\QueryController;
+use Socialblue\LaravelQueryAdviser\Http\Controllers\SessionController;
+use Socialblue\LaravelQueryAdviser\Http\Controllers\IndexController;
 
-/**
- * Api routes
- */
+// api routes
 Route::prefix('api')->group(function () {
-//    Route::get('/query/get', 'QueryController@get');
-    Route::get('/query/clear', 'QueryController@clear');
-    Route::get('/query/exec', 'QueryController@exec');
-    Route::get('/query/explain', 'QueryController@explain');
-    Route::get('/query/server-info', 'QueryController@serverInfo');
 
-    Route::get('/session/clear', 'SessionController@clear');
-    Route::get('/session/show', 'SessionController@show');
-    Route::get('/session/list', 'SessionController@getList');
-    Route::get('/session/stop', 'SessionController@stop');
-    Route::get('/session/start', 'SessionController@start');
-    Route::get('/session/is-active', 'SessionController@isActive');
-    Route::get('/session/export', 'SessionController@export');
-    Route::post('/session/import', 'SessionController@import');
+    Route::prefix('session')->group(function () {
+        // get requests
+        Route::get('/', [SessionController::class, 'getList']);
+        Route::get('/start', [SessionController::class, 'start']);
+        Route::get('/stop', [SessionController::class, 'stop']);
+        Route::get('/is-active', [SessionController::class, 'isActive']);
+        Route::get('/clear', [SessionController::class, 'clear']);
+
+        // post requests
+        Route::post('/import', 'SessionController@import');
+
+        // one session routes
+        Route::prefix('{sessionKey}')->group(function () {
+            Route::get('/', [SessionController::class, 'show']);
+            Route::get('/export', [SessionController::class, 'export']);
+
+            // query functionality
+            Route::prefix('query/{time}/{timeKey}/')->group(function () {
+                Route::get('/exec', [QueryController::class, 'exec']);
+                Route::get('/explain', [QueryController::class, 'explain']);
+            });
+        });
+    });
+
+    Route::get('/server-info', [IndexController::class, 'serverInfo']);
 });
 
-
-Route::get('/', [QueryController::class, 'index']);
-Route::get('{any}', [QueryController::class, 'index'])
+// defer all front-end routes to vue-router app
+Route::get('/', [IndexController::class, 'index']);
+Route::get('{any}', [IndexController::class, 'index'])
     ->where('any','^(?!(api)).*$');
