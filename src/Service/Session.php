@@ -13,9 +13,6 @@ class Session
     public static function add(string $sessionId)
     {
         $sessionIds = Cache::get(config('laravel-query-adviser.cache.session.key_list'), []);
-        if (! is_array($sessionIds)) {
-            $sessionIds = [$sessionId];
-        }
         $sessionIds[] = $sessionId;
 
         Cache::put(config('laravel-query-adviser.cache.session.key_list'), $sessionIds, null);
@@ -48,7 +45,7 @@ class Session
 
     public static function get(string $sessionId): array
     {
-        $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionId);
+        $data = Cache::get($sessionId);
 
         if (! is_array($data)) {
             return [];
@@ -65,7 +62,7 @@ class Session
     {
         $sessionKey = self::newSessionKey();
         self::add($sessionKey);
-        Cache::tags(['laravel-query-adviser-sessions'])->put(
+        Cache::put(
             $sessionKey,
             $data,
             config('laravel-query-adviser.cache.ttl')
@@ -81,7 +78,7 @@ class Session
         return [
             'active' => Cache::has(config('laravel-query-adviser.cache.session_id')),
             'active_session_id' => Cache::get(config('laravel-query-adviser.cache.session_id')),
-            'has_queries' => Cache::tags(['laravel-query-adviser-sessions'])->has(Cache::get(config('laravel-query-adviser.cache.session_id'))),
+            'has_queries' => Cache::has(Cache::get(config('laravel-query-adviser.cache.session_id'))),
         ];
     }
 
@@ -122,7 +119,7 @@ class Session
         $keys = self::keyList();
 
         foreach ($keys as $key) {
-            $sessionData = Cache::tags(['laravel-query-adviser-sessions'])->get($key) ?? [];
+            $sessionData = Cache::get($key) ?? [];
             $formattedData = SessionFormatter::format($sessionData, $key);
 
             if (! empty($formattedData)) {
