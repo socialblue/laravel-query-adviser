@@ -21,7 +21,7 @@ class QueryListener
         }
 
         $url = url()->current();
-        if (strpos($url, '/query-adviser') !== false) {
+        if (str_contains($url, '/query-adviser')) {
             return;
         }
         $time = time();
@@ -65,7 +65,7 @@ class QueryListener
     }
 
     /**
-     * @param possibleTraces
+     * @param $possibleTraces
      * @return mixed
      */
     protected static function formatPossibleTraces($possibleTraces)
@@ -116,7 +116,7 @@ class QueryListener
             array_shift($data);
         }
 
-        Cache::tags(['laravel-query-adviser-sessions'])->put(
+        Cache::put(
             $sessionKey,
             $data,
             config('laravel-query-adviser.cache.ttl')
@@ -131,7 +131,7 @@ class QueryListener
      */
     protected static function getFromCache(int $time, $sessionKey)
     {
-        $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionKey, []);
+        $data = Cache::get($sessionKey, []);
         if (! is_array($data)) {
             $data = [];
         }
