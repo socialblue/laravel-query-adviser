@@ -10,8 +10,11 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Test Suite">
+        <testsuite name="Test Suite - Unit">
             <directory suffix="Test.php">./tests/Unit/</directory>
+        </testsuite>
+        <testsuite name="Test Suite - Feature">
+            <directory suffix="Test.php">./tests/Feature/</directory>
         </testsuite>
     </testsuites>
     <php>
