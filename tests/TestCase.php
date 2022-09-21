@@ -9,7 +9,9 @@ class TestCase extends BaseTestCase
 {
     protected function getPackageProviders($app)
     {
-        return [LaravelQueryAdviserServiceProvider::class];
+        return [
+            LaravelQueryAdviserServiceProvider::class
+        ];
     }
 
     /**
@@ -29,10 +31,10 @@ class TestCase extends BaseTestCase
         ]);
 
         $app['config']->set('laravel-query-adviser.macros.dd', 'qadd');
-        $app['config']->set('laravel-query-adviser.macros.dump', 'qad');
+        $app['config']->set('laravel-query-adviser.macros.dump', 'qadump');
         $app['config']->set('laravel-query-adviser.cache.key', 'test');
         $app['config']->set('laravel-query-adviser.enable_query_logging', true);
-        $app['config']->set('laravel-query-adviser.cache.ttl', 60);
+        $app['config']->set('laravel-query-adviser.cache.ttl', 600);
         $app['config']->set('laravel-query-adviser.cache.max_entries', 60);
         $app['config']->set('laravel-query-adviser.cache.session.key', 60);
         $app['config']->set('laravel-query-adviser.cache.session.key_list', 'query_advisor_session_key_list');
