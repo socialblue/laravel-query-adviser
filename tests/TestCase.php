@@ -33,7 +33,7 @@ class TestCase extends BaseTestCase
             'prefix'   => '',
         ]);
 
-        $app['path.storage'] = env('APP_STORAGE_PATH', storage_path());
+        $app->instance('path.storage', env('APP_STORAGE_PATH', storage_path()));
 
         $app['config']->set('laravel-query-adviser.macros.dd', 'qadd');
         $app['config']->set('laravel-query-adviser.macros.dump', 'qadump');
