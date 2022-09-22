@@ -33,6 +33,11 @@ class SessionControllerTest extends TestCase {
         $this->get('/query-adviser/api/session/stop');
         $stopData = Cache::get(config('laravel-query-adviser.cache.session_id'));
 
+        $isActive = $this->get('/query-adviser/api/session/is-active')->json();
+        $this->assertIsArray($isActive);
+        $this->assertArrayHasKey('active', $isActive);
+        $this->assertFalse($isActive['active']);
+
         $this->assertEmpty($stopData);
     }
 
