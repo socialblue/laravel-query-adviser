@@ -22,7 +22,6 @@ class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
-        dd(env('APP_STORAGE_PATH'));
         $app->useStoragePath(env('APP_STORAGE_PATH', storage_path()));
 
         // Setup default database to use sqlite :memory:

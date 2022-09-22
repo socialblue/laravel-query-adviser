@@ -21,6 +21,7 @@
         <env name="APP_KEY" value="base64:cE+/JHPKHcMoPrMBo3tpPT9igJ2tLFaVGe5A2WAzsvg=" />
         <env name="APP_ENV" value="testing" />
         <env name="CACHE_DRIVER" value="array" />
+        <env name="LOG_CHANNEL" value="null"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="APP_STORAGE_PATH" value="/tmp/storage"/>
         <env name="APP_SERVICES_CACHE" value="/tmp/bootstrap/cache/services.php"/>
