@@ -30,8 +30,9 @@
                     <query-statistics v-bind="session" />
                 </div>
             </template>
-            <div v-else-if="loading" class="hero-body">
+            <div v-else-if="loading && sessions.length === 0" class="hero-body">
                 <div class="container">
+                    <div class="button is-primary is-large is-loading" />
                     <h1 class="title">
                         Loading..
                     </h1>
@@ -185,6 +186,8 @@
             clearSessionCache() {
                 clear().then(() => {
                     this.sessions = [];
+                    this.loading = true;
+                    this.pollActiveSession();
                 });
             }
         },

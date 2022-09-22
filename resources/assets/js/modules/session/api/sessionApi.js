@@ -6,7 +6,7 @@ export function clear() {
             window.EventBus.$emit('show-notification', {message: 'Session cache cleared'});
             return response.json();
         });
-};
+}
 
 export function sessions() {
     return fetch(`${sessionApiPath}/`).then((response) => {
@@ -39,12 +39,11 @@ export function sessionImport(body) {
         'X-Requested-With': 'XMLHttpRequest',
         'X-CSRF-TOKEN': window.Laravel.csrfToken
     };
-
-    return fetch(`${sessionApiPath}/import`, {
+    return fetch('/query-adviser/api/session/import', {
         method,
         body,
         headers
-    });
+    }).then(response => response.json());
 }
 
 export function sessionExport(sessionKey) {
@@ -65,4 +64,4 @@ export function show(sessionKey) {
         .then((response) => {
             return response.json();
         });
-};
+}

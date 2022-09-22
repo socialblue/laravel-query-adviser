@@ -2,8 +2,8 @@
     <div>
         <page-header />
         <router-view :key="routeKey"></router-view>
-        <page-footer></page-footer>
-        <notification></notification>
+        <page-footer />
+        <notification />
     </div>
 </template>
 
@@ -11,7 +11,6 @@
     import pageHeader from '../components/page-header';
     import pageFooter from '../components/page-footer';
     import notification from '../components/notification';
-
 
     export default {
         components: {notification, pageHeader, pageFooter},

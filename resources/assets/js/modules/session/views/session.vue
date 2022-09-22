@@ -22,12 +22,12 @@
                     </div>
 
                     <p class="panel-tabs">
-                        <a v-on:click="listType = 'time'" :class="{'is-active': (listType == 'time')}">Time</a>
-                        <a v-on:click="listType = 'url'" :class="{'is-active': (listType == 'url')}">Routes</a>
-                        <a v-on:click="listType = 'referer'" :class="{'is-active': (listType == 'referer')}">Referer</a>
-                        <a v-on:click="listType = 'rawSql'" :class="{'is-active': (listType == 'rawSql')}">Raw queries</a>
-                        <a v-on:click="listType = 'sql'" :class="{'is-active': (listType == 'sql')}">Queries with bindings</a>
-                        <a v-on:click="listType = 'queryTime'" :class="{'is-active': (listType == 'queryTime')}">Query time</a>
+                        <a v-on:click="listType = 'time'" :class="{'is-active': (listType === 'time')}">Time</a>
+                        <a v-on:click="listType = 'url'" :class="{'is-active': (listType === 'url')}">Routes</a>
+                        <a v-on:click="listType = 'referer'" :class="{'is-active': (listType === 'referer')}">Referer</a>
+                        <a v-on:click="listType = 'rawSql'" :class="{'is-active': (listType === 'rawSql')}">Raw queries</a>
+                        <a v-on:click="listType = 'sql'" :class="{'is-active': (listType === 'sql')}">Queries with bindings</a>
+                        <a v-on:click="listType = 'queryTime'" :class="{'is-active': (listType === 'queryTime')}">Query time</a>
                     </p>
                 </nav>
 
@@ -190,7 +190,7 @@
         methods: {
             clearQueryCache() {
                 clear().finally(() => {
-
+                    this.$router.push({name: 'sessions'});
                 });
             },
 
@@ -238,7 +238,7 @@
                 };
 
                 if (this.sortKey === 'amount') {
-                    sortClosure = (a, b) => {
+                    sortClosure = () => {
                         return 0;
                     }
                 }
