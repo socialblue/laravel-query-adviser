@@ -1,7 +1,7 @@
 <template>
     <div>
-        <page-header></page-header>
-        <router-view></router-view>
+        <page-header />
+        <router-view :key="routeKey"></router-view>
         <page-footer></page-footer>
         <notification></notification>
     </div>
@@ -15,5 +15,11 @@
 
     export default {
         components: {notification, pageHeader, pageFooter},
+
+        computed: {
+            routeKey() {
+                return this.$route.matched[0]?.path ?? 'home';
+            }
+        }
     }
 </script>

@@ -13,6 +13,8 @@
 </template>
 
 <script>
+    import {serverInfo} from "../modules/default/api/defaultApi";
+
     export default {
         data() {
             return {
@@ -21,8 +23,7 @@
         },
 
         created() {
-            fetch('/query-adviser/api/query/server-info')
-                .then((response) => response.json())
+            serverInfo()
                 .then((serverInfo) => {
                     this.serverInfo = serverInfo;
                 });
