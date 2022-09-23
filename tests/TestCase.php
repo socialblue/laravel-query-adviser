@@ -50,6 +50,7 @@ class TestCase extends BaseTestCase
 
         $app['config']->set('filesystems.default', 'local');
         $app['config']->set('filesystems.disks.local.root', '/tmp/storage/app');
+        $app['config']->set('view.compiled', '/tmp/storage/views');
         $app['config']->set('laravel-query-adviser.macros.dd', 'qadd');
         $app['config']->set('laravel-query-adviser.macros.dump', 'qadump');
         $app['config']->set('laravel-query-adviser.cache.key', 'test');
