@@ -2,7 +2,6 @@
 
 namespace Socialblue\LaravelQueryAdviser\Helper;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
 class QueryBuilderHelper
@@ -96,13 +95,13 @@ class QueryBuilderHelper
      * @param $bindings
      * @return array
      */
-    public static function analyze($sql, $bindings)
+    public static function analyze($rawSql, $bindings)
     {
         $query = [
-            'sql' => $sql,
+            'sql' => $rawSql,
             'bindings' => $bindings,
         ];
-        $queryData = DB::connection()->select('EXPLAIN ' . $sql, $bindings);
+        $queryData = DB::connection()->select('EXPLAIN ' . $rawSql, $bindings);
 
         DB::connection()->getPdo()->setAttribute(\PDO::ATTR_EMULATE_PREPARES, true);
         $showWarnings = DB::connection()->getPdo()->query("SHOW WARNINGS");

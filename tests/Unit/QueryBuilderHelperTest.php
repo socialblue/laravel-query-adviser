@@ -1,4 +1,5 @@
 <?php
+namespace Socialblue\LaravelQueryAdviser\Tests\Unit;
 
 use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 use Socialblue\LaravelQueryAdviser\Tests\TestCase;

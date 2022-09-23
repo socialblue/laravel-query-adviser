@@ -15,37 +15,15 @@ use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 class QueryController extends Controller
 {
     /**
-     * Show view
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function index()
-    {
-        return view('QueryAdviser::index');
-    }
-
-    /**
-     * Clears cache
-     */
-    public function clear(): array
-    {
-        return [
-            'success' => Cache::forget(config('laravel-query-adviser.cache.display_key')),
-        ];
-    }
-
-    /**
      * Execute query
      */
-    public function exec(Request $request): array
+    public function exec(string $sessionKey, string $time, string $timeKey, Request $request): array
     {
-        $sessionId = $request->input('session-id');
+        $data = Cache::get($sessionKey);
 
-        $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionId);
-
-        if (isset($data[$request->get('time')][$request->get('time-key')])) {
-            $query = $data[$request->get('time')][$request->get('time-key')];
-            return DB::connection()->select($query['sql'], $query['bindings']);
+        if (isset($data[$time][$timeKey])) {
+            $query = $data[$time][$timeKey];
+            return DB::connection()->select($query['rawSql'], $query['bindings']);
         }
 
         return [];
@@ -54,14 +32,12 @@ class QueryController extends Controller
     /**
      * Use explain for query
      */
-    public function explain(Request $request): array
+    public function explain(string $sessionKey, string $time, string $timeKey, Request $request): array
     {
-        $sessionId = $request->input('session-id');
-
-        $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionId);
-        if (isset($data[$request->get('time')][$request->get('time-key')])) {
-            $query = $data[$request->get('time')][$request->get('time-key')];
-            return QueryBuilderHelper::analyze($query['sql'], $query['bindings']);
+        $data = Cache::get($sessionKey);
+        if (isset($data[$time][$timeKey])) {
+            $query = $data[$time][$timeKey];
+            return QueryBuilderHelper::analyze($query['rawSql'], $query['bindings']);
         }
 
         return [
@@ -69,10 +45,5 @@ class QueryController extends Controller
             'query' => "",
             'optimized' => "",
         ];
-    }
-
-    public function serverInfo(): array
-    {
-        return QueryBuilderHelper::getServerInfo();
     }
 }

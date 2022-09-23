@@ -1,4 +1,5 @@
 <?php
+namespace Socialblue\LaravelQueryAdviser\Tests\Unit;
 
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Cache;
@@ -18,7 +19,7 @@ class QueryListenerTest extends TestCase {
         $query = new QueryExecuted('select * from user where id = ?', [1], 1, DB::connection());
         QueryListener::listen($query);
 
-        $data = Cache::tags(['laravel-query-adviser-sessions'])->get($sessionId['session_id'], []);
+        $data = Cache::get($sessionId['session_id'], []);
 
         $this->assertCount(1, $data);
 

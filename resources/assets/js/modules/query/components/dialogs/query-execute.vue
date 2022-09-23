@@ -1,5 +1,5 @@
 <template>
-    <div :class="['modal', {'is-active': active}]">
+    <div :class="['modal', 'is-active']">
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
@@ -42,14 +42,19 @@
 </template>
 
 <script>
+import {execute} from "../../api/queryApi";
+
     export default {
+
+        props: {
+            timeKey:{},
+            time:{},
+            sessionKey:{},
+            sql:{},
+        },
 
         data() {
             return {
-                timeKey: 0,
-                time: 0,
-                sessionId: 0,
-                sql: null,
                 active: false,
                 result: [
                 ]
@@ -58,37 +63,22 @@
 
         methods: {
             getQuery() {
-
-                const params = {'session-id': this.sessionId, time: this.time, 'time-key': this.timeKey};
-                fetch(`/query-adviser/api/query/exec?${new URLSearchParams(params)}`).then(resp => {
-                    return resp.json();
-                }).then(result => {
+                execute(this.sessionKey, this.time, this.timeKey).then(result => {
                     this.loading = false;
                     this.result = result;
                 });
             },
 
             hide() {
-                this.active = false;
-                this.timeKey = null;
-                this.time = null;
-                this.sessionId = 0;
+                this.$router.push({name: this.$route.matched[0].name});
             }
 
         },
 
-        created() {
-            window.EventBus.$on('show-execute-dialog', (data) => {
-                this.time = data.time;
-                this.timeKey = data.timeKey;
-                this.sessionId = data.sessionId;
-                this.sql = data.sql;
-
-                this.getQuery();
-                this.$nextTick().then(() => {
-                    this.active = true;
-                });
-            });
-        }
+        beforeRouteEnter(to, from, next) {
+            next((vm) => {
+                vm.getQuery();
+            })
+        },
     }
 </script>

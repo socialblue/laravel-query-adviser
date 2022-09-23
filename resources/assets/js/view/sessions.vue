@@ -30,8 +30,9 @@
                     <query-statistics v-bind="session" />
                 </div>
             </template>
-            <div v-else-if="loading" class="hero-body">
+            <div v-else-if="loading && sessions.length === 0" class="hero-body">
                 <div class="container">
+                    <div class="button is-primary is-large is-loading" />
                     <h1 class="title">
                         Loading..
                     </h1>
@@ -107,6 +108,7 @@
 
 <script>
     import QueryStatistics from "../components/query-statistics";
+    import {clear, isActive, sessionExport, sessions, stop, start} from "../modules/session/api/sessionApi";
 
     export default {
         components: {QueryStatistics},
@@ -133,13 +135,13 @@
 
         methods: {
             startSession() {
-                fetch('/query-adviser/api/session/start').then(() => {
+                start().then(() => {
                      this.pollActiveSession();
                 });
             },
 
             stopSession() {
-                fetch('/query-adviser/api/session/stop').then(() => {
+                stop().then(() => {
                     this.getList();
                     this.isActive = false;
                     this.hasQueries = false;
@@ -148,15 +150,13 @@
             },
 
             hasActiveSession() {
-                return fetch('/query-adviser/api/session/is-active')
+                return isActive();
             },
 
             getList() {
                 this.loading = true;
 
-                return fetch('/query-adviser/api/session/list').then((response) => {
-                    return response.json();
-                }).then((sessions) => {
+                return sessions().then((sessions) => {
                     this.sessions = sessions;
                 }).finally(() => {
                     this.loading = false;
@@ -164,21 +164,11 @@
             },
 
             exportSession(to) {
-                return fetch(`/query-adviser/api/session/export?session-key=${to.params.sessionKey}`)
-                    .then((resp) => {
-                        return resp.blob();
-                    }).then((blob) => {
-                        const blobUrl = window.URL.createObjectURL(blob);
-                        const link = document.createElement("a");
-                        link.href = blobUrl;
-                        link.download = `${to.params.sessionKey}.json`;
-                        link.click();
-                    });
+                return sessionExport(to.params.sessionKey);
             },
 
             pollActiveSession() {
                 this.hasActiveSession()
-                    .then((response) => response.json())
                     .then((response) => {
                         this.isActive = response.active ?? false;
                         this.hasQueries = response?.has_queries ?? false;
@@ -194,9 +184,10 @@
             },
 
             clearSessionCache() {
-                fetch('/query-adviser/api/session/clear').then(() => {
+                clear().then(() => {
                     this.sessions = [];
-                    window.EventBus.$emit('show-notification', {message: 'Session cache cleared'});
+                    this.loading = true;
+                    this.pollActiveSession();
                 });
             }
         },

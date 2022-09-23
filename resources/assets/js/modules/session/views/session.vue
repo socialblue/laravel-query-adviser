@@ -1,8 +1,11 @@
 <template>
     <div>
-        <query-execute></query-execute>
-        <query-explain></query-explain>
-        <query-statistics v-bind="{queries, queryTime, routes, firstQueryLogged, lastQueryLogged}"></query-statistics>
+        <router-view name="dialog" />
+
+        <!-- should contain it's own helpers -->
+        <query-statistics v-bind="{queries, queryTime, routes, firstQueryLogged, lastQueryLogged}" />
+
+        <!-- should be own component -->
         <div class="tile is-parent is-paddingless">
             <main class="is-vertical tile">
                 <nav class="panel is-primary">
@@ -19,12 +22,12 @@
                     </div>
 
                     <p class="panel-tabs">
-                        <a v-on:click="listType = 'time'" :class="{'is-active': (listType == 'time')}">Time</a>
-                        <a v-on:click="listType = 'url'" :class="{'is-active': (listType == 'url')}">Routes</a>
-                        <a v-on:click="listType = 'referer'" :class="{'is-active': (listType == 'referer')}">Referer</a>
-                        <a v-on:click="listType = 'rawSql'" :class="{'is-active': (listType == 'rawSql')}">Raw queries</a>
-                        <a v-on:click="listType = 'sql'" :class="{'is-active': (listType == 'sql')}">Queries with bindings</a>
-                        <a v-on:click="listType = 'queryTime'" :class="{'is-active': (listType == 'queryTime')}">Query time</a>
+                        <a v-on:click="listType = 'time'" :class="{'is-active': (listType === 'time')}">Time</a>
+                        <a v-on:click="listType = 'url'" :class="{'is-active': (listType === 'url')}">Routes</a>
+                        <a v-on:click="listType = 'referer'" :class="{'is-active': (listType === 'referer')}">Referer</a>
+                        <a v-on:click="listType = 'rawSql'" :class="{'is-active': (listType === 'rawSql')}">Raw queries</a>
+                        <a v-on:click="listType = 'sql'" :class="{'is-active': (listType === 'sql')}">Queries with bindings</a>
+                        <a v-on:click="listType = 'queryTime'" :class="{'is-active': (listType === 'queryTime')}">Query time</a>
                     </p>
                 </nav>
 
@@ -50,7 +53,7 @@
                                     <div class="column" v-for="query in dataList[key]" >
                                         <query-block
                                                 :query="query"
-                                                :session-id="$route.params.id"
+                                                :session-id="sessionKey"
                                         >
                                         </query-block>
                                     </div>
@@ -65,21 +68,18 @@
                 </div>
             </main>
         </div>
-        <side-panel :sort-field.sync="sortKey"/>
+        <router-view name="sidePanelLeft" :sort-field.sync="sortKey" />
     </div>
 </template>
 
 <script>
-    import pageHeader from '../components/page-header';
-    import pageFooter from '../components/page-footer';
-    import queryBlock from '../components/query-block';
-    import queryExplain from '../components/query-explain';
-    import queryStatistics from '../components/query-statistics';
-    import sidePanel from '../components/side-panel';
-    import queryExecute from '../components/query-execute';
+    import pageFooter from '../../../components/page-footer';
+    import queryBlock from '../../query/components/query-block';
+    import queryStatistics from '../../../components/query-statistics';
+    import {clear, show} from "../api/sessionApi";
 
     export default {
-        components: {pageHeader, pageFooter, queryBlock, queryExplain, queryStatistics, queryExecute, sidePanel},
+        components: {pageFooter, queryBlock, queryStatistics},
 
         props: {
             sessionKey: {
@@ -189,21 +189,17 @@
 
         methods: {
             clearQueryCache() {
-                fetch('/query-adviser/api/query/clear').then(() => {
-                    this.cachedKeys = [];
-                    window.EventBus.$emit('show-notification', {message: 'Query cache cleared'});
+                clear().finally(() => {
+                    this.$router.push({name: 'sessions'});
                 });
             },
 
             getQueries() {
-                let params = this.$route.params;
-                params.id = this.sessionKey;
-
-                fetch(`/query-adviser/api/session/show?${new URLSearchParams(params)}`)
-                    .then((response) => {
-                       return response.json();
-                    }).then((cachedKeys) => {
-                        this.cachedKeys = cachedKeys;
+                this.loading = true;
+                show(this.sessionKey).then((cachedKeys) => {
+                    this.cachedKeys = cachedKeys;
+                }).finally(() => {
+                    this.loading = false;
                 });
             },
 
@@ -242,7 +238,7 @@
                 };
 
                 if (this.sortKey === 'amount') {
-                    sortClosure = (a, b) => {
+                    sortClosure = () => {
                         return 0;
                     }
                 }
@@ -260,7 +256,7 @@
             },
 
             showFilterMenu() {
-                window.EventBus.$emit('show-filter-bar');
+                this.$router.push({name: 'session-order-menu'})
             }
         },
 

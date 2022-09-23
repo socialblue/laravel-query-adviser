@@ -59,8 +59,8 @@
 
 <script>
 
-    import selectType from "../../mixin/select-type";
-    import joinType from "../../mixin/join-type";
+    import selectType from "../../../../../mixin/select-type";
+    import joinType from "../../../../../mixin/join-type";
 
 
     export default {

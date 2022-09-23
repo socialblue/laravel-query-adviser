@@ -20,8 +20,8 @@ class MacroTest extends TestCase {
      */
     public function builder_has_dump_marco()
     {
-        $this->assertTrue(\Illuminate\Database\Query\Builder::hasMacro('qad'));
-        $this->assertTrue(\Illuminate\Database\Eloquent\Builder::hasGlobalMacro('qad'));
+        $this->assertTrue(\Illuminate\Database\Query\Builder::hasMacro('qadump'));
+        $this->assertTrue(\Illuminate\Database\Eloquent\Builder::hasGlobalMacro('qadump'));
     }
 
 }
