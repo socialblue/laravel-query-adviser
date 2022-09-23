@@ -39,7 +39,6 @@ class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         $app->useStoragePath('/tmp/storage');
-        dump($app->storagePath(), storage_path('/test'));
 
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
