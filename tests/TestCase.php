@@ -39,6 +39,7 @@ class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app)
     {
         $app->useStoragePath('/tmp/storage');
+        dump($app->storagePath(), storage_path('/test'));
 
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
@@ -47,8 +48,6 @@ class TestCase extends BaseTestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
-
-        $app->instance('path.storage', env('APP_STORAGE_PATH', storage_path()));
 
         $app['config']->set('laravel-query-adviser.macros.dd', 'qadd');
         $app['config']->set('laravel-query-adviser.macros.dump', 'qadump');
