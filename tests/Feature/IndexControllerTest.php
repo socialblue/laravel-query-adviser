@@ -10,8 +10,6 @@ class IndexControllerTest extends TestCase {
      */
     public function can_load_layout()
     {
-        dump(storage_path('test'));
-
         $this->withoutMix();
         $response = $this->get('/query-adviser/');
         $response->assertOk();
