@@ -29,7 +29,7 @@ class QueryControllerTest extends TestCase {
     /**
      * @test
      */
-    public function can_execute_query_off_session()
+    public function can_execute_query_of_session()
     {
         DB::statement("CREATE TABLE user (id INTEGER, name varchar);");
         DB::insert("INSERT INTO user VALUES(?,?);", [1, 'test']);
@@ -49,7 +49,7 @@ class QueryControllerTest extends TestCase {
 
         $data = $response->json();
         $this->assertCount(1, $data);
-        $this->assertSame([['id' => '1', 'name' => 'test']], $data);
+        $this->assertEquals([['id' => '1', 'name' => 'test']], $data);
     }
 
 }
