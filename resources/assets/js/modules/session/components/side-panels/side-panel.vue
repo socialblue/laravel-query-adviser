@@ -1,8 +1,8 @@
 <template>
-    <aside :class="['quickview', {'is-active': active}]">
+    <aside :class="['quickview', 'is-active']">
         <header class="quickview-header">
             <p class="title">Setting</p>
-            <span class="delete" v-on:click="active = false"></span>
+            <span class="delete" v-on:click="$router.push({name: $route.matched[0].name})"></span>
         </header>
 
         <div class="quickview-body">
@@ -31,12 +31,6 @@
 
 <script>
     export default {
-        data() {
-            return {
-                active: false,
-            }
-        },
-
         computed: {
             sortField: {
                 get() {
@@ -48,11 +42,5 @@
                 }
             }
         },
-
-        beforeCreate() {
-            window.EventBus.$on('show-filter-bar', () => {
-                this.active = true;
-            });
-        }
     }
 </script>

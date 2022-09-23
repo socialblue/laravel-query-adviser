@@ -34,9 +34,9 @@ class SessionController extends Controller
      *
      * @return mixed
      */
-    public function show(Request $request): array
+    public function show(string $sessionKey, Request $request): array
     {
-        return Session::get($request->input('id'));
+        return Session::get($sessionKey);
     }
 
     /**
@@ -50,9 +50,8 @@ class SessionController extends Controller
     /**
      * Export a session
      */
-    public function export(Request $request): BinaryFileResponse
+    public function export(string $sessionKey, Request $request): BinaryFileResponse
     {
-        $sessionKey = $request->input('session-key');
         return Session::export($sessionKey);
     }
 

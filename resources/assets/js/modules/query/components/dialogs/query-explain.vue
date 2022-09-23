@@ -1,5 +1,5 @@
 <template>
-    <div :class="['modal', {'is-active': active}]">
+    <div :class="['modal', 'is-active']">
         <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
@@ -17,6 +17,7 @@
 
 <script>
     import ExplainPart from "./query-explain/explain-part";
+    import {explain} from "../../api/queryApi";
     export default {
         name: "query-explain",
 
@@ -24,37 +25,39 @@
             ExplainPart
         },
 
+        props: {
+            timeKey: {},
+            sessionKey: {},
+            time: {},
+            sql: {},
+        },
+
         data() {
             return {
                 explainParts: [],
-                sql: "",
                 active: false,
                 loading: false,
-                timeKey: 0,
-                sessionId: 0,
-                time: 0,
             }
         },
 
         methods: {
             loadExplainParts() {
                 this.loading = true;
-                const params = {'session-id': this.sessionId, time: this.time, 'time-key': this.timeKey};
-                fetch(`/query-adviser/api/query/explain?${new URLSearchParams(params)}`).then(resp => {
-                    return resp.json();
-                }).then(explainParts => {
+                explain(this.sessionKey, this.time, this.timeKey).then(explainParts => {
                     this.loading = false;
-                    this.explainParts = explainParts.queryParts;
+                    this.explainParts = explainParts?.queryParts ?? [];
                 });
             },
 
             hide() {
-                this.active = false;
-                this.time = 0;
-                this.timeKey = 0;
-                this.sessionId = 0;
-                this.explainParts = [];
+                this.$router.push({name: this.$route.matched[0].name});
             }
+        },
+
+        beforeRouteEnter(to, from, next) {
+            next((vm) => {
+                vm.loadExplainParts();
+            })
         },
 
         mounted() {

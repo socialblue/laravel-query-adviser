@@ -1,22 +1,11 @@
 import Sessions from '../view/sessions.vue';
-import Session from '../view/session.vue';
 import SessionImport from '../components/session-import.vue';
+import SessionRoutes from "../modules/session/routes/session-routes";
 import VueRouter from 'vue-router';
 import Vue from 'vue';
 
 const routes = [
-    {
-        path: '/query-adviser/session/:sessionKey',
-        name: 'session',
-        components: {default: Session},
-        meta: {permission: 1},
-        props: {
-            default: (route) => {
-                return route.params
-            }
-        },
-
-    },
+    SessionRoutes,
     {
         path: '/query-adviser/',
         name: 'sessions',
@@ -28,19 +17,16 @@ const routes = [
                 name: 'session-export',
                 components: {},
                 beforeRouteEnter(to, from, next) {
-                    console.log(to, from, next);
+                    next();
                 },
-
             },
-
             {
                 path: '#import',
                 name: 'session-import',
                 components: {dialog: SessionImport},
                 beforeRouteEnter(to, from, next) {
-                    console.log(to, from, next);
+                    next();
                 },
-
             },
         ]
     },

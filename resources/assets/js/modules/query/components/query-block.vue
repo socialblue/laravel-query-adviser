@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import sqlHighlight from "./sql-highlight";
+import sqlHighlight from "../../../components/sql-highlight";
 import { format } from 'sql-formatter';
 
 export default {
@@ -100,20 +100,20 @@ export default {
 
     methods: {
         showExplainDialog() {
-            window.EventBus.$emit('show-explain-dialog', {
-                sessionId: this.sessionId,
+            this.$router.push({name: 'session-query-explain', params: {
+                sessionKey: this.sessionId,
                 time: this.query.time,
                 timeKey: this.query.timeKey,
-            })
+            }});
         },
 
         showExecuteDialog() {
-            window.EventBus.$emit('show-execute-dialog', {
-                sessionId: this.sessionId,
+            this.$router.push({name: 'session-query-execute', params: {
+                sessionKey: this.sessionId,
                 time: this.query.time,
                 timeKey: this.query.timeKey,
                 sql: this.query.sql
-            })
+            }});
         },
 
         clipboardSuccess() {
@@ -129,10 +129,6 @@ export default {
     },
 
     computed: {
-        execUrl() {
-            return `/query-adviser/api/query/exec/?time=${this.query.time}&time-key=${this.query.timeKey}`;
-        },
-
         dateTime() {
             return (new Date(this.query.time*1000)).toISOString();
         }
