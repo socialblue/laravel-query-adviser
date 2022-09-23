@@ -18,6 +18,19 @@ class TestCase extends BaseTestCase
     }
 
     /**
+     * Setup the test environment.
+     */
+    protected function setUp(): void
+    {
+        // Code before application created.
+
+        parent::setUp();
+
+        // Code after application created.
+    }
+
+
+    /**
      * Define environment setup.
      *
      * @param  \Illuminate\Foundation\Application  $app
@@ -25,6 +38,8 @@ class TestCase extends BaseTestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        $app->useStoragePath('/tmp/storage');
+
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
@@ -48,4 +63,6 @@ class TestCase extends BaseTestCase
         $app['config']->set('laravel-query-adviser.cache.display_key', 'query_adviser_display');
         $app['config']->set('laravel-query-adviser.cache.session_max_time', 120);
     }
+
+
 }

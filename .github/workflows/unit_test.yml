@@ -24,7 +24,11 @@ jobs:
                   php-version: ${{matrix.php-versions}}
                   tools: phpunit:9.5
             - name: add bootstrap cachedir
-              run: mkdir /tmp/bootstrap && mkdir /tmp/bootstrap/cache && chmod 777 /tmp/bootstrap/cache
+              run: mkdir /tmp/bootstrap && \
+                mkdir /tmp/bootstrap/cache && \
+                chmod 777 /tmp/bootstrap/cache && \
+                mkdir /tmp/storage && \
+                chmod 777 /tmp/storage
               shell: bash
             - name: PHPUnit Tests
               run: composer test-ci
