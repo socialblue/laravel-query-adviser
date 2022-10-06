@@ -85,7 +85,7 @@ export default {
             type: Object,
         },
 
-        sessionId: {
+        sessionKey: {
             type: String,
         }
 
@@ -101,7 +101,7 @@ export default {
     methods: {
         showExplainDialog() {
             this.$router.push({name: 'session-query-explain', params: {
-                sessionKey: this.sessionId,
+                sessionKey: this.sessionKey,
                 time: this.query.time,
                 timeKey: this.query.timeKey,
             }});
@@ -109,7 +109,7 @@ export default {
 
         showExecuteDialog() {
             this.$router.push({name: 'session-query-execute', params: {
-                sessionKey: this.sessionId,
+                sessionKey: this.sessionKey,
                 time: this.query.time,
                 timeKey: this.query.timeKey,
                 sql: this.query.sql

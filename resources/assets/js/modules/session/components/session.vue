@@ -40,7 +40,7 @@
     export default {
 
         props: {
-            id: {
+            sessionKey: {
                 type: Number,
                 default() {
                     return 0;
@@ -78,7 +78,7 @@
 
         methods: {
             openSession() {
-                this.$router.push({name: 'session', params: {sessionKey: this.id}});
+                this.$router.push({name: 'session', params: {sessionKey: this.sessionKey}});
             }
         }
     }

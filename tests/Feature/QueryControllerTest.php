@@ -31,8 +31,8 @@ class QueryControllerTest extends TestCase {
      */
     public function can_execute_query_of_session()
     {
-        DB::statement("CREATE TABLE user (id INTEGER, name varchar);");
-        DB::insert("INSERT INTO user VALUES(?,?);", [1, 'test']);
+        DB::statement('CREATE TABLE user (id INTEGER, name varchar);');
+        DB::insert('INSERT INTO user VALUES(?,?);', [1, 'test']);
         $sessionKey = $this->get('/query-adviser/api/session/start')->json('session_id');
 
         // reset current url for test
@@ -51,5 +51,17 @@ class QueryControllerTest extends TestCase {
         $this->assertCount(1, $data);
         $this->assertEquals([['id' => '1', 'name' => 'test']], $data);
     }
+
+    /**
+     * @test
+     */
+    public function returns_empty_array_when_no_traces_in_session()
+    {
+        $sessionKey = $this->get('/query-adviser/api/session/start')->json('session_id');
+        $sessionData = $this->get("/query-adviser/api/session/$sessionKey/")->json();
+
+        $this->assertSame([], $sessionData);
+    }
+
 
 }
