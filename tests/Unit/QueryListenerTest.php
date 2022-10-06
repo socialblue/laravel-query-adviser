@@ -5,10 +5,12 @@ use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Socialblue\LaravelQueryAdviser\DataListener\QueryListener;
+use Socialblue\LaravelQueryAdviser\DataListener\Services\BindingsMapper;
 use Socialblue\LaravelQueryAdviser\Http\Controllers\SessionController;
 use Socialblue\LaravelQueryAdviser\Tests\TestCase;
 
-class QueryListenerTest extends TestCase {
+class QueryListenerTest extends TestCase
+{
 
     /** @test */
     public function query_listener_stores_all_data_keys_in_cache()
@@ -38,7 +40,21 @@ class QueryListenerTest extends TestCase {
         $this->assertArrayHasKey('url', $data);
 
         $this->assertEquals('select * from user where id = \'1\'', $data['sql']);
+    }
 
+    /**
+     * @test
+     */
+    public function binding_mapper_should_be_able_to_process_expressions()
+    {
+        $data = [1, '1', DB::raw("test")];
+
+        $toCache = (new BindingsMapper())->toCache($data);
+
+        $this->assertSame([1, '1', '{EXPRESSION:} test'], $toCache);
+
+        $fromCache = (new BindingsMapper())->fromCache($toCache);
+        $this->assertEquals($data, $fromCache);
     }
 
 }
