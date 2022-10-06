@@ -4,7 +4,7 @@ namespace Socialblue\LaravelQueryAdviser\DataListener;
 
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Cache;
-use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
+use Socialblue\LaravelQueryAdviser\DataListener\Services\SessionFormatter;
 
 class QueryListener
 {
@@ -24,87 +24,14 @@ class QueryListener
         if (str_contains($url, '/query-adviser')) {
             return;
         }
-        $time = time();
-        $referer = request()->headers->get('referer');
 
+        $time = time();
         $data = self::getFromCache($time, $sessionKey);
 
-        $possibleTraces = self::formatPossibleTraces(self::getPossibleTraces());
-
         self::putToCache(
-            self::formatData($query, $data, $time, $possibleTraces, $url, $referer),
+            (new SessionFormatter())->format($time, $data, $query),
             $sessionKey
         );
-    }
-
-    protected static function getPossibleTraces(): array
-    {
-        $traces = debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT, 25);
-        krsort($traces);
-
-        $possibleTraces = array_filter(
-            $traces,
-            static function ($trace) {
-                return isset($trace['file']) &&
-                    isset($trace['object']) &&
-                    strpos($trace['file'], base_path('vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php')) !== false;
-            }
-        );
-
-        $currentPossibleTrace = current($possibleTraces);
-
-        if (! empty($currentPossibleTrace)) {
-            $calledBy = $traces[key($possibleTraces) + 1];
-            $currentPossibleTrace['file'] = $calledBy['file'];
-            $currentPossibleTrace['line'] = $calledBy['line'];
-            $currentPossibleTrace['function'] = $calledBy['function'];
-            return [$currentPossibleTrace];
-        }
-
-        return $possibleTraces;
-    }
-
-    /**
-     * @param $possibleTraces
-     * @return mixed
-     */
-    protected static function formatPossibleTraces($possibleTraces)
-    {
-        array_walk($possibleTraces, static function (&$trace) {
-            if (method_exists($trace['object'], 'getModel')) {
-                $a = $trace['object']->getModel();
-                if (is_string($a)) {
-                    $trace['model'] = $a;
-                } else {
-                    $trace['model'] = get_class($a);
-                }
-            }
-            unset($trace['object']);
-            unset($trace['args']);
-        });
-        return $possibleTraces;
-    }
-
-    /**
-     * @param $possibleTraces
-     * @param string|null $referer
-     */
-    protected static function formatData(QueryExecuted $query, array $data, int $time, $possibleTraces, string $url, $referer = ''): array
-    {
-        $key = count($data[$time]);
-
-        $data[$time][$key] = [
-            'time' => $time,
-            'timeKey' => $key,
-            'backtrace' => $possibleTraces,
-            'sql' => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
-            'rawSql' => $query->sql,
-            'bindings' => $query->bindings,
-            'queryTime' => $query->time,
-            'url' => empty($url) ? '/' : $url,
-            'referer' => empty($referer) ? '/' : $referer,
-        ];
-        return $data;
     }
 
     /**
