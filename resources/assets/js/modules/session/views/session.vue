@@ -30,42 +30,12 @@
                         <a v-on:click="listType = 'queryTime'" :class="{'is-active': (listType === 'queryTime')}">Query time</a>
                     </p>
                 </nav>
-
-
-                <div class="timeline">
-                    <header class="timeline-header">
-                        <span class="tag is-medium is-primary">Start</span>
-                    </header>
-
-                    <div class="timeline-item is-primary" v-for="key in dataListKey">
-                        <div class="timeline-marker is-icon button is-info" v-on:click="toggleQueryGroup(key)">
-                            <span class="material-icons" title="expand">
-                                    <template v-if="!showQueryGroup(key)">expand_more</template>
-                                    <template v-if="showQueryGroup(key)">expand_less</template>
-                            </span>
-                        </div>
-                        <div class="timeline-content">
-                            <p class="heading">{{groupTitle(key)}} ({{dataList[key].length}})
-
-                            </p>
-                            <div>
-                                <div class="columns is-multiline" v-if="showQueryGroup(key)">
-                                    <div class="column" v-for="query in dataList[key]" >
-                                        <query-block
-                                                :query="query"
-                                                :session-key="sessionKey"
-                                        >
-                                        </query-block>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <header class="timeline-header">
-                        <span class="tag is-medium is-primary">End</span>
-                    </header>
-
-                </div>
+                <timeline
+                    :data-list="dataList"
+                    :session-key="sessionKey"
+                    :data-list-key="dataListKey"
+                    :list-type="listType"
+                />
             </main>
         </div>
         <router-view name="sidePanelLeft" :sort-field.sync="sortKey" />
@@ -77,9 +47,10 @@
     import queryBlock from '../../query/components/query-block';
     import queryStatistics from '../../../components/query-statistics';
     import {clear, show} from "../api/sessionApi";
+    import Timeline from "../components/views/timeline";
 
     export default {
-        components: {pageFooter, queryBlock, queryStatistics},
+        components: {Timeline, pageFooter, queryBlock, queryStatistics},
 
         props: {
             sessionKey: {
@@ -110,7 +81,6 @@
                 sortDirection: 1,
                 listType: 'time',
                 cachedKeys: {},
-                showTime: []
             }
         },
 
