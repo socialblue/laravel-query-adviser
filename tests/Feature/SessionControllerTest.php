@@ -141,7 +141,12 @@ class SessionControllerTest extends TestCase {
         $response = $this->get("/query-adviser/api/session/$sessionKey/");
         $response->assertOk();
 
-        $this->assertCount(1, $response->json());
+        $session = $response->json();
+
+        $this->assertArrayHasKey('data', $session);
+        $this->assertArrayHasKey('summary', $session);
+        $this->assertCount(1, $session['data']);
+        $this->assertCount(1, current($session['data']));
     }
 
     /**

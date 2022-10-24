@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 32 50" xmlns="http://www.w3.org/2000/svg">
+  <g transform="matrix(1, 0, 0, 1, -1.772368, -0.239217)">
+    <g style="" transform="matrix(0.24134, 0, 0, 0.350729, 14.036423, 10.076302)">
+      <title>Database</title>
+      <ellipse style="fill: rgb(236, 236, 236); stroke-width: 13.5119px; stroke: rgb(51, 51, 51);" cx="15.005" cy="83.365" rx="50" ry="20">
+        <title>bottom</title>
+      </ellipse>
+      <ellipse style="fill: rgb(236, 236, 236); stroke-width: 13.5119px; stroke: rgb(51, 51, 51);" cx="15.005" cy="57.365" rx="50" ry="20">
+        <title>middle-bottom</title>
+      </ellipse>
+      <ellipse style="fill: rgb(236, 236, 236); stroke-width: 13.5119px; stroke: rgb(51, 51, 51);" cx="15.005" cy="33.365" rx="50" ry="20">
+        <title>middle-tup</title>
+      </ellipse>
+      <path style="fill: rgb(236, 236, 236); stroke-width: 13.5119px; stroke: rgb(51, 51, 51);" d="M 65.424 7.365 L 65.005 85.598"/>
+      <path style="fill: rgb(236, 236, 236); stroke-width: 13.5119px; stroke: rgb(51, 51, 51);" d="M -34.576 7.365 L -34.995 85.598"/>
+      <ellipse style="paint-order: fill; fill: rgb(236, 236, 236); stroke-width: 13.5119px; stroke: rgb(51, 51, 51);" cx="15.005" cy="7.365" rx="50" ry="20">
+        <title>top</title>
+      </ellipse>
+    </g>
+    <g style="" transform="matrix(0.132459, 0, 0, 0.132459, -47.525974, 0.651215)">
+      <title>Relation</title>
+      <g transform="matrix(1.560455, 0, 0, 1.560455, 178.17189, -112.217316)" style="">
+        <title>Relation line</title>
+        <line style="stroke-width: 4.05494px; fill: rgb(58, 184, 158); paint-order: stroke; stroke: rgb(58, 184, 158);" x1="201.221" y1="177.314" x2="201.221" y2="193.534"/>
+        <line style="stroke-width: 4.05494px; fill: rgb(58, 184, 158); paint-order: stroke; stroke: rgb(58, 184, 158);" x1="219.114" y1="191.84" x2="219.114" y2="211.014" transform="matrix(0, -1, 1, 0, 17.686996, 420.541)"/>
+        <line style="stroke-width: 4.05494px; fill: rgb(58, 184, 158); paint-order: stroke; stroke: rgb(58, 184, 158);" x1="183.625" y1="191.84" x2="183.625" y2="211.014" transform="matrix(0, -1, 1, 0, -17.802002, 385.052002)"/>
+        <line style="stroke-width: 4.05494px; fill: rgb(58, 184, 158); paint-order: stroke; stroke: rgb(58, 184, 158);" x1="236.603" y1="208.121" x2="236.603" y2="224.341"/>
+        <line style="stroke-width: 4.05494px; fill: rgb(58, 184, 158); paint-order: stroke; stroke: rgb(58, 184, 158);" x1="165.111" y1="208.121" x2="165.111" y2="224.341"/>
+        <ellipse style="fill: rgb(216, 216, 216); stroke-linejoin: round; stroke: rgb(58, 184, 157); paint-order: stroke; stroke-width: 12.1648px;" cx="166.481" cy="201.381" rx="2.685" ry="2.685"/>
+        <ellipse style="fill: rgb(216, 216, 216); stroke-linejoin: round; stroke: rgb(58, 184, 157); paint-order: stroke; stroke-width: 12.1648px;" cx="236.471" cy="201.381" rx="2.685" ry="2.685"/>
+        <ellipse style="fill: rgb(216, 216, 216); stroke-linejoin: round; stroke: rgb(58, 184, 157); paint-order: stroke; stroke-width: 12.1648px;" cx="201.355" cy="201.381" rx="2.685" ry="2.685"/>
+      </g>
+      <g transform="matrix(0.499693, 0, 0, 0.499693, 408.701843, 199.424301)" style="">
+        <title>Entity Parent</title>
+        <rect x="230" y="75" width="100" height="69.919" style="stroke-linejoin: round; fill: rgb(255, 255, 255); paint-order: fill; fill-rule: nonzero; stroke: rgb(58, 184, 157); stroke-width: 17.9814px;"/>
+        <path style="stroke-linejoin: round; fill: rgb(255, 255, 255); paint-order: fill; fill-rule: nonzero; stroke: rgb(58, 184, 157); stroke-width: 5.99379px;" d="M 230 104.699 L 330 104.408"/>
+      </g>
+      <g transform="matrix(1.113404, 0, 0, 1.17075, 180.136734, -10.4697)" style="">
+        <title>Entity Parent</title>
+        <rect x="230" y="75" width="100" height="69.919" style="stroke-linejoin: round; fill: rgb(255, 255, 255); paint-order: fill; fill-rule: nonzero; stroke: rgb(58, 184, 157); stroke-width: 17.9814px;"/>
+        <path style="stroke-linejoin: round; fill: rgb(255, 255, 255); paint-order: fill; fill-rule: nonzero; stroke: rgb(58, 184, 157); stroke-width: 5.99379px;" d="M 230 104.699 L 330 104.408"/>
+      </g>
+      <g transform="matrix(0.499693, 0, 0, 0.499693, 299.85614, 199.424164)" style="">
+        <title>Entity Parent</title>
+        <rect x="230" y="75" width="100" height="69.919" style="stroke-linejoin: round; fill: rgb(255, 255, 255); paint-order: fill; fill-rule: nonzero; stroke: rgb(58, 184, 157); stroke-width: 17.9814px;"/>
+        <path style="stroke-linejoin: round; fill: rgb(255, 255, 255); paint-order: fill; fill-rule: nonzero; stroke: rgb(58, 184, 157); stroke-width: 5.99379px;" d="M 230 104.699 L 330 104.408"/>
+      </g>
+    </g>
+    <g style="" transform="matrix(0.208277, 0, 0, 0.208526, -9.577927, 8.398914)">
+      <title>Magnifying glass</title>
+      <ellipse style="stroke: rgb(0, 0, 0); stroke-linejoin: round; stroke-linecap: square; fill: rgb(58, 184, 157); stroke-width: 3.16004px;" cx="133.707" cy="122.941" rx="24.368" ry="24.368"/>
+      <ellipse style="stroke: rgb(0, 0, 0); stroke-linejoin: round; stroke-linecap: square; fill: rgb(255, 255, 255); stroke-width: 3.16004px;" cx="133.837" cy="122.649" rx="17.899" ry="17.899"/>
+      <g style="" transform="matrix(0.658456, 0, 0, 1.172879, 46.702843, -25.645754)">
+        <title>Graph</title>
+        <rect x="137.82" y="127.903" width="8.622" height="9.681" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 3.4505px;"/>
+        <rect x="129.198" y="123.063" width="8.622" height="14.521" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 3.4505px;"/>
+        <rect x="120.576" y="113.382" width="8.622" height="24.202" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0); stroke-width: 3.4505px;"/>
+      </g>
+      <rect x="127.857" y="108.138" width="48.944" height="10.804" style="stroke: rgb(0, 0, 0); stroke-linejoin: round; stroke-linecap: square; fill: rgb(58, 184, 157); stroke-width: 3.16004px;" rx="3.658" ry="3.658" transform="matrix(-0.681998, -0.731354, 0.731354, -0.681998, 189.106796, 349.15683)"/>
+    </g>
+  </g>
+</svg>

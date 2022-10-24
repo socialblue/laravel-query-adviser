@@ -42,7 +42,7 @@ class QueryControllerTest extends TestCase {
         QueryListener::listen($query);
 
         $sessions = $this->get("/query-adviser/api/session/$sessionKey/")->json();
-        $time = key($sessions);
+        $time = key($sessions['data']);
 
         $response = $this->get("/query-adviser/api/session/$sessionKey/query/$time/0/exec");
         $response->assertOk();

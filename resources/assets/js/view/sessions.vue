@@ -2,14 +2,14 @@
     <main class="is-vertical tile">
         <router-view name="dialog"></router-view>
         <nav class="panel is-primary">
-            <div class="panel-heading">
+            <div class="panel-heading ">
                 <span>
                     Sessions
                 </span>
 
-                <router-link class="button is-pulled-right" :to="{ name: 'session-import'}" ><i class="material-icons">file_upload</i></router-link>
-                <span class="material-icons button is-pulled-right" title="clear query cache" v-on:click="clearSessionCache">
-                    eject
+                <router-link tag="span" class="button is-primary material-icons is-text is-pulled-right is-small" :to="{ name: 'session-import'}" >file_upload</router-link>
+                <span class="button is-primary material-icons is-text is-pulled-right is-small" title="clear query cache" v-on:click="clearSessionCache">
+                    delete_sweeps
                 </span>
             </div>
         </nav>
@@ -21,7 +21,7 @@
                             You have sessions
                         </h1>
                         <p>
-                            To add another session press play. <span class="material-icons button" v-on:click="startSession" v-if="!isActive ">play_arrow</span>
+                            To add another session press play. <span class="material-icons is-text button" v-on:click="startSession" v-if="!isActive ">play_arrow</span>
                         </p>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
             </template>
             <div v-else-if="loading && sessions.length === 0" class="hero-body">
                 <div class="container">
-                    <div class="button is-primary is-large is-loading" />
+                    <div class="button is-primary is-text is-large is-loading" />
                     <h1 class="title">
                         Loading..
                     </h1>

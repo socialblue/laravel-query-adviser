@@ -32,9 +32,8 @@
         </div>
         <div class="level-item level-right">
             <p class="level-item">
-                <router-link class="button" :to="{ name: 'session', params: { sessionKey, queries, routes, queryTime, firstQueryLogged, lastQueryLogged}}" v-if="sessionKey"><i class="material-icons">info</i></router-link>
-                <router-link class="button" :to="{ name: 'session-export', params: { sessionKey }}" v-if="sessionKey"><i class="material-icons">file_download</i></router-link>
-                <router-link class="button" :to="{ name: 'sessions'}"  v-if="!sessionKey"><i class="material-icons">domain</i></router-link>
+                <router-link class="button is-text" :to="{ name: 'session', params: { sessionKey, queries, routes, queryTime, firstQueryLogged, lastQueryLogged}}" v-if="sessionKey"><i class="material-icons">info</i></router-link>
+                <router-link class="button is-text" :to="{ name: 'session-export', params: { sessionKey }}" v-if="sessionKey"><i class="material-icons">file_download</i></router-link>
             </p>
         </div>
     </nav>
