@@ -4,9 +4,18 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/socialblue/laravel-query-adviser.svg?style=flat-square)](https://scrutinizer-ci.com/g/socialblue/laravel-query-adviser)
 [![Total Downloads](https://img.shields.io/packagist/dt/socialblue/laravel-query-adviser.svg?style=flat-square)](https://packagist.org/packages/socialblue/laravel-query-adviser)
 
-With Laravel Query Adviser you can get more insights into the SQL queries created by Eloquent models used in your app.
+
+<table>
+    <tr>
+        <td><img src="./public/images/favicon.svg" width="180" /></td>
+        <td>With Laravel Query Adviser you can get more insights into the SQL queries created by Eloquent models used in your app.
 It logs the queries used by your application and provides a helpful overview of the SQL queries. You can rerun the SQL query to analyze the database impact or copy the SQL query to your clipboard.
-The handy card view allows you to quickly point out the pain points of your application's SQL queries.
+The handy card view allows you to quickly point out the pain points of your application's SQL queries.</td>
+    </tr>
+</table>
+
+
+
 
 ## Installation
 
@@ -100,7 +109,7 @@ Also you can clear the cached queries by pressing the eject button.
 As of version 0.10.0, the query card has labels related to the class,
 file and function of the query executed from your app folder.
 
-> *Query labels*
+> *File Information*
 > ![Query labels](./img/labels.png)
 
 Open the explain dialog to see more information about the query.
@@ -137,3 +146,15 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 ## Laravel Package Boilerplate
 
 This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
+
+
+svg
+use rect for table
+use polyline for joins
+use groups for sub queries
+
+
+table names 
+show relations
+snap to grid (24,24)
+collision detection Add minimal space between tables using aabb

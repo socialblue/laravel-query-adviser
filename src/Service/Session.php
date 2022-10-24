@@ -34,7 +34,7 @@ class Session
         $directory = storage_path('laravel-query-adviser/');
         File::makeDirectory($directory, 0777, true, true);
         $file = $directory . 'last-export.json';
-        file_put_contents($file, json_encode(self::get($sessionKey), JSON_PRETTY_PRINT));
+        file_put_contents($file, json_encode(self::get($sessionKey)['data'], JSON_PRETTY_PRINT));
 
         return Response::download(
             $file,
@@ -43,15 +43,18 @@ class Session
         );
     }
 
-    public static function get(string $sessionId): array
+    public static function get(string $sessionKey): array
     {
-        $data = Cache::get($sessionId);
+        $data = Cache::get($sessionKey);
 
         if (! is_array($data)) {
             return [];
         }
 
-        return $data;
+        return [
+            'summary' => SessionFormatter::format($data, $sessionKey),
+            'data' => $data,
+        ];
     }
 
     /**

@@ -2,9 +2,6 @@
     <div>
         <router-view name="dialog" />
 
-        <!-- should contain it's own helpers -->
-        <query-statistics v-bind="{queries, queryTime, routes, firstQueryLogged, lastQueryLogged}" />
-
         <!-- should be own component -->
         <div class="tile is-parent is-paddingless">
             <main class="is-vertical tile">
@@ -13,11 +10,18 @@
                         <span>
                             Queries
                         </span>
-                        <span class="material-icons button is-pulled-right" title="show filter menu" v-on:click="showFilterMenu">
-                            filter_list
+                        <router-link tag="span" class="button is-pulled-right is-primary is-text material-icons is-small" :to="{ name: 'sessions'}">close</router-link>
+
+                        <span class="material-icons button is-text is-primary is-pulled-right is-small" title="show filter menu" v-on:click="showFilterMenu">
+                            sort
                         </span>
-                        <span class="material-icons button is-pulled-right" title="clear query cache" v-on:click="clearQueryCache">
-                            eject
+
+                        <router-link tag="span" title="download session file" class="material-icons button is-text is-primary is-pulled-right is-small" :to="{ name: 'download-session'}">
+                            download
+                        </router-link>
+
+                        <span class="material-icons button is-text is-primary is-pulled-right is-small" title="clear query cache" v-on:click="clearQueryCache">
+                            delete
                         </span>
                     </div>
 
@@ -30,7 +34,19 @@
                         <a v-on:click="listType = 'queryTime'" :class="{'is-active': (listType === 'queryTime')}">Query time</a>
                     </p>
                 </nav>
-                <timeline
+
+                <!-- should contain it's own helpers -->
+                <query-statistics v-if="!loading" :queries="sessionSummary.queries" :routes="sessionSummary.routes" :query-time="sessionSummary.queryTime"  />
+
+                <div class="container" v-if="loading">
+                    <div class="button is-primary is-text is-large is-loading" />
+                    <h1 class="title">
+                        Loading..
+                    </h1>
+                </div>
+
+                <datagrid
+                    v-else
                     :data-list="dataList"
                     :session-key="sessionKey"
                     :data-list-key="dataListKey"
@@ -47,31 +63,16 @@
     import queryBlock from '../../query/components/query-block';
     import queryStatistics from '../../../components/query-statistics';
     import {clear, show} from "../api/sessionApi";
-    import Timeline from "../components/views/timeline";
+    import Datagrid from "../components/views/datagrid";
 
     export default {
-        components: {Timeline, pageFooter, queryBlock, queryStatistics},
+        components: {Datagrid, pageFooter, queryBlock, queryStatistics},
 
         props: {
             sessionKey: {
 
             },
 
-            queries: {
-
-            },
-
-            queryTime: {
-            },
-
-            routes: {
-            },
-
-            firstQueryLogged: {
-            },
-
-            lastQueryLogged: {
-            }
         },
 
 
@@ -80,7 +81,9 @@
                 sortKey: 'time',
                 sortDirection: 1,
                 listType: 'time',
-                cachedKeys: {},
+                sessionData: {},
+                sessionSummary: {},
+                loading: true,
             }
         },
 
@@ -116,7 +119,7 @@
             },
 
             flattenedCachedKeys() {
-                return Object.values(this.cachedKeys).flat();
+                return Object.values(this.sessionData).flat();
             },
 
             totalQueryTime() {
@@ -167,7 +170,8 @@
             getQueries() {
                 this.loading = true;
                 show(this.sessionKey).then((cachedKeys) => {
-                    this.cachedKeys = cachedKeys;
+                    this.sessionData = cachedKeys['data'] ?? [];
+                    this.sessionSummary = cachedKeys['summary'] ?? {};
                 }).finally(() => {
                     this.loading = false;
                 });
