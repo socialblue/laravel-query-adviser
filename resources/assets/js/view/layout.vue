@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="laravel-query-adviser">
         <router-view :key="routeKey"></router-view>
         <page-footer />
         <notification />
@@ -28,3 +28,14 @@
         }
     }
 </script>
+
+<style lang="scss">
+    .laravel-query-adviser {
+        .button {
+            &.is-text {
+                text-decoration: none;
+            }
+            font-weight: 700;
+        }
+    }
+</style>

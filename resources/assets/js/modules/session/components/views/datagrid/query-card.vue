@@ -3,13 +3,13 @@
         <div class="main-column">
             <div class="options">
                 <div class="buttons">
-                    <div class="button" title="explain query" v-on:click="showExplainDialog">
+                    <div class="button is-text" title="explain query" v-on:click="showExplainDialog">
                         <svg><use xlink:href="#sql-time" href="#explain"></use></svg>
                     </div>
-                    <div class="button" title="execute query" v-on:click="showExecuteDialog">
+                    <div class="button is-text" title="execute query" v-on:click="showExecuteDialog">
                         <svg><use xlink:href="#sql-time" href="#execute"></use></svg>
                     </div>
-                    <div class="button" title="copy query to clipboard" v-clipboard="format(query.sql)" v-clipboard:success="clipboardSuccess">
+                    <div class="button is-text" title="copy query to clipboard" v-clipboard="format(query.sql)" v-clipboard:success="clipboardSuccess">
                         <svg><use xlink:href="#sql-time" href="#copy"></use></svg>
                     </div>
                 </div>
@@ -30,6 +30,7 @@
                             <svg class="item"><use href="#sql-time"></use></svg>
                             <svg class="item"><use href="#referrer"></use></svg>
                             <svg class="item"><use href="#url"></use></svg>
+                            <!--todo add support for`phpstorm://open?file=${query.backtrace[0].file}&line=${query.backtrace[0].line}`-->
                             <svg class="item" v-if="Object.values(query.backtrace)[0]"><use href="#src"></use></svg>
                             <svg class="item" v-if="Object.values(query.backtrace)[0]"><use href="#exec"></use></svg>
                         </div>
@@ -43,11 +44,9 @@
                             <div class="item">
                                 {{ query.url }}
                             </div>
-
                             <div v-if="Object.values(query.backtrace)[0]" class="item">
                                 {{query.backtrace[0].file}}:{{query.backtrace[0].line}}
                             </div>
-
                             <div v-if="Object.values(query.backtrace)[0]" class="item" >
                                 {{query.backtrace[0].model}}::{{query.backtrace[0].function}}
                             </div>
@@ -160,7 +159,7 @@
                 width: 64px;
                 height: calc(48 * 4px);
                 overflow: hidden;
-                margin-top: -5px;
+                margin-left: -10px;
                 z-index: 1;
             }
         }
