@@ -222,3 +222,9 @@
         name: 'iconSheet',
     }
 </script>
+
+<style scoped>
+    svg {
+        display: none;
+    }
+</style>
