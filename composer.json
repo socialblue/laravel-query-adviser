@@ -39,6 +39,8 @@
         "ext-pdo": "*"
     },
     "require-dev": {
+        "guzzlehttp/guzzle": "^7.5",
+        "guzzlehttp/promises": "^1.5",
         "orchestra/testbench": "^6.19",
         "symplify/easy-coding-standard": "^9.4"
     },
