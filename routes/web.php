@@ -32,6 +32,7 @@ Route::prefix('api')->group(function () {
     });
 
     Route::get('/server-info', [IndexController::class, 'serverInfo']);
+    Route::get('/version', [IndexController::class, 'version']);
 });
 
 // defer all front-end routes to vue-router app
