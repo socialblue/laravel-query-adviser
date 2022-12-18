@@ -4,7 +4,6 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/socialblue/laravel-query-adviser.svg?style=flat-square)](https://scrutinizer-ci.com/g/socialblue/laravel-query-adviser)
 [![Total Downloads](https://img.shields.io/packagist/dt/socialblue/laravel-query-adviser.svg?style=flat-square)](https://packagist.org/packages/socialblue/laravel-query-adviser)
 
-
 <table>
     <tr>
         <td><img src="./public/images/favicon.svg" width="180" /></td>
@@ -14,8 +13,31 @@ The handy card view allows you to quickly point out the pain points of your appl
     </tr>
 </table>
 
+## Features
 
-
+| Query Logging    | Web app           | Chrome DevTool            | Code                      |
+|------------------|-------------------|---------------------------|---------------------------|
+| Use cache driver |                   |                           |                           |
+| Eloquent Queries |                   |                           |                           |
+| Routes           |                   |                           |                           |
+| Stack trace      |                   |                           |                           |
+| Tinker Support   |                   |                           |                           |
+| Job Support      |                   |                           |                           |
+| MySql Support    |                   |                           |                           |
+|                  | Start session     | Start Session             |                           |
+|                  | Stop session      | Stop Session              |                           |
+|                  | Export Session    |                           |                           |
+|                  | Import Session    |                           |                           |
+|                  | Query Grouping    |                           |                           |
+|                  | Query Ordering    |                           |                           |
+|                  | Explain Query     |                           |                           |
+|                  | Re-execute Query  |                           |                           |
+|                  | Copy to clipboard |                           |                           |
+|                  |                   | Show realtime query usage |                           |
+|                  |                   |                           | dd query builder query    |
+|                  |                   |                           | dump query builder query  |
+|                  |                   |                           | dd eloquent model query   |
+|                  |                   |                           | dump eloquent model query |
 
 ## Installation
 
@@ -37,12 +59,18 @@ php artisan vendor:publish --provider="Socialblue\LaravelQueryAdviser\LaravelQue
 php artisan vendor:publish --tag=public --force
 ```
 
-
 **When updating from `0.13.2` to `0.14.0` please use**
 
 ```bash
 php artisan vendor:publish --provider="Socialblue\LaravelQueryAdviser\LaravelQueryAdviserServiceProvider" --force
 ```
+
+## Install Chrome developer tool
+When you want to be able to start and stop the log sessions and see realtime query information from your current browser tab.
+You can install the Chrome developer tool in the
+[Chrome web store](https://chrome.google.com/webstore/detail/laravel-query-adviser/dgojkgibloeebbjieckfjaflodkamdbf).
+
+![Extension](./img/chrome-developer-tool.png)
 
 ## Usage
 
@@ -146,15 +174,3 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 ## Laravel Package Boilerplate
 
 This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
-
-
-svg
-use rect for table
-use polyline for joins
-use groups for sub queries
-
-
-table names 
-show relations
-snap to grid (24,24)
-collision detection Add minimal space between tables using aabb
