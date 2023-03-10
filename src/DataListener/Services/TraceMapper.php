@@ -29,9 +29,9 @@ class TraceMapper
 
         if (! empty($currentPossibleTrace)) {
             $calledBy = $traces[key($possibleTraces) + 1];
-            $currentPossibleTrace['file'] = $calledBy['file'];
-            $currentPossibleTrace['line'] = $calledBy['line'];
-            $currentPossibleTrace['function'] = $calledBy['function'];
+            $currentPossibleTrace['file'] = $calledBy['file'] ?? '';
+            $currentPossibleTrace['line'] = $calledBy['line'] ?? '';
+            $currentPossibleTrace['function'] = $calledBy['function'] ?? '';
             return [$currentPossibleTrace];
         }
 
