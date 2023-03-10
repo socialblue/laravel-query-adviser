@@ -7807,7 +7807,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "8.*",
+        "php": "8.0|8.1",
         "ext-json": "*",
         "ext-pdo": "*"
     },
