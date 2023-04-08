@@ -99,6 +99,7 @@ class QueryBuilderHelper
     {
         $queryData = '';
         $sqlOptimized = '';
+        $errorMessage = '';
         $query = [
             'sql' => $rawSql,
             'bindings' => $bindings,
