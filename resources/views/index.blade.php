@@ -1,3 +1,10 @@
+@php
+    function vite_vendor($asset, $vendor)
+    {
+        $manifest = json_decode(file_get_contents(public_path('vendor/socialblue/laravel-query-adviser/build/manifest.json')), true);
+        return $vendor . '/build/' . $manifest[$asset]['file'];
+    }
+@endphp
 <!doctype html>
 <html lang="en">
     <head>
@@ -9,14 +16,15 @@
         <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet'>
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
         <title>Laravel Query Adviser</title>
-        <link href="{{ asset(mix('/css/app.css', 'vendor/socialblue/laravel-query-adviser')) }}" rel="stylesheet" type="text/css">
+        <link href="{{ vite_vendor('resources/app/app.css', '/vendor/socialblue/laravel-query-adviser') }}" rel="stylesheet" type="text/css">
     </head>
     <body>
         <section id="app">
             <view-layout />
         </section>
-        <script src="{{ asset(mix('/js/app.js', 'vendor/socialblue/laravel-query-adviser')) }}"></script>
+        <script src="{{ vite_vendor('resources/app/app.js', '/vendor/socialblue/laravel-query-adviser') }}"></script>
         <script>window.Laravel = {csrfToken: '{{ csrf_token() }}'}</script>
     </body>
 </html>
