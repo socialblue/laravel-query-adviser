@@ -43,8 +43,6 @@ export default [
                 name: 'session-query-execute',
                 components: {dialog: ExecuteQuery},
                 props: { dialog: (route) => {
-                    console.log('dialog-component-route', route.params);
-
                     return route.params;
                 }},
             },

@@ -108,7 +108,6 @@
     }
 
     function showExecuteDialog() {
-        console.log(props);
         router.push({
             name: 'session-query-execute',
             params: {

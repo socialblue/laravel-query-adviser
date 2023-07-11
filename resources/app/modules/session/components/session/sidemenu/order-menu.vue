@@ -35,7 +35,6 @@
         },
 
         set(field) {
-            console.log(field);
             emit('update:sort-field', field);
         }
     });

@@ -46,7 +46,6 @@ const props = defineProps({
 
 function getExplain() {
     this.loading = true;
-    console.log(props);
 
     explain(props.sessionKey, props.time, props.timeKey)
         .then((explainParts) => {

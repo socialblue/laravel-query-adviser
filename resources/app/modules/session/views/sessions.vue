@@ -14,8 +14,8 @@
             <div class="sessions">
                 <session-row v-bind="session"  v-for="session in data.sessions" v-if="data.sessions.length > 0" />
                 <loader v-else-if="data.loading" />
-                <div v-else>
-                    No sessions found.
+                <div class="container" v-else>
+                    <h2>No sessions found.</h2>
                 </div>
             </div>
         </section>
@@ -98,6 +98,12 @@
 
         .is-pulled-right {
             margin-left: auto;
+        }
+    }
+
+    .sessions {
+        > .container {
+            text-align: center;
         }
     }
 

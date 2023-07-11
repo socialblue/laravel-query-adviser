@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="queries" v-if="showQueryGroup(key)">
-                <query-card :session-key="sessionKey" :time="key" :time-key="queryId" :query="query" v-for="(query, queryId) in dataList[key]" />
+                <query-card :session-key="sessionKey" :time="query.time" :time-key="queryId" :query="query" v-for="(query, queryId) in dataList[key]" />
             </div>
         </div>
     </div>
@@ -61,8 +61,6 @@
             return;
         }
         data.showTime.push(time);
-
-        console.log(showQueryGroup(time));
     }
 
     function groupTitle(value) {
