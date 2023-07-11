@@ -85,7 +85,7 @@ class IndexControllerTest extends TestCase {
         $data = $this->get('/query-adviser/api/version')->json();
 
         $this->assertSame([
-            'installed' => 'dev-develop',
+            'installed' => '1.0.0+no-version-set',
             'latest' => '2.2.1',
             'update' => -1
         ], $data);
