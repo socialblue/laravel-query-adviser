@@ -3,7 +3,6 @@ const sessionApiPath = '/query-adviser/api/session';
 export function clear() {
     return fetch(`${sessionApiPath}/clear`)
         .then((response) => {
-            window.EventBus.$emit('show-notification', {message: 'Session cache cleared'});
             return response.json();
         });
 }
@@ -65,3 +64,4 @@ export function show(sessionKey) {
             return response.json();
         });
 }
+

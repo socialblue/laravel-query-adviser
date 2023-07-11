@@ -217,10 +217,7 @@
     </svg>
 </template>
 
-<script>
-    export default {
-        name: 'iconSheet',
-    }
+<script setup>
 </script>
 
 <style scoped>
