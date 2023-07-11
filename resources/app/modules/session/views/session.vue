@@ -92,25 +92,6 @@
         });
     }
 
-    function showQueryGroup(time) {
-        return data.showTime.includes(time);
-    }
-
-    function toggleQueryGroup(time) {
-        if (data.showTime.includes(time)) {
-            data.showTime = data.showTime.filter(val => val !== time);
-            return;
-        }
-        data.showTime.push(time);
-    }
-
-    function groupTitle(value) {
-        if (data.listType === "time") {
-            return new Date(value * 1000).toISOString();
-        }
-        return value;
-    }
-
     function getUniqueValuesByKey(key) {
         return [...new Set(flattenedCachedKeys.value.map(val => val[key]))];
     }
@@ -142,10 +123,6 @@
         });
 
         return cdata;
-    }
-
-    function showFilterMenu() {
-        router.push({name: 'session-order-menu'})
     }
 
     function close() {
@@ -188,41 +165,8 @@
         return Object.values(data.sessionData).flat();
     });
 
-    const totalQueryTime = computed(() => {
-        if (flattenedCachedKeys.value.length === 0) {
-            return 0;
-        }
-        return flattenedCachedKeys.value.reduce((total, time, index) => {
-            if (index === 1) {
-                total = total.queryTime;
-            }
-            return total + time.queryTime;
-        });
-    })
 
-    const totalAmountOfQueries = computed(() => {
-        flattenedCachedKeys.value.length;
-    });
 
-    const amountOfRoutes = computed( () => {
-        return getUniqueRoutes.value.length;
-    });
-
-    const getUniqueRoutes = computed( () => {
-        return getUniqueValuesByKey('url');
-    })
-
-    const getUniqueRawSql = computed( () => {
-        return getUniqueValuesByKey('rawSql');
-    })
-
-    const getRawQueryList = computed( () => {
-        return groupValuesByKey('rawSql');
-    });
-
-    const getRouteQueryList= computed( () => {
-        return groupValuesByKey('url');
-    });
 
     function sortMenu()
     {
