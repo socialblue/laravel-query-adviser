@@ -1,7 +1,7 @@
 @php
     function vite_vendor($asset, $vendor)
     {
-        $path = public_path('vendor/socialblue/laravel-query-adviser/build/manifest.json');
+        $path = public_path($vendor . '/build/manifest.json');
         if (!file_exists($path)) {
             return $vendor . '/build/' . $asset;
         }
