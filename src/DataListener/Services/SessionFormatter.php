@@ -13,11 +13,12 @@ class SessionFormatter
         $possibleTraces = (new TraceMapper())->get();
         $key = count($data[$time]);
 
+
         $data[$time][$key] = [
             'time' => $time,
             'timeKey' => $key,
             'backtrace' => $possibleTraces,
-            'sql' => QueryBuilderHelper::combineQueryAndBindings($query->sql, $query->bindings),
+            'sql' => QueryBuilderHelper::combineQueryAndBindings((string)$query->sql, $query->bindings),
             'rawSql' => $query->sql,
             'bindings' => (new BindingsMapper())->toCache($query->bindings),
             'queryTime' => $query->time,
