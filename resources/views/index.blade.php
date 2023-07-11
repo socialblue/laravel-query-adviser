@@ -1,7 +1,12 @@
 @php
     function vite_vendor($asset, $vendor)
     {
-        $manifest = json_decode(file_get_contents(public_path('vendor/socialblue/laravel-query-adviser/build/manifest.json')), true);
+        $path = public_path('vendor/socialblue/laravel-query-adviser/build/manifest.json');
+        if (!file_exists($path)) {
+            return $vendor . '/build/' . $asset;
+        }
+
+        $manifest = json_decode(file_get_contents($path), true);
         return $vendor . '/build/' . $manifest[$asset]['file'];
     }
 @endphp
