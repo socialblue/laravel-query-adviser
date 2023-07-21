@@ -9,16 +9,7 @@
                 </template>
             </page-header>
             <session-row v-bind="data.sessionSummary" :session-key="sessionKey" />
-
-            <div class="tabs">
-                <div :class="['tab', {'active': data.listType === 'time'}]" @click="data.listType = 'time'">Time</div>
-                <div :class="['tab', {'active': data.listType === 'url'}]" @click="data.listType = 'url'">Routes</div>
-                <div :class="['tab', {'active': data.listType === 'referer'}]" @click="data.listType = 'referer'">Referer</div>
-                <div :class="['tab', {'active': data.listType === 'rawSql'}]" @click="data.listType = 'rawSql'">Queries</div>
-                <div :class="['tab', {'active': data.listType === 'sql'}]" @click="data.listType = 'sql'">Queries with bindings</div>
-                <div :class="['tab', {'active': data.listType === 'queryTime'}]" @click="data.listType = 'queryTime'">Query time</div>
-            </div>
-
+            <lqa-tabs v-model:active-tab="data.listType" :tabs="tabs" />
             <data-grid
                 :data-list="dataList"
                 :session-key="sessionKey"
@@ -38,6 +29,7 @@
     import {RouterView, useRouter} from "vue-router";
     import PageHeader from "../../default/components/page-header.vue";
     import ButtonIcon from "../../default/components/button-icon.vue";
+    import lqaTabs from "../../default/components/tabs.vue";
 
     const router = useRouter();
 
@@ -58,7 +50,6 @@
                 return 0;
             }
         }
-
     });
 
     //data
@@ -70,6 +61,34 @@
         sessionSummary: {},
         loading: true,
     });
+
+    const tabs = {
+        time: {
+            name: 'time',
+            label: 'Time',
+        },
+        url: {
+            name: 'url',
+            label: 'Routes',
+        },
+        referer: {
+            name: 'referer',
+            label: 'Referer',
+        },
+        rawSql: {
+            name: 'rawSql',
+            label: 'Queries',
+        },
+        sql: {
+            name: 'sql',
+            label: 'Queries with bindings',
+        },
+        queryTime: {
+            name: 'queryTime',
+            label: 'Query time',
+        },
+    };
+
 
     function clearQueryCache() {
         clear().finally(() => {
@@ -244,35 +263,6 @@
     }
 
 
-    .tabs {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        border-bottom: 1px solid rgba(233,233,233,.9);
 
-        .tab {
-            padding: 0.5rem 1rem;
-            border-bottom: none;
-            cursor: pointer;
-            background: #fff;
-            margin-right: 0.5rem;
-            color: #000;
-            font-weight: 900;
-            text-decoration: none;
-            transition: all 0.2s ease-in-out;
-            border-bottom: 2px solid transparent;
-
-            &:hover {
-                background: #eee;
-                border-bottom: 2px solid rgba(33,180,180, .5);
-            }
-
-            &.active {
-                border-bottom: 2px solid rgba(33,180,180,.9);
-            }
-        }
-
-    }
 
 </style>

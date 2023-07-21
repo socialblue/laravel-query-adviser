@@ -7,15 +7,24 @@
                 <button-icon title="import session" icon="file_upload" @button:click="importSession" />
             </template>
         </page-header>
+
+
+
         <section>
             <div class="container">
-                <steps @session:status="onStatusChange"/>
+                <steps @session:status="onStatusChange" v-model:active-session-id="data.activeSessionId"/>
             </div>
-            <div class="sessions">
+            <lqa-tabs v-model:active-tab="data.activeTab" :tabs="tabs" />
+            <div class="sessions" v-if="data.activeTab === 'sessions'">
                 <session-row v-bind="session"  v-for="session in data.sessions" v-if="data.sessions.length > 0" />
                 <loader v-else-if="data.loading" />
                 <div class="container" v-else>
                     <h2>No sessions found.</h2>
+                </div>
+            </div>
+            <div v-else>
+                <div class="container live-queries">
+                    <live-query v-bind="query" v-for="query in data.liveQueries" />
                 </div>
             </div>
         </section>
@@ -26,24 +35,65 @@
     import {reactive, onMounted} from "vue";
     import SessionRow from "../components/sessions/session-row.vue";
     import Steps from "../components/sessions/steps.vue";
-    import {sessions} from "../api/session-api";
+    import {sessions, show} from "../api/session-api";
     import {useRouter, onBeforeRouteUpdate} from "vue-router";
     import PageHeader from "../../default/components/page-header.vue";
     import ButtonIcon from "../../default/components/button-icon.vue";
     import Loader from "../../default/components/loader.vue";
+    import lqaTabs from "../../default/components/tabs.vue";
+    import LiveQuery from "../components/sessions/live-query.vue";
 
     const $router = useRouter();
 
     const data = reactive({
         sessions: [{firstQueryLogged: new Date(), lastQueryLogged: new Date()}, {firstQueryLogged: new Date(), lastQueryLogged: new Date()}],
         active: true,
+        activeTab: 'sessions', // 'sessionlist' | 'import' | 'clear
+        activeSessionId: null,
         loading: false,
+        liveQueries: [],
     });
+
+    const tabs = [
+        {
+            name: 'sessions',
+            label: 'Sessions',
+        },
+        {
+            name: 'liveSession',
+            label: 'Live Session',
+        }
+    ]
 
     function onStatusChange(status) {
         data.active = status;
         getList();
+        pollLiveSession();
     }
+
+    let timeOut = null;
+
+    function pollLiveSession() {
+        if (data.active) {
+
+            const tempSessionList = [];
+            show(data.activeSessionId).then((response) => {
+                Object.values(response.data).reverse().forEach((time) => {
+                    time.reverse().forEach(query => {
+                        tempSessionList.push({route: query.url, sql: query.sql, time: query.queryTime});
+                    });
+                });
+
+                data.liveQueries = tempSessionList;
+            });
+
+            clearTimeout(timeOut);
+            timeOut = setTimeout(() => {
+                pollLiveSession();
+            }, 2500);
+        }
+    }
+
 
     function getList() {
         data.loading = true;

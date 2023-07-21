@@ -36,15 +36,12 @@
             return;
         }
 
-        navigator.permissions.query({ name: 'clipboard-write' }).then((result) => {
-            if (result.state === 'granted' || result.state === 'prompt') {
-                hasClipboardPermission.value = true;
-            } else {
-                hasClipboardPermission.value = false;
-            }
+        navigator.permissions.query(
+            { name: 'clipboard-write' }
+        ).then((result) => {
+            hasClipboardPermission.value = (result.state === 'granted' || result.state === 'prompt');
         });
-    };
-
+    }
 
     function handleClick() {
         requestClipboardPermission();
@@ -57,8 +54,6 @@
         } catch (e) {
             fallbackClipboardMethod();
         }
-
-
     }
 
     function fallbackClipboardMethod() {
@@ -238,9 +233,6 @@ $sql-hl-number-color: rgba(0, 120, 220, .9);
                 transform: scale(1.5);
             }
         }
-
-
-
 
         span {
             padding: 0;
