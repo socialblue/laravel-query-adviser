@@ -2,6 +2,7 @@
 
 namespace Socialblue\LaravelQueryAdviser;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -15,9 +16,6 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*
-         * Optional methods to load your package assets
-         */
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'QueryAdviser');
 
         Route::group([
@@ -46,12 +44,10 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
     /**
      * Register the application services.
      */
-    public function register()
+    public function register(): void
     {
-        // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-query-adviser');
 
-        // Register the main class to use with the facade
         $this->app->singleton('laravel-query-adviser', function () {
             return new LaravelQueryAdviser();
         });
@@ -60,12 +56,15 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
     /**
      * Add helper functions to app
      */
-    protected function bootLaravelQueryAdviser()
+    protected function bootLaravelQueryAdviser(): void
     {
-        DB::listen(static function ($query) {
-            QueryListener::listen($query);
-        });
+        $this->setupQueryLog();
+        $this->setExceptionHandler();
+        $this->setupMacro();
+    }
 
+    private function setupMacro(): void
+    {
         \Illuminate\Database\Eloquent\Builder::macro(config('laravel-query-adviser.macros.dd'), function () {
             dd(QueryBuilderHelper::infoByBuilder($this));
         });
@@ -80,6 +79,21 @@ class LaravelQueryAdviserServiceProvider extends ServiceProvider
 
         \Illuminate\Database\Query\Builder::macro(config('laravel-query-adviser.macros.dump'), function () {
             dump(QueryBuilderHelper::infoByBuilder($this));
+        });
+    }
+
+    private function setExceptionHandler(): void
+    {
+        set_exception_handler(function (QueryException $exception) {
+            QueryListener::onQueryException($exception);
+            throw $exception;
+        });
+    }
+
+    private function setupQueryLog(): void
+    {
+        DB::listen(static function ($query) {
+            QueryListener::listen($query);
         });
     }
 }

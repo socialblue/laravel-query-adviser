@@ -3,8 +3,12 @@
 namespace Socialblue\LaravelQueryAdviser\DataListener;
 
 use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Cache;
+use Socialblue\LaravelQueryAdviser\DataListener\Services\BindingsMapper;
 use Socialblue\LaravelQueryAdviser\DataListener\Services\SessionFormatter;
+use Socialblue\LaravelQueryAdviser\DataListener\Services\TraceMapper;
+use Socialblue\LaravelQueryAdviser\Helper\QueryBuilderHelper;
 
 class QueryListener
 {
@@ -33,6 +37,43 @@ class QueryListener
             $sessionKey
         );
     }
+
+    public static function onQueryException(QueryException $queryException): void
+    {
+        if (config('laravel-query-adviser.enable_query_logging') === false) {
+            return;
+        }
+
+        $sessionKey = self::getSessionKey();
+
+        if (empty($sessionKey)) {
+            return;
+        }
+
+        $url = url()->current();
+        if (str_contains($url, '/query-adviser')) {
+            return;
+        }
+
+        $time = time();
+        $data = self::getFromCache($time, $sessionKey);
+
+        $key = count($data[$time]);
+        $data[$time][$key] = [
+            'time' => $time,
+            'timeKey' => $key,
+            'errorInfo' => $queryException->errorInfo,
+            'backtrace' => $queryException->getTrace(),
+            'sql' => QueryBuilderHelper::combineQueryAndBindings($queryException->getSql(), $queryException->getBindings()),
+            'rawSql' => $queryException->getSql(),
+            'bindings' => (new BindingsMapper())->toCache($queryException->getBindings()),
+            'queryTime' => 0,
+            'url' => empty($url) ? '/' : $url,
+            'referer' => empty($referer) ? '/' : $referer,
+        ];
+        self::putToCache($data, $sessionKey);
+    }
+
 
     /**
      * @param $sessionKey
