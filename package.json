@@ -6,15 +6,15 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
+    "@vitejs/plugin-vue": "^4.4.0",
     "laravel-vite-plugin": "^0.7.8",
-    "sass": "^1.63.6",
-    "vite": "^4.4.3"
+    "sass": "^1.69.5",
+    "vite": "^4.5.0"
   },
   "dependencies": {
-    "sql-formatter": "^12.2.3",
-    "sql-highlight": "^4.3.3",
-    "vue": "^3.3.4",
-    "vue-router": "^4.2.4"
+    "sql-formatter": "^12.2.4",
+    "sql-highlight": "^4.4.0",
+    "vue": "^3.3.7",
+    "vue-router": "^4.2.5"
   }
 }
