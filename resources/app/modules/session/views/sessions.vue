@@ -80,7 +80,7 @@
             show(data.activeSessionId).then((response) => {
                 Object.values(response.data).reverse().forEach((time) => {
                     time.reverse().forEach(query => {
-                        tempSessionList.push({route: query.url, sql: query.sql, time: query.queryTime});
+                        tempSessionList.push({route: query.url, sql: query.sql, time: query.queryTime, errorInfo: query?.errorInfo ?? null});
                     });
                 });
 
